@@ -21,8 +21,10 @@
 #   |3 for the best reverse fallback Unicode scaler value
 #
 <code_set_name>               "646"
-<subchar>                     \x3F\x3F\x3F
-#<subchar1>                   \x3F\x3F
+<mb_cur_max>                  1
+<mb_cur_min>                  1
+<uconv_class>                 "SBCS"
+<subchar>                     \x3F
 #
 CHARMAP
 #
