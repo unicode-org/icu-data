@@ -145,6 +145,24 @@ main(int argc, const char *argv[]) {
             return U_INVALID_TABLE_FORMAT;
         }
 
+        /* merge the base and extension tables again to be friendlier to other tools */
+        if(ucm->ext->mappingsLength>0) {
+            UCMTable *base, *ext;
+            UCMapping *m, *mLimit;
+
+            base=ucm->base;
+            ext=ucm->ext;
+            m=ext->mappings;
+            mLimit=m+ext->mappingsLength;
+            while(m<mLimit) {
+                ucm_addMapping(base, m, UCM_GET_CODE_POINTS(ext, m), UCM_GET_BYTES(ext, m));
+                ++m;
+            }
+
+            ucm_sortTable(base);
+            ext->mappingsLength=0;
+        }
+
         puts("CHARMAP");
         ucm_printTable(ucm->base, stdout, byUnicode);
         puts("END CHARMAP");

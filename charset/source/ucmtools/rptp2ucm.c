@@ -965,10 +965,28 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
 
     ucm_processStates(states);
 
-    /* separate extension mappings out of base table */
+    /* separate extension mappings out of base table, and other checks */
     if(!ucm_separateMappings(fromUFile, is_0xe_0xf_Stateful)) {
         fprintf(stderr, "error: ucm_separateMappings() failed\n");
         exit(U_INVALID_FORMAT_ERROR);
+    }
+
+    /* merge the base and extension tables again to be friendlier to other tools */
+    if(fromUFile->ext->mappingsLength>0) {
+        UCMTable *base, *ext;
+        UCMapping *m, *mLimit;
+
+        base=fromUFile->base;
+        ext=fromUFile->ext;
+        m=ext->mappings;
+        mLimit=m+ext->mappingsLength;
+        while(m<mLimit) {
+            ucm_addMapping(base, m, UCM_GET_CODE_POINTS(ext, m), UCM_GET_BYTES(ext, m));
+            ++m;
+        }
+
+        ucm_sortTable(base);
+        ext->mappingsLength=0;
     }
 
     /* write the mappings */
