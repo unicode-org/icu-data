@@ -1,31 +1,29 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000, International Business Machines
+*   Copyright (C) 2000-2003, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
 *
 *  Modification History:
 *
-*   Date        Name        Description
-*   15-Jul-2001 Ed Batutis  Created.
+*   Date        Name            Description
+*   15-Jul-2001 Ed Batutis      Created.
+*   15-Jun-2002 George Rhoten   Modified to get platform independent results.
 *
-* genmucm.cpp : Generate ucm file using Microsoft IMultiLang
+* genucm.cpp : Generate ucm file using Microsoft IMultiLang, Mac TEC or iconv
 * 
-* genmucm [path_to_unicode_data_txt]
+* genucm [converter_alias]
 *
 *
 * Win32 Notes:
 *   This program requires MSVC plus the Platform SDK from April 2000 or later.
 *   Also required is MLANG.DLL version 5.5 or later which is installed
 *   with IE 5.5. The MLANG.DLL that comes with Win2K will not work.
+* 
+* By default all conversion mapping tables are collected.
 */
-
-// todo:
-// Deal with surrogates and UChar32 - currently Windows does not support
-// gb18030 or converters with surrogates, so no big hurry. Windows XP will.
-// - eb
 
 #include <stdio.h>
 #include <time.h>
