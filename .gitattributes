@@ -409,3 +409,4 @@ charset/data/xml/windows-932-2000.xml svneol=native#text/xml
 charset/data/xml/windows-936-2000.xml svneol=native#text/xml
 charset/data/xml/windows-949-2000.xml svneol=native#text/xml
 charset/data/xml/windows-950-2000.xml svneol=native#text/xml
+charset/source/gb18030/gb18030.html svneol=native#text/html
