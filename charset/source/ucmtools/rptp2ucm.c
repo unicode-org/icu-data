@@ -144,6 +144,9 @@ knownStateTables[]={
     1370,  "<icu:state>                   0-80, 81-fe:1\n"
            "<icu:state>                   40-7e, 81-fe\n",
 
+    1373,  "<icu:state>                   0-7f, 81-fe:1\n"
+           "<icu:state>                   40-7e, 81-fe\n",
+
     1381,  "<icu:state>                   0-84, 8c-fe:1\n"
            "<icu:state>                   a1-fe\n",
 
@@ -157,7 +160,7 @@ knownStateTables[]={
     1386,  "<icu:state>                   0-80, 81-fe:1\n" /* Was 0-7f, 81-fe:1 */
            "<icu:state>                   40-7e, 80-fe\n",
 
-    5039,   "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
+    5039,  "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
            "<icu:state>                   40-7e, 80-fc\n",
 
     5050,  "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
@@ -165,6 +168,7 @@ knownStateTables[]={
            "<icu:state>                   a1-e4\n"
            "<icu:state>                   a1-fe:1, a1:4, a3-af:4, b6:4, d6:4, da-db:4, ed-f2:4\n"
            "<icu:state>                   a1-fe.u\n",
+
     5067,  "<icu:state>                   0-ff:2, 21-7e:1\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
@@ -229,7 +233,8 @@ variantLF,
 variantASCII,
 variantControls,
 variantSUB,
-is7Bit;
+is7Bit,
+is_0xe_0xf_Stateful;
 
 static void
 init() {
@@ -247,6 +252,7 @@ init() {
     variantControls=0;
     variantSUB=0;
     is7Bit=0;
+    is_0xe_0xf_Stateful=0;
 }
 
 /* lexically compare Mappings for sorting */
@@ -274,7 +280,7 @@ compareMappings(const void *left, const void *right) {
 
 static const char *
 skipWhitespace(const char *s) {
-    while(*s==' ' || *s=='\t') {
+    while(*s==' ' || *s=='\t' || *s=='\x7f') {
         ++s;
     }
     return s;
@@ -291,7 +297,7 @@ parseMappings(FILE *f, Mapping *mappings) {
     oldMappings=mappings;
     while(fgets(line, sizeof(line), f)!=NULL) {
         s=(char *)skipWhitespace(line);
-    lineNum++;
+        lineNum++;
 
         /* skip empty lines */
         if(*s==0 || *s=='\n' || *s=='\r') {
@@ -577,6 +583,10 @@ analyzeTable() {
     if(charsetFamily!=EBCDIC || minCharLength!=1) {
         variantLF=0;
     }
+    if(ccsid==25546) {
+        /* Special case. It's not EBCDIC, but it stateful like EBCDIC_STATEFUL. */
+        is_0xe_0xf_Stateful = 1;
+    }
 }
 
 static int
@@ -672,12 +682,12 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
 
     /* write the header */
     fprintf(f,
-        "# *******************************************************************************\n"
+        "# ***************************************************************************\n"
         "# *\n"
-        "# *   Copyright (C) 1995-2001, International Business Machines\n"
+        "# *   Copyright (C) 1995-2002, International Business Machines\n"
         "# *   Corporation and others.  All Rights Reserved.\n"
         "# *\n"
-        "# *******************************************************************************\n"
+        "# ***************************************************************************\n"
         "#\n"
         "# File created by rptp2ucm (compiled on %s)\n"
         "# from source files %s and %s\n"
@@ -696,6 +706,7 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
         if(minCharLength==1) {
             if(charsetFamily==EBCDIC) {
                 fputs("<uconv_class>                 \"EBCDIC_STATEFUL\"\n", f);
+                is_0xe_0xf_Stateful = 1;
             } else {
                 fputs("<uconv_class>                 \"MBCS\"\n", f);
             }
@@ -762,6 +773,11 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     fputs("CHARMAP\n", f);
     for(i=0; i<fromUMappingsTop; ++i) {
         writeBytes(buffer, fromUMappings[i].b);
+        if (is_0xe_0xf_Stateful && (fromUMappings[i].b == 0x0e || fromUMappings[i].b == 0x0f)) {
+            /* These fallbacks aren't really a part of the state table. Ignore them. */
+            fprintf(stderr, "warning: Skipping <U%04lX> %s |%lu for stateful encoding.\n", fromUMappings[i].u&0xffffff, buffer, fromUMappings[i].u>>24);
+            continue;
+        }
         fprintf(f, "<U%04lX> %s |%lu\n", fromUMappings[i].u&0xffffff, buffer, fromUMappings[i].u>>24);
     }
     fputs("END CHARMAP\n", f);
