@@ -124,7 +124,7 @@ main(int argc, const char *argv[]) {
             }
         }
         if(line[0]!=0 && line[0]!='#') {
-            if(uprv_strcmp(line, "CHARMAP")) {
+            if(0==uprv_strcmp(line, "CHARMAP")) {
                 /* process the extension table's charmap section, start with the line read above */
                 for(;;) {
                     if(gets(line)==NULL) {
