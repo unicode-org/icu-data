@@ -177,6 +177,9 @@ knownStateTables[]={
     1373,  "<icu:state>                   0-7f, 81-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
+    1375,  "<icu:state>                   0-7f, 81-fe:1\n"
+           "<icu:state>                   40-7e, 80-fe\n",
+
     1381,  "<icu:state>                   0-84, 8c-fe:1\n"
            "<icu:state>                   a1-fe\n",
 
@@ -1105,7 +1108,7 @@ processTable(const char *arg) {
         ccsid=(uint16_t)(value>>16);
     } else {
         unicode=value>>16;
-        if(unicode==13488 || unicode==17584 || unicode==1200) {
+        if(unicode==13488 || unicode==17584 || unicode==1200 || unicode==61956) {
             ccsid=(uint16_t)(value&0xffff);
         } else {
             fprintf(stderr, "error: \"%s\" is not a Unicode conversion table\n", basename);
