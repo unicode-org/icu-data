@@ -54,7 +54,7 @@ main(int argc, const char *argv[]) {
     UCMFile *baseFile, *extFile;
     UCMStates *baseStates;
     UErrorCode errorCode;
-    UBool isSISO, intersectBase;
+    UBool intersectBase;
 
     baseFile=ucm_open();
     extFile=ucm_open();
@@ -106,7 +106,6 @@ main(int argc, const char *argv[]) {
 
     baseStates=&baseFile->states;
     ucm_processStates(baseStates);
-    isSISO=(UBool)(baseStates->outputType==MBCS_OUTPUT_2_SISO);
 
     /* read the base file base table */
     errorCode=U_ZERO_ERROR;
