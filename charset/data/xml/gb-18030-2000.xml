@@ -2,43 +2,29 @@
 <!DOCTYPE characterMapping SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
 <characterMapping id="gb-18030-2000" version="1">
  <history>
-  <modified version="1" date="2001-07-20">This file was generated with XMLSimpleGenerator.java.</modified>
+  <modified version="3" date="2001-02-21">
+   0x80 appears to be a valid (and unassigned) single-byte code, added to the validity.
+  </modified>
+  <modified version="2" date="2000-11-30">
+   New mapping data, changing all four-byte mappings to the BMP.
+   Removed mappings to single surrogates.
+  </modified>
+  <modified version="1" date="2000-03-17">
+   Original table.
+  </modified>
  </history>
+
  <validity>
-  <state type="FIRST" next="VALID" s="00" e="7F" max="FFFF"/>
-  <state type="FIRST" next="EIGHTH" s="81" max="FFFF"/>
-  <state type="FIRST" next="NINTH" s="82" max="FFFF"/>
-  <state type="FIRST" next="TENTH" s="83" max="FFFF"/>
-  <state type="FIRST" next="ELEVENTH" s="84" max="FFFF"/>
-  <state type="FIRST" next="FIFTH" s="85" e="FE" max="FFFF"/>
-  <state type="SECOND" next="THIRD" s="30" e="39" max="FFFF"/>
-  <state type="SECOND" next="VALID" s="40" e="7E" max="FFFF"/>
-  <state type="SECOND" next="VALID" s="80" e="FE" max="FFFF"/>
-  <state type="THIRD" next="FOURTH" s="81" e="FE" max="FFFF"/>
-  <state type="FOURTH" next="VALID" s="30" e="39" max="FFFF"/>
-  <state type="FIFTH" next="SIXTH" s="30" e="39" max="FFFF"/>
-  <state type="FIFTH" next="VALID" s="40" e="7E" max="FFFF"/>
-  <state type="FIFTH" next="VALID" s="80" e="FE" max="FFFF"/>
-  <state type="SIXTH" next="SEVENTH" s="81" e="FE" max="FFFF"/>
-  <state type="SEVENTH" next="UNASSIGNED" s="30" e="39" max="FFFF"/>
-  <state type="EIGHTH" next="THIRD" s="30" max="FFFF"/>
-  <state type="EIGHTH" next="SIXTH" s="31" e="35" max="FFFF"/>
-  <state type="EIGHTH" next="THIRD" s="36" e="39" max="FFFF"/>
-  <state type="EIGHTH" next="VALID" s="40" e="7E" max="FFFF"/>
-  <state type="EIGHTH" next="VALID" s="80" e="FE" max="FFFF"/>
-  <state type="NINTH" next="THIRD" s="30" e="35" max="FFFF"/>
-  <state type="NINTH" next="SIXTH" s="36" e="39" max="FFFF"/>
-  <state type="NINTH" next="VALID" s="40" e="7E" max="FFFF"/>
-  <state type="NINTH" next="VALID" s="80" e="FE" max="FFFF"/>
-  <state type="TENTH" next="SIXTH" s="30" e="35" max="FFFF"/>
-  <state type="TENTH" next="THIRD" s="36" max="FFFF"/>
-  <state type="TENTH" next="SIXTH" s="37" e="39" max="FFFF"/>
-  <state type="TENTH" next="VALID" s="40" e="7E" max="FFFF"/>
-  <state type="TENTH" next="VALID" s="80" e="FE" max="FFFF"/>
-  <state type="ELEVENTH" next="THIRD" s="30" e="31" max="FFFF"/>
-  <state type="ELEVENTH" next="SIXTH" s="32" e="39" max="FFFF"/>
-  <state type="ELEVENTH" next="VALID" s="40" e="7E" max="FFFF"/>
-  <state type="ELEVENTH" next="VALID" s="80" e="FE" max="FFFF"/>
+  <state type="FIRST"  s="00" e="80" next="VALID" max="7f"/>
+  <state type="FIRST"  s="81" e="fe" next="SECOND"/>
+
+  <state type="SECOND" s="40" e="7e" next="VALID" max="ffff"/>
+  <state type="SECOND" s="80" e="fe" next="VALID" max="ffff"/>
+  <state type="SECOND" s="30" e="39" next="THIRD"/>
+
+  <state type="THIRD"  s="81" e="fe" next="FOURTH"/>
+
+  <state type="FOURTH" s="30" e="39" next="VALID" max="10ffff"/>
  </validity>
  <assignments sub="1A">
   <!-- One to one mappings -->
@@ -30903,6 +30889,25 @@
   <a u="FFE3" b="A3 FE"/>
   <a u="FFE4" b="A9 57"/>
   <a u="FFE5" b="A3 A4"/>
+  <!-- Roundtrip-mappings that can be enumerated
+       Note that GB 18030 defines roundtrip mappings for all Unicode code points U+0000..U+10ffff.
+       This would require 1.1 million <a> elements.
+       However, most four-byte GB 18030 mappings can be enumerated efficiently within distinct ranges.
+       Therefore, we use <range> elements for all but the 31000 or so assignments above.
+    -->
+  <range uFirst="0452" uLast="200F"  bFirst="81 30 D3 30" bLast="81 36 A5 31"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="2643" uLast="2E80"  bFirst="81 37 A8 39" bLast="81 38 FD 38"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="361B" uLast="3917"  bFirst="82 30 A6 33" bLast="82 30 F2 37"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="3CE1" uLast="4055"  bFirst="82 31 D4 38" bLast="82 32 AF 32"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="4160" uLast="4336"  bFirst="82 32 C9 37" bLast="82 32 F8 37"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="44D7" uLast="464B"  bFirst="82 33 A3 39" bLast="82 33 C9 31"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="478E" uLast="4946"  bFirst="82 33 E8 38" bLast="82 34 96 38"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="49B8" uLast="4C76"  bFirst="82 34 A1 31" bLast="82 34 E7 33"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="9FA6" uLast="D7FF"  bFirst="82 35 8F 33" bLast="83 36 C7 38"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="E865" uLast="F92B"  bFirst="83 36 D0 30" bLast="84 30 85 34"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="FA2A" uLast="FE2F"  bFirst="84 30 9C 38" bLast="84 31 85 37"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="FFE6" uLast="FFFF"  bFirst="84 31 A2 34" bLast="84 31 A4 39"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
+  <range uFirst="10000" uLast="10FFFF"  bFirst="90 30 81 30" bLast="E3 32 9A 35"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
   <!-- Fallback mappings from Unicode to bytes -->
   <!-- NONE -->
   <!-- Fallback mappings from bytes to Unicode -->
