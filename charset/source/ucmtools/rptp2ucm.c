@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2001, International Business Machines
+*   Copyright (C) 2000-2003, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -22,18 +22,31 @@
 *   R*MAP: Unicode->codepage
 *   T*MAP: codepage->Unicode
 *
-*   To compile, just call a C compiler/linker with this source file.
-*   On Windows: cl rptp2ucm.c
+*   Starting 2003oct25, rptp2ucm handles m:n mappings as well, but requires
+*   a more elaborate build using the ICU common (icuuc) and toolutil libraries.
+*   On Windows (on one line):
+*
+*   cl -nologo
+*      -I..\..\..\icu\source\common
+*      -I..\..\..\icu\source\tools\toolutil
+*      rptp2ucm.c -link /LIBPATH:..\..\..\icu\lib icuucd.lib icutud.libcanonucm.c
 */
 
+#include "unicode/utypes.h"
+#include "unicode/ustring.h"
+#include "cmemory.h"
+#include "cstring.h"
+#include "ucnv_ext.h"
+#include "ucm.h"
+#include "uparse.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <time.h>
+
+#define LENGTHOF(array) (int32_t)(sizeof(array)/sizeof((array)[0]))
 
 typedef struct UCMSubchar {
     const char *name;
-    unsigned long subchar, subchar1;
+    uint32_t subchar, subchar1;
 } UCMSubchar;
 
 static const UCMSubchar
@@ -46,7 +59,7 @@ knownSubchars[]={
 };
 
 typedef struct CCSIDStateTable {
-    unsigned int ccsid;
+    uint16_t ccsid;
     const char *table;
 } CCSIDStateTable;
 
@@ -195,65 +208,56 @@ knownStateTables[]={
 
 };
 
-typedef struct Mapping {
-    /*
-     * u bits:
-     * 31..24  fallback indicator
-     *         0  roundtrip
-     *         1  Unicode->codepage
-     *         3  codepage->Unicode
-     * 23.. 0  Unicode code point
-     *
-     * b: codepage bytes with leading zeroes
-     */
-    unsigned long u, b;
-} Mapping;
-
-#define MAX_MAPPINGS_COUNT 200000
 #define MAX_YEAR 2900
 #define MIN_YEAR 1940
 
-static Mapping
-fromUMappings[MAX_MAPPINGS_COUNT], toUMappings[MAX_MAPPINGS_COUNT];
+static UCMFile *fromUFile, *toUFile;
 
-static long fromUMappingsTop, toUMappingsTop;
-
-static unsigned long subchar, subchar1;
-static unsigned int ccsid;
+static uint32_t subchar, subchar1;
+static uint16_t ccsid;
 
 /*Year when the ucm files were produced using this tool*/
-static unsigned int year;
+static uint16_t year;
 
 enum {
-    ASCII,
-    EBCDIC,
-    UNKNOWN
+    U_UNKNOWN_CHARSET_FAMILY=9
 };
 
-static char
-minCharLength,
-maxCharLength,
-charsetFamily,
-usesPUA,
-variantLF,
-variantASCII,
-variantControls,
-variantSUB,
-is7Bit,
-is_0xe_0xf_Stateful,
-isYearModificationDate;
+static uint32_t minTwoByte, maxTwoByte;
+
+static int32_t
+    minCharLength,
+    maxCharLength;
+
+static uint8_t charsetFamily, oredBytes;
+
+static UBool
+    usesPUA,
+    variantLF,
+    variantASCII,
+    variantControls,
+    variantSUB,
+    is7Bit,
+    is_0xe_0xf_Stateful,
+    isYearModificationDate;
 
 static void
 init() {
-    fromUMappingsTop=toUMappingsTop=0;
+    fromUFile=ucm_open();
+    toUFile=ucm_open();
 
     subchar=subchar1=0;
     ccsid=0;
     year=0;
 
-    minCharLength=4;
+    minTwoByte=0xffff;
+    maxTwoByte=0;
+
+    minCharLength=0;
     maxCharLength=0;
-    charsetFamily=UNKNOWN;
+    charsetFamily=U_UNKNOWN_CHARSET_FAMILY;
+    oredBytes=0;
+
     usesPUA=0;
     variantLF=0;
     variantASCII=0;
@@ -264,48 +268,74 @@ init() {
     isYearModificationDate=0;
 }
 
-/* lexically compare Mappings for sorting */
-static int
-compareMappings(const void *left, const void *right) {
-    const Mapping *l=(const Mapping *)left, *r=(const Mapping *)right;
-    long result;
-
-    /* the code points use fewer than 32 bits, just cast them to signed values and subtract */
-    result=(long)(l->u&0xffffff)-(long)(r->u&0xffffff);
-    if(result!=0) {
-        /* shift right 16 with sign-extend to take care of int possibly being 16 bits wide */
-        return (int)(result>>16)|1;
-    }
-
-    /* the b fields may use all 32 bits as unsigned long, so result=(long)(l->b-r->b) would not work (try l->b=0x80000000 and r->b=1) */
-    if(l->b<r->b) {
+static int32_t
+parseDigit(char c) {
+    if('0'<=c && c<='9') {
+        return (int32_t)(c-'0');
+    } else if('a'<=c && c<='f') {
+        return (int32_t)(c-('a'-10));
+    } else if('A'<=c && c<='F') {
+        return (int32_t)(c-('A'-10));
+    } else {
         return -1;
-    } else if(l->b>r->b) {
-        return 1;
     }
-
-    return (int)(l->u>>24)-(int)(r->u>>24);
 }
 
-static const char *
-skipWhitespace(const char *s) {
-    while(*s==' ' || *s=='\t' || *s=='\x7f') {
-        ++s;
+/*
+ * 0..ff - byte value
+ * 0x100 - no byte (EUC)
+ * -1 - c1 not a digit
+ * -2 - c2 not a digit
+ */
+static int32_t
+parseByte(char c1, char c2, UBool firstByte) {
+    int32_t d1, d2;
+
+    d1=parseDigit(c1);
+    if(d1<0) {
+        return -1;
     }
-    return s;
+    d2=parseDigit(c2);
+    if(d2<0) {
+        if(firstByte && c2=='-' && d1<=3) {
+            /* this is a special EUC format where the code set number prepends the bytes */
+            switch(d1) {
+            case 0:
+            case 1:
+                return 0x100;
+            case 2:
+                return 0x8e;
+            case 3:
+                return 0x8f;
+            default:
+                /* never occurs because of the above check */
+                break;
+            }
+        }
+        return -2;
+    }
+    return (d1<<4)|d2;
 }
 
-static long
-parseMappings(FILE *f, Mapping *mappings) {
+static void
+parseMappings(FILE *f, UCMFile *ucm) {
     char line[200];
-    Mapping *oldMappings;
     char *s, *end;
-    long mappingsTop=0;
-    long lineNum=0;
+    int32_t lineNum=0;
+    UBool isOK;
 
-    oldMappings=mappings;
+    UCMapping m={ 0 };
+    UChar32 codePoints[UCNV_EXT_MAX_UCHARS];
+    uint8_t bytes[UCNV_EXT_MAX_BYTES];
+
+    UChar32 cp;
+    int32_t byte, charLength, u16Length;
+    int8_t uLen, bLen;
+
+    isOK=TRUE;
+
     while(fgets(line, sizeof(line), f)!=NULL) {
-        s=(char *)skipWhitespace(line);
+        s=(char *)u_skipWhitespace(line);
         lineNum++;
 
         /* skip empty lines */
@@ -314,19 +344,19 @@ parseMappings(FILE *f, Mapping *mappings) {
         }
 
         /* explicit end of table */
-        if(memcmp(s, "END CHARMAP", 11)==0) {
+        if(uprv_memcmp(s, "END CHARMAP", 11)==0) {
             break;
         }
 
         /* comment lines, parse substitution characters, otherwise skip them */
         if(*s=='#' || *s=='*') {
             /* get subchar1 */
-            s=strstr(line, "for U+00xx");
+            s=uprv_strstr(line, "for U+00xx");
             if(s!=NULL) {
-                s=strstr(line, "x'");
+                s=uprv_strstr(line, "x'");
                 if(s!=NULL) {
                     s+=2;
-                    subchar1=strtoul(s, &end, 16);
+                    subchar1=uprv_strtoul(s, &end, 16);
                     if(end!=s+2 || *end!='\'') {
                         fprintf(stderr, "error parsing subchar1 from \"%s\"\n", line);
                         exit(2);
@@ -339,12 +369,12 @@ parseMappings(FILE *f, Mapping *mappings) {
             }
 
             /* get subchar */
-            s=strstr(line, "for U+xxxx");
+            s=uprv_strstr(line, "for U+xxxx");
             if(s!=NULL) {
-                s=strstr(line, "x'");
+                s=uprv_strstr(line, "x'");
                 if(s!=NULL) {
                     s+=2;
-                    subchar=strtoul(s, &end, 16);
+                    subchar=uprv_strtoul(s, &end, 16);
                     if(end<s+2 || *end!='\'') {
                         fprintf(stderr, "error parsing subchar from \"%s\"\n", line);
                         exit(2);
@@ -357,15 +387,14 @@ parseMappings(FILE *f, Mapping *mappings) {
             }
 
             /* get modified date */
-            Modified   :
-            s=strstr(line, "Modified");
-            if(s!=NULL && strstr(s, ":") != NULL) {
-                int len = strlen(s);
-                while (!isdigit(s[len])) {
+            s=uprv_strstr(line, "Modified");
+            if(s!=NULL && uprv_strstr(s, ":") != NULL) {
+                int len = uprv_strlen(s);
+                while (!isdigit(s[len-1])) {
                     len--;
                 }
-                year=strtoul(s+len-4, &end, 10);
-                if(end<s+4 || year < MIN_YEAR || MAX_YEAR < year) {
+                year=(uint16_t)uprv_strtoul(s+len-4, &end, 10);
+                if(end!=s+len || year < MIN_YEAR || MAX_YEAR < year) {
                     fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
                     exit(2);
                 }
@@ -373,17 +402,17 @@ parseMappings(FILE *f, Mapping *mappings) {
                 continue;
             }
 
-            s=strstr(line, "Updated      :");
+            s=uprv_strstr(line, "Updated      :");
             if(s!=NULL) {
-                int len = strlen(s);
+                int len = uprv_strlen(s);
                 while (s[len] != '(') {
                     len--;
                 }
-                while (!isdigit(s[len])) {
+                while (!isdigit(s[len-1])) {
                     len--;
                 }
-                year=strtoul(s+len-4, &end, 10);
-                if(end<s+4 || year < MIN_YEAR || MAX_YEAR < year) {
+                year=(uint16_t)uprv_strtoul(s+len-4, &end, 10);
+                if(end!=s+len || year < MIN_YEAR || MAX_YEAR < year) {
                     fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
                     exit(2);
                 }
@@ -392,14 +421,14 @@ parseMappings(FILE *f, Mapping *mappings) {
             }
 
             /* get creation date */
-            s=strstr(line, "Creation date:");
+            s=uprv_strstr(line, "Creation date:");
             if(s!=NULL && !isYearModificationDate) {
-                int len = strlen(s);
-                while (!isdigit(s[len])) {
+                int len = uprv_strlen(s);
+                while (!isdigit(s[len-1])) {
                     len--;
                 }
-                year=strtoul(s+len-4, &end, 10);
-                if(end<s+4 || year < MIN_YEAR || MAX_YEAR < year) {
+                year=(uint16_t)uprv_strtoul(s+len-4, &end, 10);
+                if(end!=s+len || year < MIN_YEAR || MAX_YEAR < year) {
                     fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
                     exit(2);
                 }
@@ -409,203 +438,254 @@ parseMappings(FILE *f, Mapping *mappings) {
             continue;
         }
 
-        mappings->b=strtoul(s, &end, 16);
-        if(s==end || (*end!=' ' && *end!='\t')) {
-            if((s+1)==end && *end=='-' && (mappings->b<=3)) {
-                /* this is a special EUC format where the code set number prepends the bytes */
-                unsigned long prefix;
+        /* parse a mapping */
+        charLength=0;
+        uLen=bLen=0;
 
-                switch(mappings->b) {
-                case 0:
-                    prefix=0;
-                    break;
-                case 1:
-                    prefix=0;
-                    break;
-                case 2:
-                    prefix=0x8e;
-                    break;
-                case 3:
-                    prefix=0x8f;
-                    break;
-                default:
-                    /* never occurs because of above check */
-                    break;
+        /* parse bytes */
+        for(;;) {
+            if(*s==' ' || *s=='\t' || *s=='+') {
+                /* do some of the analysis while we know the character boundaries */
+                if(minCharLength==0 || charLength<minCharLength) {
+                    minCharLength=charLength;
+                }
+                if(maxCharLength==0 || charLength>maxCharLength) {
+                    maxCharLength=charLength;
                 }
 
-                s+=2;
-                mappings->b=strtoul(s, &end, 16);
-                if(s==end || ((end-s)&1) || (*end!=' ' && *end!='\t')) {
-                    fprintf(stderr, "error parsing EUC codepage bytes on \"%s\"\n", line);
-                    exit(2);
+                if(charLength==2) {
+                    uint32_t twoByte;
+
+                    twoByte=((uint32_t)bytes[bLen-2]<<8)|bytes[bLen-1];
+                    if(twoByte<minTwoByte) {
+                        minTwoByte=twoByte;
+                    }
+                    if(twoByte>maxTwoByte) {
+                        maxTwoByte=twoByte;
+                    }
                 }
-                mappings->b|=prefix<<(4*(end-s));
-            } else {
-                fprintf(stderr, "%d: error parsing codepage bytes on \"%s\"\n", lineNum, line);
-                exit(2);
+
+                /* skip an optional plus sign */
+                if(bLen>0 && *s=='+') {
+                    charLength=0; /* count codepage characters between plusses */
+                    ++s;
+                }
+                if(*s==' ' || *s=='\t') {
+                    break;
+                }
             }
-        }
 
-        s=(char *)skipWhitespace(end);
-        mappings->u=strtoul(s, &end, 16);
-        if(s==end || (*end!=' ' && *end!='\t' && *end!='\n' && *end!='\r' && *end!=0)) {
-            if(strncmp(s, "????", 4)==0 || strstr(s, "UNASSIGNED")!=NULL) {
-                /* this is a non-entry, do not add it to the mapping table */
+            byte=parseByte(s[0], s[1], (UBool)(bLen==0));
+            if(byte<0) {
+                fprintf(stderr, "%d: error parsing codepage bytes on \"%s\"\n", lineNum, line);
+                isOK=FALSE;
+                break;
+            }
+            if(byte>0xff) {
+                /* special EUC prefix which does not result in a byte */
                 continue;
             }
-            fprintf(stderr, "error parsing Unicode code point on \"%s\"\n", line);
-            exit(2);
+
+            if(bLen==UCNV_EXT_MAX_BYTES) {
+                fprintf(stderr, "%d: error: too many codepage bytes on \"%s\"\n", lineNum, line);
+                isOK=FALSE;
+                break;
+            }
+
+            bytes[bLen++]=(uint8_t)byte;
+            oredBytes|=(uint8_t)byte;
+            ++charLength;
+
+            s+=2;
         }
 
-        ++mappings;
-        if(++mappingsTop>=MAX_MAPPINGS_COUNT) {
-            fprintf(stderr, "error: too many mappings at \"%s\"\n", line);
-            exit(2);
+        if(!isOK) {
+            continue;
         }
+
+        if(bLen==0) {
+            fprintf(stderr, "%d: no codepage bytes on \"%s\"\n", lineNum, line);
+            isOK=FALSE;
+            continue;
+        } else if(bLen<=4) {
+            uprv_memcpy(m.b.bytes, bytes, bLen);
+        }
+        m.bLen=bLen;
+
+        s=(char *)u_skipWhitespace(s);
+
+        /* parse code points */
+        for(;;) {
+            /* skip a plus sign between codepage characters */
+            if(uLen>0 && *s=='+') {
+                ++s;
+            }
+            if(*s==0 || *s==' ' || *s=='\t' || *s=='\n' || *s=='\r') {
+                break;
+            }
+
+            cp=(UChar32)uprv_strtoul(s, &end, 16);
+            if(end==s) {
+                if(uprv_strncmp(s, "????", 4)==0 || uprv_strstr(s, "UNASSIGNED")!=NULL) {
+                    /* this is a non-entry, do not add it to the mapping table */
+                    continue;
+                }
+                fprintf(stderr, "%d: error parsing Unicode code point on \"%s\"\n", lineNum, line);
+                isOK=FALSE;
+                break;
+            }
+            if((uint32_t)cp>0x10ffff || U_IS_SURROGATE(cp)) {
+                fprintf(stderr, "%d: error: Unicode code point must be 0..d7ff or e000..10ffff - \"%s\"\n", lineNum, line);
+                isOK=FALSE;
+                break;
+            }
+
+            if(uLen==UCNV_EXT_MAX_UCHARS) {
+                fprintf(stderr, "%d: error: too many Unicode code points on \"%s\"\n", lineNum, line);
+                isOK=FALSE;
+                break;
+            }
+            codePoints[uLen++]=cp;
+            s=end+1;
+        }
+
+        if(!isOK) {
+            continue;
+        }
+
+        if(uLen==0) {
+            fprintf(stderr, "%d: no Unicode code points on \"%s\"\n", lineNum, line);
+            isOK=FALSE;
+            continue;
+        } else if(uLen==1) {
+            m.u=codePoints[0];
+        } else {
+            UErrorCode errorCode=U_ZERO_ERROR;
+            u_strFromUTF32(NULL, 0, &u16Length, codePoints, uLen, &errorCode);
+            if( (U_FAILURE(errorCode) && errorCode!=U_BUFFER_OVERFLOW_ERROR) ||
+                u16Length>UCNV_EXT_MAX_UCHARS
+            ) {
+                fprintf(stderr, "%d: too many UChars on \"%s\"\n", lineNum, line);
+                isOK=FALSE;
+                continue;
+            }
+        }
+        m.uLen=uLen;
+
+        ucm_addMapping(ucm->base, &m, codePoints, bytes);
     }
 
-    /* sort the mappings */
-    qsort(oldMappings, mappingsTop, sizeof(Mapping), compareMappings);
-
-    return mappingsTop;
+    if(!isOK) {
+        exit(2);
+    }
 }
 
-/* merge the mappings into fromUMappings and add fallback indicator values to Mapping.u bits 31..24 */
+/* merge the mappings into fromUFile and set real precision flags */
 static void
 mergeMappings() {
-    long fromUIndex, toUIndex, newFromUMappingsTop=fromUMappingsTop;
-    int cmp;
+    uint8_t subBytes[4];
+    int32_t subcharLength;
 
-    fromUIndex=toUIndex=0;
-    while(fromUIndex<fromUMappingsTop && toUIndex<toUMappingsTop) {
-        cmp=compareMappings(fromUMappings+fromUIndex, toUMappings+toUIndex);
-        if(cmp==0) {
-            /* equal: roundtrip, nothing to do */
-            ++fromUIndex;
-            ++toUIndex;
-        } else if(cmp<0) {
-            /*
-             * the fromU mapping does not have a toU counterpart:
-             * fallback Unicode->codepage
-             */
-            if(fromUMappings[fromUIndex].b!=subchar && fromUMappings[fromUIndex].b!=subchar1) {
-                fromUMappings[fromUIndex++].u|=0x1000000;
-            } else {
-                fromUMappings[fromUIndex++].u|=0x2000000;
-            }
-        } else {
-            /*
-             * the toU mapping does not have a fromU counterpart:
-             * (reverse) fallback codepage->Unicode, copy it to the fromU table
-             */
-            fromUMappings[newFromUMappingsTop].u=toUMappings[toUIndex].u|=0x3000000;
-            fromUMappings[newFromUMappingsTop++].b=toUMappings[toUIndex++].b;
-        }
+    if(subchar>0xffffff) {
+        subBytes[0]=(uint8_t)(subchar>>24);
+        subBytes[1]=(uint8_t)(subchar>>16);
+        subBytes[2]=(uint8_t)(subchar>>8);
+        subBytes[3]=(uint8_t)subchar;
+        subcharLength=4;
+    } else if(subchar>0xffff) {
+        subBytes[0]=(uint8_t)(subchar>>16);
+        subBytes[1]=(uint8_t)(subchar>>8);
+        subBytes[2]=(uint8_t)subchar;
+        subcharLength=3;
+    } else if(subchar>0xff) {
+        subBytes[0]=(uint8_t)(subchar>>8);
+        subBytes[1]=(uint8_t)subchar;
+        subcharLength=2;
+    } else {
+        subBytes[0]=(uint8_t)subchar;
+        subcharLength=1;
     }
 
-    /* either one or both tables are exhausted */
-    while(fromUIndex<fromUMappingsTop) {
-        /* leftover fromU mappings are fallbacks */
-        if(fromUMappings[fromUIndex].b!=subchar && fromUMappings[fromUIndex].b!=subchar1) {
-            fromUMappings[fromUIndex++].u|=0x1000000;
-        } else {
-            fromUMappings[fromUIndex++].u|=0x2000000;
-        }
-    }
-
-    while(toUIndex<toUMappingsTop) {
-        /* leftover toU mappings are reverse fallbacks */
-        fromUMappings[newFromUMappingsTop].u=toUMappings[toUIndex].u|=0x3000000;
-        fromUMappings[newFromUMappingsTop++].b=toUMappings[toUIndex++].b;
-    }
-
-    fromUMappingsTop=newFromUMappingsTop;
-
-    /* re-sort the mappings */
-    qsort(fromUMappings, fromUMappingsTop, sizeof(Mapping), compareMappings);
+    ucm_mergeTables(
+        fromUFile->base, toUFile->base,
+        subBytes, subcharLength,
+        (uint8_t)subchar1);
 }
 
 static void
 analyzeTable() {
-    unsigned long u, b, f, minTwoByte=0xffff, maxTwoByte=0, oredBytes=0;
-    long i, countASCII=0;
-    char length;
+    UCMTable *table;
+    UCMapping *m, *mLimit;
+    UChar32 *codePoints;
+    uint8_t *bytes;
 
-    for(i=0; i<fromUMappingsTop; ++i) {
-        f=fromUMappings[i].u>>24;
-        u=fromUMappings[i].u&0xffffff;
-        b=fromUMappings[i].b;
+    UChar32 u;
+    int32_t i, countASCII=0;
+    uint8_t b;
 
-        oredBytes|=b;
+    table=fromUFile->base;
+    m=table->mappings;
+    mLimit=m+table->mappingsLength;
 
-        /* character length? */
-        if(b<=0xff) {
-            length=1;
-        } else if(b<=0xffff) {
-            length=2;
-            if(b<minTwoByte) {
-                minTwoByte=b;
-            }
-            if(b>maxTwoByte) {
-                maxTwoByte=b;
-            }
-        } else if(b<=0xffffff) {
-            length=3;
-        } else {
-            length=4;
-        }
-        if(length<minCharLength) {
-            minCharLength=length;
-        }
-        if(length>maxCharLength) {
-            maxCharLength=length;
-        }
+    for(; m<mLimit; ++m) {
+        codePoints=UCM_GET_CODE_POINTS(table, m);
+        bytes=UCM_GET_BYTES(table, m);
 
         /* PUA used? */
-        if((unsigned long)(u-0xe000)<0x1900 || (unsigned long)(u-0xf0000)<0x20000) {
-            usesPUA=1;
+        for(i=0; i<m->uLen; ++i) {
+            u=codePoints[i];
+            if((uint32_t)(u-0xe000)<0x1900 || (uint32_t)(u-0xf0000)<0x20000) {
+                usesPUA=1;
+            }
         }
 
         /* only consider roundtrip mappings for the rest */
-        if(f!=0) {
+        if(m->f!=0) {
             continue;
         }
 
-        /* ASCII or EBCDIC? */
-        if(u==0x41) {
-            if(b==0x41) {
-                charsetFamily=ASCII;
-            } else if(b==0xc1) {
-                charsetFamily=EBCDIC;
-            }
-        } else if(u==0xa) {
-            if(b==0xa) {
-                charsetFamily=ASCII;
-            } else if(b==0x25) {
-                charsetFamily=EBCDIC;
-                variantLF=0;
-            } else if(b==0x15) {
-                charsetFamily=EBCDIC;
-                variantLF=1;
-            }
-        }
+        if(m->uLen==1) {
+            u=*codePoints;
+            b=*bytes;
 
-        /* US-ASCII? */
-        if((unsigned long)(u-0x21)<94) {
-            if(u==b) {
-                ++countASCII;
-            } else {
-                variantASCII=1;
+            if(m->bLen==1) {
+                /* ASCII or EBCDIC? */
+                if(u==0x41) {
+                    if(b==0x41) {
+                        charsetFamily=U_ASCII_FAMILY;
+                    } else if(b==0xc1) {
+                        charsetFamily=U_EBCDIC_FAMILY;
+                    }
+                } else if(u==0xa) {
+                    if(b==0xa) {
+                        charsetFamily=U_ASCII_FAMILY;
+                    } else if(b==0x25) {
+                        charsetFamily=U_EBCDIC_FAMILY;
+                        variantLF=0;
+                    } else if(b==0x15) {
+                        charsetFamily=U_EBCDIC_FAMILY;
+                        variantLF=1;
+                    }
+                }
             }
-        } else if(u<0x20 || u==0x7f) {
-            /* non-ISO C0 controls? */
-            if(u!=b) {
-                /* IBM PC rotation of SUB and other controls: 0x1a->0x7f->0x1c->0x1a */
-                if(u==0x1a && b==0x7f || u==0x1c && b==0x1a || u==0x7f && b==0x1c) {
-                    charsetFamily=ASCII;
-                    variantSUB=1;
+
+            /* US-ASCII? */
+            if((uint32_t)(u-0x21)<94) {
+                if(m->bLen==1 && u==b) {
+                    ++countASCII;
                 } else {
-                    variantControls=1;
+                    variantASCII=1;
+                }
+            } else if(u<0x20 || u==0x7f) {
+                /* non-ISO C0 controls? */
+                if(u!=b) {
+                    /* IBM PC rotation of SUB and other controls: 0x1a->0x7f->0x1c->0x1a */
+                    if(u==0x1a && b==0x7f || u==0x1c && b==0x1a || u==0x7f && b==0x1c) {
+                        charsetFamily=U_ASCII_FAMILY;
+                        variantSUB=1;
+                    } else {
+                        variantControls=1;
+                    }
                 }
             }
         }
@@ -613,37 +693,37 @@ analyzeTable() {
 
     is7Bit= oredBytes<=0x7f;
 
-    if(charsetFamily==UNKNOWN) {
+    if(charsetFamily==U_UNKNOWN_CHARSET_FAMILY) {
         if(minCharLength==2 && maxCharLength==2) {
             /* guess the charset family for DBCS according to typical byte distributions */
             if( ((0x2020<=minTwoByte || minTwoByte<=0x217e) && maxTwoByte<=0x7e7e) ||
                 ((0xa0a0<=minTwoByte || minTwoByte<=0xa1fe) && maxTwoByte<=0xfefe) ||
                 ((0x8140<=minTwoByte || minTwoByte<=0x81fe) && maxTwoByte<=0xfefe)
             ) {
-                charsetFamily=ASCII;
+                charsetFamily=U_ASCII_FAMILY;
             } else if((minTwoByte==0x4040 || (0x4141<=minTwoByte && minTwoByte<=0x41fe)) && maxTwoByte<=0xfefe) {
-                charsetFamily=EBCDIC;
+                charsetFamily=U_EBCDIC_FAMILY;
             }
         }
-        if(charsetFamily==UNKNOWN) {
+        if(charsetFamily==U_UNKNOWN_CHARSET_FAMILY) {
             fprintf(stderr, "error: unable to determine the charset family\n");
             exit(3);
         }
     }
 
     /* reset variant indicators if they do not apply */
-    if(charsetFamily!=ASCII || minCharLength!=1) {
+    if(charsetFamily!=U_ASCII_FAMILY || minCharLength!=1) {
         variantASCII=variantSUB=variantControls=0;
     } else if(countASCII!=94) {
         /* if there are not 94 mappings for ASCII graphic characters, then set variantASCII */
         variantASCII=1;
     }
 
-    if(charsetFamily!=EBCDIC || minCharLength!=1) {
+    if(charsetFamily!=U_EBCDIC_FAMILY || minCharLength!=1) {
         variantLF=0;
     }
     if(ccsid==25546) {
-        /* Special case. It's not EBCDIC, but it stateful like EBCDIC_STATEFUL. */
+        /* Special case. It's not EBCDIC, but it is stateful like EBCDIC_STATEFUL. */
         is_0xe_0xf_Stateful = 1;
     }
 }
@@ -653,7 +733,7 @@ getSubchar(const char *name) {
     int i;
 
     for(i=0; i<sizeof(knownSubchars)/sizeof(knownSubchars[0]); ++i) {
-        if(strcmp(name, knownSubchars[i].name)==0) {
+        if(uprv_strcmp(name, knownSubchars[i].name)==0) {
             subchar=knownSubchars[i].subchar;
             subchar1=knownSubchars[i].subchar1;
             return 1;
@@ -667,11 +747,11 @@ static void
 getSubcharFromUPMAP(FILE *f) {
     char line[200];
     char *s, *end;
-    unsigned long *p;
-    unsigned long value, bytes;
+    uint32_t *p;
+    uint32_t value, bytes;
 
-    while(fgets(line, sizeof(line), f)!=NULL && memcmp(line, "CHARMAP", 7)!=0) {
-        s=(char *)skipWhitespace(line);
+    while(fgets(line, sizeof(line), f)!=NULL && uprv_memcmp(line, "CHARMAP", 7)!=0) {
+        s=(char *)u_skipWhitespace(line);
 
         /* skip empty lines */
         if(*s==0 || *s=='\n' || *s=='\r') {
@@ -679,14 +759,14 @@ getSubcharFromUPMAP(FILE *f) {
         }
 
         /* look for variations of subchar entries */
-        if(memcmp(s, "<subchar>", 9)==0) {
-            s=(char *)skipWhitespace(s+9);
+        if(uprv_memcmp(s, "<subchar>", 9)==0) {
+            s=(char *)u_skipWhitespace(s+9);
             p=&subchar;
-        } else if(memcmp(s, "<subchar1>", 10)==0) {
-            s=(char *)skipWhitespace(s+10);
+        } else if(uprv_memcmp(s, "<subchar1>", 10)==0) {
+            s=(char *)u_skipWhitespace(s+10);
             p=&subchar1;
-        } else if(memcmp(s, "#<subchar1>", 11)==0) {
-            s=(char *)skipWhitespace(s+11);
+        } else if(uprv_memcmp(s, "#<subchar1>", 11)==0) {
+            s=(char *)u_skipWhitespace(s+11);
             p=&subchar1;
         } else {
             continue;
@@ -695,7 +775,7 @@ getSubcharFromUPMAP(FILE *f) {
         /* get the value and store it in *p */
         bytes=0;
         while(s[0]=='\\' && s[1]=='x') {
-            value=strtoul(s+2, &end, 16);
+            value=uprv_strtoul(s+2, &end, 16);
             s+=4;
             if(end!=s) {
                 fprintf(stderr, "error parsing UPMAP subchar from \"%s\"\n", line);
@@ -709,9 +789,9 @@ getSubcharFromUPMAP(FILE *f) {
 
 static const char *
 getStateTable() {
-    int i;
+    int32_t i;
 
-    for(i=0; i<sizeof(knownStateTables)/sizeof(knownStateTables[0]); ++i) {
+    for(i=0; i<LENGTHOF(knownStateTables); ++i) {
         if(ccsid==knownStateTables[i].ccsid) {
             return knownStateTables[i].table;
         }
@@ -721,7 +801,7 @@ getStateTable() {
 }
 
 static void
-writeBytes(char *s, unsigned long b) {
+writeBytes(char *s, uint32_t b) {
     if(b<=0xff) {
         sprintf(s, "\\x%02lX", b);
     } else if(b<=0xffff) {
@@ -735,15 +815,18 @@ writeBytes(char *s, unsigned long b) {
 
 static void
 writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
-    char buffer[100];
-    const char *s;
-    long i;
+    char buffer[200];
+    const char *s, *end;
+
+    UCMStates *states;
+
+    states=&fromUFile->states;
 
     /* write the header */
     fprintf(f,
         "# ***************************************************************************\n"
         "# *\n"
-        "# *   Copyright (C) 1995-2002, International Business Machines\n"
+        "# *   Copyright (C) 1995-2003, International Business Machines\n"
         "# *   Corporation and others.  All Rights Reserved.\n"
         "# *\n"
         "# ***************************************************************************\n"
@@ -759,18 +842,28 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     fprintf(f, "<mb_cur_max>                  %u\n", maxCharLength);
     fprintf(f, "<mb_cur_min>                  %u\n", minCharLength);
 
+    states->maxCharLength=maxCharLength;
+    states->minCharLength=minCharLength;
+
+    states->conversionType=UCNV_MBCS;
+    states->outputType=maxCharLength-1;
+
     if(maxCharLength==1) {
         fputs("<uconv_class>                 \"SBCS\"\n", f);
+        states->conversionType=UCNV_SBCS;
     } else if(maxCharLength==2) {
         if(minCharLength==1) {
-            if(charsetFamily==EBCDIC) {
+            if(charsetFamily==U_EBCDIC_FAMILY) {
                 fputs("<uconv_class>                 \"EBCDIC_STATEFUL\"\n", f);
                 is_0xe_0xf_Stateful = 1;
+                states->conversionType=UCNV_EBCDIC_STATEFUL;
+                states->outputType=MBCS_OUTPUT_2_SISO;
             } else {
                 fputs("<uconv_class>                 \"MBCS\"\n", f);
             }
         } else if(minCharLength==2) {
             fputs("<uconv_class>                 \"DBCS\"\n", f);
+            states->conversionType=UCNV_DBCS;
         } else {
             fputs("<uconv_class>                 \"MBCS\"\n", f);
         }
@@ -788,7 +881,7 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     }
 
     /* write charset family */
-    if(charsetFamily==ASCII) {
+    if(charsetFamily==U_ASCII_FAMILY) {
         fputs("<icu:charsetFamily>           \"ASCII\"\n", f);
     } else {
         fputs("<icu:charsetFamily>           \"EBCDIC\"\n", f);
@@ -797,49 +890,71 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     /* write alias describing the codepage */
     sprintf(buffer, "<icu:alias>                   \"ibm-%u", ccsid);
     if(!usesPUA && !variantLF && !variantASCII && !variantControls && !variantSUB) {
-        strcat(buffer, "_STD\"\n\n");
+        uprv_strcat(buffer, "_STD\"\n\n");
     } else {
         /* add variant indicators in alphabetic order */
         if(variantASCII) {
-            strcat(buffer, "_VASCII");
+            uprv_strcat(buffer, "_VASCII");
         }
         if(variantControls) {
-            strcat(buffer, "_VGCTRL");
+            uprv_strcat(buffer, "_VGCTRL");
         }
         if(variantLF) {
-            strcat(buffer, "_VLF");
+            uprv_strcat(buffer, "_VLF");
         }
         if(variantSUB) {
-            strcat(buffer, "_VSUB");
+            uprv_strcat(buffer, "_VSUB");
         }
         if(usesPUA) {
-            strcat(buffer, "_VPUA");
+            uprv_strcat(buffer, "_VPUA");
         }
-        strcat(buffer, "\"\n\n");
+        uprv_strcat(buffer, "\"\n\n");
     }
     fputs(buffer, f);
 
     /* write the state table - <icu:state> */
     s=getStateTable();
+    if(s==NULL && is7Bit) {
+        s="<icu:state>                   0-7f\n";
+    }
     if(s!=NULL) {
         fputs(s, f);
         fputs("\n", f);
-    } else if(is7Bit) {
-        fputs("<icu:state>                   0-7f\n\n", f);
+
+        /* set the state table */
+        while(s!=NULL && *s!=0) {
+            /* separate the state table string into lines */
+            end=uprv_strchr(s, '\n');
+            if(end!=NULL) {
+                uprv_memcpy(buffer, s, end-s);
+                buffer[end-s]=0;
+                s=end+1;
+            } else {
+                uprv_strcpy(buffer, s);
+                s=NULL;
+            }
+            ucm_addState(states, buffer);
+        }
+    }
+
+    ucm_processStates(states);
+
+    /* separate extension mappings out of base table */
+    if(!ucm_separateMappings(fromUFile, is_0xe_0xf_Stateful)) {
+        fprintf(stderr, "error: ucm_separateMappings() failed\n");
+        exit(U_INVALID_FORMAT_ERROR);
     }
 
     /* write the mappings */
     fputs("CHARMAP\n", f);
-    for(i=0; i<fromUMappingsTop; ++i) {
-        writeBytes(buffer, fromUMappings[i].b);
-        if (is_0xe_0xf_Stateful && (fromUMappings[i].b == 0x0e || fromUMappings[i].b == 0x0f)) {
-            /* These fallbacks aren't really a part of the state table. Ignore them. */
-            fprintf(stderr, "warning: Skipping <U%04lX> %s |%lu for stateful encoding.\n", fromUMappings[i].u&0xffffff, buffer, fromUMappings[i].u>>24);
-            continue;
-        }
-        fprintf(f, "<U%04lX> %s |%lu\n", fromUMappings[i].u&0xffffff, buffer, fromUMappings[i].u>>24);
-    }
+    ucm_printTable(fromUFile->base, f, TRUE);
     fputs("END CHARMAP\n", f);
+
+    if(fromUFile->ext->mappingsLength>0) {
+        fputs("\nCHARMAP\n", f);
+        ucm_printTable(fromUFile->ext, f, TRUE);
+        fputs("END CHARMAP\n", f);
+    }
 }
 
 static void
@@ -847,15 +962,15 @@ processTable(const char *arg) {
     char filename[1024], tpname[32];
     const char *basename, *s;
     FILE *rpmap, *tpmap, *ucm;
-    unsigned long value, unicode;
+    uint32_t value, unicode;
     int length;
 
     init();
 
     /* separate path and basename */
-    basename=strrchr(arg, '/');
+    basename=uprv_strrchr(arg, '/');
     if(basename==NULL) {
-        basename=strrchr(arg, '\\');
+        basename=uprv_strrchr(arg, '\\');
         if(basename==NULL) {
             basename=arg;
         } else {
@@ -863,17 +978,17 @@ processTable(const char *arg) {
         }
     } else {
         ++basename;
-        s=strrchr(arg, '\\');
+        s=uprv_strrchr(arg, '\\');
         if(s!=NULL && ++s>basename) {
             basename=s;
         }
     }
 
     /* is this a standard RPMAP filename? */
-    value=strtoul(basename, (char **)&s, 16);
-    if( strlen(basename)!=17 ||
-        (memcmp(basename+9, "RPMAP", 5)!=0 && memcmp(basename+9, "rpmap", 5)!=0 &&
-         memcmp(basename+9, "RXMAP", 5)!=0 && memcmp(basename+9, "rxmap", 5)!=0) ||
+    value=uprv_strtoul(basename, (char **)&s, 16);
+    if( uprv_strlen(basename)!=17 ||
+        (uprv_memcmp(basename+9, "RPMAP", 5)!=0 && uprv_memcmp(basename+9, "rpmap", 5)!=0 &&
+         uprv_memcmp(basename+9, "RXMAP", 5)!=0 && uprv_memcmp(basename+9, "rxmap", 5)!=0) ||
         (s-basename)!=8 ||
         *s!='.'
     ) {
@@ -884,11 +999,11 @@ processTable(const char *arg) {
     /* is this really a Unicode conversion table? - get the CCSID */
     unicode=value&0xffff;
     if(unicode==13488 || unicode==17584) {
-        ccsid=(unsigned int)(value>>16);
+        ccsid=(uint16_t)(value>>16);
     } else {
         unicode=value>>16;
         if(unicode==13488 || unicode==17584) {
-            ccsid=(unsigned int)(value&0xffff);
+            ccsid=(uint16_t)(value&0xffff);
         } else {
             fprintf(stderr, "error: \"%s\" is not a Unicode conversion table\n", basename);
             exit(1);
@@ -903,8 +1018,8 @@ processTable(const char *arg) {
     }
 
     /* try to open the TPMAP file */
-    strcpy(filename, arg);
-    length=strlen(filename);
+    uprv_strcpy(filename, arg);
+    length=uprv_strlen(filename);
 
     /* guess the TPMAP filename; note that above we have checked the format of the basename */
     /* replace the R in RPMAP by T, keep upper- or lowercase */
@@ -915,8 +1030,8 @@ processTable(const char *arg) {
     }
 
     /* reverse the CCSIDs */
-    memcpy(filename+length-17, basename+4, 4);
-    memcpy(filename+length-13, basename, 4);
+    uprv_memcpy(filename+length-17, basename+4, 4);
+    uprv_memcpy(filename+length-13, basename, 4);
 
     /* first, keep the same suffix */
     tpmap=fopen(filename, "r");
@@ -931,11 +1046,11 @@ processTable(const char *arg) {
         }
     }
     puts(filename);
-    strcpy(tpname, filename+length-17);
+    uprv_strcpy(tpname, filename+length-17);
 
     /* parse both files */
-    fromUMappingsTop=parseMappings(rpmap, fromUMappings);
-    toUMappingsTop=parseMappings(tpmap, toUMappings);
+    parseMappings(rpmap, fromUFile);
+    parseMappings(tpmap, toUFile);
     fclose(tpmap);
     fclose(rpmap);
 
@@ -944,7 +1059,7 @@ processTable(const char *arg) {
         FILE *f;
 
         /* restore the RPMAP filename and just replace the R by U */
-        strcpy(filename+length-17, basename);
+        uprv_strcpy(filename+length-17, basename);
         if(filename[length-8]=='R') {
             filename[length-8]='U';
         } else {
@@ -954,8 +1069,8 @@ processTable(const char *arg) {
         f=fopen(filename, "r");
         if(f==NULL) {
             /* try reversing the CCSIDs */
-            memcpy(filename+length-17, basename+4, 4);
-            memcpy(filename+length-13, basename, 4);
+            uprv_memcpy(filename+length-17, basename+4, 4);
+            uprv_memcpy(filename+length-13, basename, 4);
             f=fopen(filename, "r");
         }
         if(f!=NULL) {
@@ -991,7 +1106,7 @@ processTable(const char *arg) {
     analyzeTable();
 
     /* open the .ucm file */
-    strcat(filename, ".ucm");
+    uprv_strcat(filename, ".ucm");
     ucm=fopen(filename, "w");
     if(ucm==NULL) {
         fprintf(stderr, "error: unable to open output file \"%s\"\n", filename);
@@ -999,7 +1114,7 @@ processTable(const char *arg) {
     }
 
     /* remove the .ucm from the filename for the following processing */
-    filename[strlen(filename)-4]=0;
+    filename[uprv_strlen(filename)-4]=0;
 
     /* write the .ucm file */
     writeUCM(ucm, filename, basename, tpname);
