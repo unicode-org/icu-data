@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE CHARACTERMAPPING SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
-<!-- Warning! Preliminary version: not all features implemented! -->
+<!DOCTYPE characterMapping SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
 <characterMapping id="gb-18030-2000" version="1">
  <history>
-  <modified version="1" date="2001-01-05">This file was generated.</modified>
+  <modified version="1" date="2001-07-20">This file was generated with XMLSimpleGenerator.java.</modified>
  </history>
  <validity>
-  <state type="FIRST" next="VALID" s="0" e="7f"/>
-  <state type="FIRST" next="EIGHTH" s="81"/>
-  <state type="FIRST" next="NINTH" s="82"/>
-  <state type="FIRST" next="TENTH" s="83"/>
-  <state type="FIRST" next="ELEVENTH" s="84"/>
-  <state type="FIRST" next="FIFTH" s="85" e="fe"/>
-  <state type="SECOND" next="THIRD" s="30" e="39"/>
-  <state type="SECOND" next="VALID" s="40" e="7e"/>
-  <state type="SECOND" next="VALID" s="80" e="fe"/>
-  <state type="THIRD" next="FOURTH" s="81" e="fe"/>
-  <state type="FOURTH" next="VALID" s="30" e="39"/>
-  <state type="FIFTH" next="SIXTH" s="30" e="39"/>
-  <state type="FIFTH" next="VALID" s="40" e="7e"/>
-  <state type="FIFTH" next="VALID" s="80" e="fe"/>
-  <state type="SIXTH" next="SEVENTH" s="81" e="fe"/>
-  <state type="SEVENTH" next="UNASSIGNED" s="30" e="39"/>
-  <state type="EIGHTH" next="THIRD" s="30"/>
-  <state type="EIGHTH" next="SIXTH" s="31" e="35"/>
-  <state type="EIGHTH" next="THIRD" s="36" e="39"/>
-  <state type="EIGHTH" next="VALID" s="40" e="7e"/>
-  <state type="EIGHTH" next="VALID" s="80" e="fe"/>
-  <state type="NINTH" next="THIRD" s="30" e="35"/>
-  <state type="NINTH" next="SIXTH" s="36" e="39"/>
-  <state type="NINTH" next="VALID" s="40" e="7e"/>
-  <state type="NINTH" next="VALID" s="80" e="fe"/>
-  <state type="TENTH" next="SIXTH" s="30" e="35"/>
-  <state type="TENTH" next="THIRD" s="36"/>
-  <state type="TENTH" next="SIXTH" s="37" e="39"/>
-  <state type="TENTH" next="VALID" s="40" e="7e"/>
-  <state type="TENTH" next="VALID" s="80" e="fe"/>
-  <state type="ELEVENTH" next="THIRD" s="30" e="31"/>
-  <state type="ELEVENTH" next="SIXTH" s="32" e="39"/>
-  <state type="ELEVENTH" next="VALID" s="40" e="7e"/>
-  <state type="ELEVENTH" next="VALID" s="80" e="fe"/>
+  <state type="FIRST" next="VALID" s="00" e="7F" max="FFFF"/>
+  <state type="FIRST" next="EIGHTH" s="81" max="FFFF"/>
+  <state type="FIRST" next="NINTH" s="82" max="FFFF"/>
+  <state type="FIRST" next="TENTH" s="83" max="FFFF"/>
+  <state type="FIRST" next="ELEVENTH" s="84" max="FFFF"/>
+  <state type="FIRST" next="FIFTH" s="85" e="FE" max="FFFF"/>
+  <state type="SECOND" next="THIRD" s="30" e="39" max="FFFF"/>
+  <state type="SECOND" next="VALID" s="40" e="7E" max="FFFF"/>
+  <state type="SECOND" next="VALID" s="80" e="FE" max="FFFF"/>
+  <state type="THIRD" next="FOURTH" s="81" e="FE" max="FFFF"/>
+  <state type="FOURTH" next="VALID" s="30" e="39" max="FFFF"/>
+  <state type="FIFTH" next="SIXTH" s="30" e="39" max="FFFF"/>
+  <state type="FIFTH" next="VALID" s="40" e="7E" max="FFFF"/>
+  <state type="FIFTH" next="VALID" s="80" e="FE" max="FFFF"/>
+  <state type="SIXTH" next="SEVENTH" s="81" e="FE" max="FFFF"/>
+  <state type="SEVENTH" next="UNASSIGNED" s="30" e="39" max="FFFF"/>
+  <state type="EIGHTH" next="THIRD" s="30" max="FFFF"/>
+  <state type="EIGHTH" next="SIXTH" s="31" e="35" max="FFFF"/>
+  <state type="EIGHTH" next="THIRD" s="36" e="39" max="FFFF"/>
+  <state type="EIGHTH" next="VALID" s="40" e="7E" max="FFFF"/>
+  <state type="EIGHTH" next="VALID" s="80" e="FE" max="FFFF"/>
+  <state type="NINTH" next="THIRD" s="30" e="35" max="FFFF"/>
+  <state type="NINTH" next="SIXTH" s="36" e="39" max="FFFF"/>
+  <state type="NINTH" next="VALID" s="40" e="7E" max="FFFF"/>
+  <state type="NINTH" next="VALID" s="80" e="FE" max="FFFF"/>
+  <state type="TENTH" next="SIXTH" s="30" e="35" max="FFFF"/>
+  <state type="TENTH" next="THIRD" s="36" max="FFFF"/>
+  <state type="TENTH" next="SIXTH" s="37" e="39" max="FFFF"/>
+  <state type="TENTH" next="VALID" s="40" e="7E" max="FFFF"/>
+  <state type="TENTH" next="VALID" s="80" e="FE" max="FFFF"/>
+  <state type="ELEVENTH" next="THIRD" s="30" e="31" max="FFFF"/>
+  <state type="ELEVENTH" next="SIXTH" s="32" e="39" max="FFFF"/>
+  <state type="ELEVENTH" next="VALID" s="40" e="7E" max="FFFF"/>
+  <state type="ELEVENTH" next="VALID" s="80" e="FE" max="FFFF"/>
  </validity>
  <assignments sub="1A">
   <!-- One to one mappings -->

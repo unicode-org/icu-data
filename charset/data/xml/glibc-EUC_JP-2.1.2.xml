@@ -24,7 +24,7 @@
   <state type="FOURTH" next="SECOND" s="DC" e="EC" max="FFFF"/>
   <state type="FOURTH" next="FIFTH" s="ED" e="F2" max="FFFF"/>
   <state type="FOURTH" next="SECOND" s="F3" e="FE" max="FFFF"/>
-  <state type="FIFTH" next="VALID" s="A1" e="FE" max="FFFF"/>
+  <state type="FIFTH" next="UNASSIGNED" s="A1" e="FE" max="FFFF"/>
  </validity>
  <assignments sub="1A">
   <!-- One to one mappings -->

@@ -23,7 +23,7 @@
   <state type="THIRD" next="FIFTH" s="AE" e="B0" max="FFFF"/>
   <state type="FOURTH" next="SECOND" s="A1" e="FE" max="FFFF"/>
   <state type="FIFTH" next="SIXTH" s="A1" e="FE" max="FFFF"/>
-  <state type="SIXTH" next="VALID" s="A1" e="FE" max="FFFF"/>
+  <state type="SIXTH" next="UNASSIGNED" s="A1" e="FE" max="FFFF"/>
   <state type="SEVENTH" next="SECOND" s="A1" e="A4" max="FFFF"/>
   <state type="SEVENTH" next="SIXTH" s="A5" e="FE" max="FFFF"/>
   <state type="EIGHTH" next="SECOND" s="A1" e="E2" max="FFFF"/>
