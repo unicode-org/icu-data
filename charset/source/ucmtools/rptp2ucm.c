@@ -77,6 +77,14 @@ typedef struct CCSIDStateTable {
     "<icu:state>                   0-ff:1.i\n" \
     "<icu:state>                   0-40:1.i, 41-fe:1.p, ff:1.i\n"
 
+#define states16684 \
+    "# includes mappings for surrogate pairs\n" \
+    "<icu:state>                   0-3f:3, 40:2, 41-fe:1, ff:3, b3-b7:4\n" \
+    "<icu:state>                   41-fe\n" \
+    "<icu:state>                   40\n" \
+    "<icu:state>                   \n" \
+    "<icu:state>                   41-fe.p\n"
+
 static const CCSIDStateTable
 knownStateTables[]={
 
@@ -202,6 +210,8 @@ knownStateTables[]={
     5478,  "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
+
+    16684, states16684,
 
     21427, "<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
            "<icu:state>                   40-7e, 80-fe\n"
