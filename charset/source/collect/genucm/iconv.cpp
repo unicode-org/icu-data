@@ -47,7 +47,11 @@ converter::get_supported_encodings(UVector *p_encodings,
                                    UHashtable *p_map_encoding_info,
                                    int argc, const char* const argv[])
 {
+#ifdef U_AIX
+    static const char cmd[] = "/bin/ls /usr/lib/nls/loc/uconvTable/";
+#else
     static const char cmd[] = "locale -m";
+#endif
     static char buf[4096] = "UTF-8";
     size_t n;
     FILE *p;
@@ -302,6 +306,8 @@ converter::get_OS_vendor()
 {
 #ifdef U_LINUX
     return "glibc";
+#elif defined(U_AIX)
+    return "aix";
 #endif
 }
 
@@ -346,6 +352,50 @@ converter::get_OS_variant()
         }
     }
     return ptr;
+#elif defined(U_AIX)
+    static const char v[] = "uname -v";
+    static const char r[] = "uname -r";
+    static char ver[80] = "";
+    static char rel[80] = "";
+    static char buf[80] = "";
+    static char *ptr = NULL;
+    size_t n;
+    FILE *p;
+
+    memset(ver, 0, sizeof(ver));
+    memset(rel, 0, sizeof(rel));
+    p = popen(v, "r");
+
+    if (p == NULL)
+    {
+        fprintf(stderr, "error using popen to get the AIX version\n");
+        return "";
+    }
+
+    n = fread(ver, sizeof(char), sizeof(ver), p);
+    pclose(p);
+
+    p = popen(r, "r");
+
+    if (p == NULL)
+    {
+        fprintf(stderr, "error using popen to get the AIX release\n");
+        return "";
+    }
+
+    n = fread(rel, sizeof(char), sizeof(rel), p);
+    pclose(p);
+
+    strcpy( buf, ver );
+    if(buf[strlen(buf)-1]=='\n')
+        buf[strlen(buf)-1]=0;
+
+    strcat( buf, "." );
+    strcat( buf, rel );
+    if(buf[strlen(buf)-1]=='\n')
+        buf[strlen(buf)-1]=0;
+
+    return buf;
 #endif
 }
 
@@ -356,6 +406,10 @@ converter::get_OS_interface()
     static char buf[80];
     strcpy(buf, "Linux with glibc ");
     strcat(buf, get_OS_variant());
+    return buf;
+#elif defined(U_AIX)
+    static char buf[80];
+    strcpy(buf, "AIX with iconv ");
     return buf;
 #endif
 }
