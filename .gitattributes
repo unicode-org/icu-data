@@ -24,6 +24,7 @@ charset/data/xml/aix-ISO8859_9-4.3.6.xml svneol=native#text/xml
 charset/data/xml/aix-JISX0201.1976_0-4.3.6.xml svneol=native#text/xml
 charset/data/xml/aix-TIS_620-4.3.6.xml svneol=native#text/xml
 charset/data/xml/aix-big5-4.3.6.xml svneol=native#text/xml
+charset/data/xml/gb-18030-2000.xml svneol=native#text/xml
 charset/data/xml/glibc-ASMO_449-2.1.2.xml svneol=native#text/xml
 charset/data/xml/glibc-BALTIC-2.1.2.xml svneol=native#text/xml
 charset/data/xml/glibc-BIG5-2.1.2.xml svneol=native#text/xml
