@@ -99,7 +99,7 @@ knownStateTables[]={
            "<icu:state>                   40-7e, 80-fe\n",
 
     950,   "<icu:state>                   0-7f, 81-fe:1\n"
-           "<icu:state>                   40-7e, 81-fe\n",
+           "<icu:state>                   40-7e, 80-fe\n",
 
     954,   "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n"
@@ -145,7 +145,7 @@ knownStateTables[]={
            "<icu:state>                   40-7e, 80-fe\n",
 
     1373,  "<icu:state>                   0-7f, 81-fe:1\n"
-           "<icu:state>                   40-7e, 81-fe\n",
+           "<icu:state>                   40-7e, 80-fe\n",
 
     1381,  "<icu:state>                   0-84, 8c-fe:1\n"
            "<icu:state>                   a1-fe\n",
