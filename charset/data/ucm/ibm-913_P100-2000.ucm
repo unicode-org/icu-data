@@ -1,11 +1,11 @@
-# *******************************************************************************
+# ***************************************************************************
 # *
-# *   Copyright (C) 1995-2001, International Business Machines
+# *   Copyright (C) 1995-2002, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
-# *******************************************************************************
+# ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Feb 23 2001)
+# File created by rptp2ucm (compiled on Dec  3 2002)
 # from source files 44B00391.RPMAP100 and 039144B0.TPMAP100
 #
 <code_set_name>               "ibm-913_P100-2000"
@@ -13,6 +13,7 @@
 <mb_cur_max>                  1
 <mb_cur_min>                  1
 <uconv_class>                 "SBCS"
+<subchar>                     \x1A
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-913_STD"
 

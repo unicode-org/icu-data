@@ -1,0 +1,127 @@
+# ***************************************************************************
+# *
+# *   Copyright (C) 1995-2002, International Business Machines
+# *   Corporation and others.  All Rights Reserved.
+# *
+# ***************************************************************************
+#
+# File created by rptp2ucm (compiled on Dec  3 2002)
+# from source files 34B00380.RPMAP100 and 038034B0.TPMAP100
+#
+<code_set_name>               "ibm-896_P100-1995"
+<char_name_mask>              "AXXXX"
+<mb_cur_max>                  1
+<mb_cur_min>                  1
+<uconv_class>                 "SBCS"
+<subchar>                     \x1A
+<icu:charsetFamily>           "ASCII"
+<icu:alias>                   "ibm-896_VASCII"
+
+<icu:state>                   0-7f
+
+CHARMAP
+<U0000> \x00 |0
+<U0001> \x01 |0
+<U0002> \x02 |0
+<U0003> \x03 |0
+<U0004> \x04 |0
+<U0005> \x05 |0
+<U0006> \x06 |0
+<U0007> \x07 |0
+<U0008> \x08 |0
+<U0009> \x09 |0
+<U000A> \x0A |0
+<U000B> \x0B |0
+<U000C> \x0C |0
+<U000D> \x0D |0
+<U000E> \x0E |0
+<U000F> \x0F |0
+<U0010> \x10 |0
+<U0011> \x11 |0
+<U0012> \x12 |0
+<U0013> \x13 |0
+<U0014> \x14 |0
+<U0015> \x15 |0
+<U0016> \x16 |0
+<U0017> \x17 |0
+<U0018> \x18 |0
+<U0019> \x19 |0
+<U001A> \x1A |0
+<U001B> \x1B |0
+<U001C> \x1C |0
+<U001D> \x1D |0
+<U001E> \x1E |0
+<U001F> \x1F |0
+<U0020> \x20 |0
+<U005C> \x63 |0
+<U007E> \x64 |0
+<U007F> \x7F |0
+<U00A2> \x60 |0
+<U00A3> \x61 |0
+<U00AC> \x62 |0
+<UFF3C> \x63 |1
+<UFF5E> \x64 |1
+<UFF61> \x21 |0
+<UFF62> \x22 |0
+<UFF63> \x23 |0
+<UFF64> \x24 |0
+<UFF65> \x25 |0
+<UFF66> \x26 |0
+<UFF67> \x27 |0
+<UFF68> \x28 |0
+<UFF69> \x29 |0
+<UFF6A> \x2A |0
+<UFF6B> \x2B |0
+<UFF6C> \x2C |0
+<UFF6D> \x2D |0
+<UFF6E> \x2E |0
+<UFF6F> \x2F |0
+<UFF70> \x30 |0
+<UFF71> \x31 |0
+<UFF72> \x32 |0
+<UFF73> \x33 |0
+<UFF74> \x34 |0
+<UFF75> \x35 |0
+<UFF76> \x36 |0
+<UFF77> \x37 |0
+<UFF78> \x38 |0
+<UFF79> \x39 |0
+<UFF7A> \x3A |0
+<UFF7B> \x3B |0
+<UFF7C> \x3C |0
+<UFF7D> \x3D |0
+<UFF7E> \x3E |0
+<UFF7F> \x3F |0
+<UFF80> \x40 |0
+<UFF81> \x41 |0
+<UFF82> \x42 |0
+<UFF83> \x43 |0
+<UFF84> \x44 |0
+<UFF85> \x45 |0
+<UFF86> \x46 |0
+<UFF87> \x47 |0
+<UFF88> \x48 |0
+<UFF89> \x49 |0
+<UFF8A> \x4A |0
+<UFF8B> \x4B |0
+<UFF8C> \x4C |0
+<UFF8D> \x4D |0
+<UFF8E> \x4E |0
+<UFF8F> \x4F |0
+<UFF90> \x50 |0
+<UFF91> \x51 |0
+<UFF92> \x52 |0
+<UFF93> \x53 |0
+<UFF94> \x54 |0
+<UFF95> \x55 |0
+<UFF96> \x56 |0
+<UFF97> \x57 |0
+<UFF98> \x58 |0
+<UFF99> \x59 |0
+<UFF9A> \x5A |0
+<UFF9B> \x5B |0
+<UFF9C> \x5C |0
+<UFF9D> \x5D |0
+<UFF9E> \x5E |0
+<UFF9F> \x5F |0
+END CHARMAP

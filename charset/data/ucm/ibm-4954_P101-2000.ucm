@@ -1,11 +1,11 @@
-# *******************************************************************************
+# ***************************************************************************
 # *
-# *   Copyright (C) 1995-2001, International Business Machines
+# *   Copyright (C) 1995-2002, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
-# *******************************************************************************
+# ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Feb 23 2001)
+# File created by rptp2ucm (compiled on Dec  3 2002)
 # from source files 44B0135A.RPMAP101 and 135A44B0.TPMAP101
 #
 <code_set_name>               "ibm-4954_P101-2000"
