@@ -251,6 +251,7 @@ charset/data/xml/ibm-1283_P100-1996.xml svneol=native#text/xml
 charset/data/xml/ibm-1284_P100-1996.xml svneol=native#text/xml
 charset/data/xml/ibm-1285_P100-1996.xml svneol=native#text/xml
 charset/data/xml/ibm-13121_P100-1995.xml svneol=native#text/xml
+charset/data/xml/ibm-13124_P100-1995.xml svneol=native#text/xml
 charset/data/xml/ibm-13124_P10A-2000.xml svneol=native#text/xml
 charset/data/xml/ibm-13140_P101-2000.xml svneol=native#text/xml
 charset/data/xml/ibm-13143_P101-2000.xml svneol=native#text/xml
