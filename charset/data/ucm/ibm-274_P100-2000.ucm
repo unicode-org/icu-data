@@ -13,6 +13,7 @@
 <mb_cur_max>                  1
 <mb_cur_min>                  1
 <uconv_class>                 "SBCS"
+<subchar>                     \x3F
 <icu:charsetFamily>           "EBCDIC"
 <icu:alias>                   "ibm-274_STD"
 
