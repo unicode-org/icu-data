@@ -616,14 +616,14 @@ void emit_ucm_header(FILE* fp, const converter &cnv, encoding_info* encoding_inf
     
     fputs("# ***************************************************************************\n", fp);
     fputs("# *\n", fp);
-    fputs("# *   Copyright (C) 2001-2003, International Business Machines\n", fp);
+    fputs("# *   Copyright (C) 2001-2005, International Business Machines\n", fp);
     fputs("# *   Corporation and others.  All Rights Reserved.\n", fp);
     fputs("# *\n", fp);
     fputs("# ***************************************************************************\n", fp);
     fputs("#\n", fp);
     fprintf(fp, "# File created on %s\n", timeBuf);
     fputs("#\n", fp);
-    fputs("# File created by genmucm tool.\n", fp);
+    fputs("# File created by genucm tool.\n", fp);
     fprintf(fp, "# from %s %s using %s\n", converter::get_OS_vendor(), converter::get_OS_variant(), converter::get_OS_interface());
     fputs("#\n", fp);
     fputs("# Table Version : 1.0\n", fp);
