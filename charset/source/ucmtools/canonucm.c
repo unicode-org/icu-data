@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000, International Business Machines
+*   Copyright (C) 2000-2003, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -20,49 +20,41 @@
 *   - remove the comments
 *   - remove unnecessary spaces
 *
-*   To compile, just call a C compiler/linker with this source file.
-*   On Windows: cl canonucm.c
+*   Use the -b option to sort the output by bytes instead of by Unicode.
+*
+*   Starting 2003oct09, canonucm handles m:n mappings as well, but requires
+*   a more elaborate build using the ICU common (icuuc) and toolutil libraries.
+*   On Windows (on one line):
+*
+*   cl -nologo
+*      -I..\..\..\icu\source\common
+*      -I..\..\..\icu\source\tools\toolutil
+*      canonucm.c -link /LIBPATH:..\..\..\icu\lib icuucd.lib icutud.libcanonucm.c
 */
 
+#include "unicode/utypes.h"
+#include "cstring.h"
+#include "ucnv_ext.h"
+#include "ucm.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-typedef struct Mapping {
-    unsigned long u, b, f;
-} Mapping;
-
-static Mapping
-mappings[200000];
-
-/* lexically compare Mappings for sorting */
-static int
-compareMappings(const void *left, const void *right) {
-    const Mapping *l=(const Mapping *)left, *r=(const Mapping *)right;
-    long result;
-
-    /* the code points use fewer than 32 bits, just cast them to signed values and subtract */
-    result=(long)(l->u)-(long)(r->u);
-    if(result!=0) {
-        /* shift right 16 with sign-extend to take care of int possibly being 16 bits wide */
-        return (int)(result>>16)|1;
-    }
-
-    /* the b fields may use all 32 bits as unsigned long, so result=(long)(l->b-r->b) would not work (try l->b=0x80000000 and r->b=1) */
-    if(l->b<r->b) {
-        return -1;
-    } else if(l->b>r->b) {
-        return 1;
-    }
-
-    return (int)(l->f-r->f);
-}
 
 extern int
 main(int argc, const char *argv[]) {
     char line[200];
-    char *s, *end;
-    unsigned long b, i, mappingsTop=0;
+    char *key, *value;
+
+    UCMFile *ucm;
+    UCMStates *baseStates;
+    UBool byUnicode;
+
+    if(argc>=2 && 0==uprv_strcmp(argv[1], "-b")) {
+        byUnicode=FALSE;
+    } else {
+        byUnicode=TRUE;
+    }
+
+    ucm=ucm_open();
+    baseStates=NULL;
 
     /* parse the input file from stdin */
     /* read and copy header */
@@ -72,105 +64,110 @@ main(int argc, const char *argv[]) {
             return 1;
         }
         puts(line);
-    } while(0!=strcmp(line, "CHARMAP"));
+    } while(ucm_parseHeaderLine(ucm, line, &key, &value) ||
+            0!=uprv_strcmp(line, "CHARMAP"));
 
-    /* copy empty and comment lines before the first mapping */
-    for(;;) {
-        if(gets(line)==NULL) {
-            fprintf(stderr, "error: no mappings");
-            return 1;
+    ucm_processStates(&ucm->states);
+
+    /*
+     * If there is _no_ <icu:base> base table name, then parse the base table
+     * and then an optional extension table.
+     *
+     * If there _is_ a base table name, then only parse
+     * the then-mandatory extension table.
+     */
+    if(ucm->baseName[0]==0) {
+        /* copy empty and comment lines before the first mapping */
+        for(;;) {
+            if(gets(line)==NULL) {
+                fprintf(stderr, "error: no mappings");
+                return 1;
+            }
+            if(line[0]!=0 && line[0]!='#') {
+                break;
+            }
+            puts(line);
         }
-        if(line[0]!=0 && line[0]!='#') {
-            break;
+
+        baseStates=&ucm->states;
+
+        /* process the base charmap section, start with the line read above */
+        for(;;) {
+            /* ignore empty and comment lines */
+            if(line[0]!=0 && line[0]!='#') {
+                if(0!=uprv_strcmp(line, "END CHARMAP")) {
+                    if(!ucm_addMappingFromLine(ucm, line, TRUE, baseStates)) {
+                        exit(U_INVALID_TABLE_FORMAT);
+                    }
+                } else {
+                    /* sort and write all mappings */
+                    if(!ucm_checkBaseExt(baseStates, ucm->base, ucm->ext, TRUE)) {
+                        return U_INVALID_TABLE_FORMAT;
+                    }
+                    ucm_printTable(ucm->base, stdout, byUnicode);
+
+                    /* output "END CHARMAP" */
+                    puts(line);
+                    break;
+                }
+            }
+            /* read the next line */
+            if(gets(line)==NULL) {
+                fprintf(stderr, "incomplete charmap section\n");
+                return U_INVALID_TABLE_FORMAT;
+            }
         }
-        puts(line);
     }
 
-    /* process the charmap section, start with the line read above */
+    /* do the same with an extension table section, ignore lines before it */
     for(;;) {
-        /* ignore empty and comment lines */
-        if(line[0]!=0 && line[0]!='#') {
-            if(0!=strcmp(line, "END CHARMAP")) {
-                if(mappingsTop==sizeof(mappings)/sizeof(mappings[0])) {
-                    fprintf(stderr, "too many mappings\n");
-                    return 1;
-                }
-                /* parse mapping */
-                if(line[0]!='<' || line[1]!='U') {
-                    fprintf(stderr, "parse error (does not start with \"<U\") in mapping line \"%s\"\n", line);
-                    return 1;
-                }
-                /* parse Unicode code point */
-                mappings[mappingsTop].u=strtoul(line+2, &end, 16);
-                if(end==line+2 || mappings[mappingsTop].u>0x10ffff || *end!='>') {
-                    fprintf(stderr, "parse error (Unicode code point) in mapping line \"%s\"\n", line);
-                    return 1;
-                }
-                /* skip white space */
-                s=end+1;
-                while(*s==' ' || *s=='\t') {
-                    ++s;
-                }
-                /* parse codepage bytes */
-                b=0;
-                for(;;) {
-                    if(*s!='\\') {
-                        break;
-                    }
-                    if(s[1]!='x') {
-                        fprintf(stderr, "parse error (no 'x' in \"\\xXX\") in mapping line \"%s\"\n", line);
-                        return 1;
-                    }
-                    s+=2;
-                    b=(b<<8)|strtoul(s, &end, 16);
-                    if(end!=s+2) {
-                        fprintf(stderr, "parse error (codepage byte) in mapping line \"%s\"\n", line);
-                        return 1;
-                    }
-                    s+=2;
-                }
-                mappings[mappingsTop].b=b;
-                /* skip everything until the fallback indicator */
-                while(*s!='|') {
-                    if(*s==0) {
-                        fprintf(stderr, "parse error (missing '|' fallback indicator) in mapping line \"%s\"\n", line);
-                        return 1;
-                    }
-                    ++s;
-                }
-                /* parse fallback indicator */
-                i=s[1]-'0';
-                if(i>3) {
-                    fprintf(stderr, "parse error (fallback indicator not 0..3) in mapping line \"%s\"\n", line);
-                    return 1;
-                }
-                mappings[mappingsTop++].f=i;
+        if(gets(line)==NULL) {
+            if(ucm->baseName[0]==0) {
+                break; /* the extension table is optional if we parsed a base table */
             } else {
-                /* sort and write all mappings */
-                if(mappingsTop>0) {
-                    qsort(mappings, mappingsTop, sizeof(Mapping), compareMappings);
-                    for(i=0; i<mappingsTop; ++i) {
-                        b=mappings[i].b;
-                        if(b<=0xff) {
-                            printf("<U%04lX> \\x%02lX |%lu\n", mappings[i].u, b, mappings[i].f);
-                        } else if(b<=0xffff) {
-                            printf("<U%04lX> \\x%02lX\\x%02lX |%lu\n", mappings[i].u, b>>8, b&0xff, mappings[i].f);
-                        } else if(b<=0xffffff) {
-                            printf("<U%04lX> \\x%02lX\\x%02lX\\x%02lX |%lu\n", mappings[i].u, b>>16, (b>>8)&0xff, b&0xff, mappings[i].f);
+                fprintf(stderr, "missing extension charmap section when <icu:base> specified\n");
+                return U_INVALID_TABLE_FORMAT;
+            }
+        }
+        if(line[0]!=0 && line[0]!='#') {
+            if(uprv_strcmp(line, "CHARMAP")) {
+                /* process the extension table's charmap section, start with the line read above */
+                for(;;) {
+                    if(gets(line)==NULL) {
+                        fprintf(stderr, "incomplete extension charmap section\n");
+                        return U_INVALID_TABLE_FORMAT;
+                    }
+
+                    /* ignore empty and comment lines */
+                    if(line[0]!=0 && line[0]!='#') {
+                        if(0!=uprv_strcmp(line, "END CHARMAP")) {
+                            if(!ucm_addMappingFromLine(ucm, line, FALSE, baseStates)) {
+                                exit(U_INVALID_TABLE_FORMAT);
+                            }
                         } else {
-                            printf("<U%04lX> \\x%02lX\\x%02lX\\x%02lX\\x%02lX |%lu\n", mappings[i].u, b>>24, (b>>16)&0xff, (b>>8)&0xff, b&0xff, mappings[i].f);
+                            break;
                         }
                     }
                 }
-                /* output "END CHARMAP" */
-                puts(line);
-                return 0;
+                break;
+            } else {
+                fprintf(stderr, "unexpected text after the base mapping table\n");
+                return U_INVALID_TABLE_FORMAT;
             }
         }
-        /* read the next line */
-        if(gets(line)==NULL) {
-            fprintf(stderr, "incomplete charmap section\n");
-            return 1;
-        }
     }
+
+    if(ucm->ext->mappingsLength>0) {
+        puts("\nCHARMAP");
+
+        /* sort and write all extension mappings */
+        ucm_sortTable(ucm->ext);
+        ucm_printTable(ucm->ext, stdout, byUnicode);
+
+        /* output "END CHARMAP" */
+        puts(line);
+    }
+
+    ucm_close(ucm);
+    return 0;
 }
