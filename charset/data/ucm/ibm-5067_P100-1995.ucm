@@ -5,7 +5,7 @@
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
+# File created by rptp2ucm (compiled on Dec 27 2002)
 # from source files 34B013CB.RPMAP100 and 13CB34B0.TPMAP100
 #
 <code_set_name>               "ibm-5067_P100-1995"
@@ -17,7 +17,7 @@
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-5067_VPUA"
 
-<icu:state>                   0-ff:2, 21-7e:1
+<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2
 <icu:state>                   21-7e
 <icu:state>
 

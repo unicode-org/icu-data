@@ -5,7 +5,7 @@
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
+# File created by rptp2ucm (compiled on Dec 27 2002)
 # from source files 34B01566.RPMAP100 and 156634B0.TPMAP100
 #
 <code_set_name>               "ibm-5478_P100-1995"
@@ -17,7 +17,7 @@
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-5478_STD"
 
-<icu:state>                   0-ff:2, 21-7e:1
+<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2
 <icu:state>                   21-7e
 <icu:state>
 

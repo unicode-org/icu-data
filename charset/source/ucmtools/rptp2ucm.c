@@ -51,16 +51,17 @@ typedef struct CCSIDStateTable {
 } CCSIDStateTable;
 
 /**/
-#define japanesePCDBCSStates  "<icu:state>                   0-ff:2, 81-9f:1, a0-fc:1\n"\
+#define japanesePCDBCSStates  "<icu:state>                   0-80:2, 81-fc:1, fd-ff:2\n"\
                               "<icu:state>                   40-7e, 80-fc\n"\
                               "<icu:state>\n"
 
 static const CCSIDStateTable
 knownStateTables[]={
 
-    301,  "<icu:state>                   0-ff:2, 81-9f:1, e0-fc:1\n"
-           "<icu:state>                   40-7e, 80-fc\n"
-           "<icu:state>\n",
+    301,  "<icu:state>                   0-80:2, 81-9f:1, a0-df:2, e0-fc:1, fd-ff:2\n"
+          "<icu:state>                   40-7e, 80-fc\n"
+          "<icu:state>\n",
+
     367,   "<icu:state>                   0-7f\n",
 
     927, japanesePCDBCSStates,
@@ -69,9 +70,8 @@ knownStateTables[]={
 
     928, japanesePCDBCSStates,
 
-    932, "<icu:state>                   0-7f,80,81-9f:1,a0-df,fd-ff, e0-fc:1\n"
+    932, "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
          "<icu:state>                   40-7e, 80-fc\n",
-
 
     941,  japanesePCDBCSStates,
 
@@ -130,6 +130,7 @@ knownStateTables[]={
 
     1363,  "<icu:state>                   0-7f, 81-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
+
     1350,  "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n"
            "<icu:state>                   a1-e4\n"
@@ -152,7 +153,7 @@ knownStateTables[]={
     1383,  "<icu:state>                   0-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n",
 
-    1385,  "<icu:state>                   0-ff:2,81-fe:1\n"
+    1385,  "<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
            "<icu:state>                   40-7e, 80-fe\n"
            "<icu:state>\n",
 
@@ -168,11 +169,11 @@ knownStateTables[]={
            "<icu:state>                   a1-fe:1, a1:4, a3-af:4, b6:4, d6:4, da-db:4, ed-f2:4\n"
            "<icu:state>                   a1-fe.u\n",
 
-    5067,  "<icu:state>                   0-ff:2, 21-7e:1\n"
+    5067,  "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
 
-    5478,  "<icu:state>                   0-ff:2, 21-7e:1\n"
+    5478,  "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
 

@@ -5,7 +5,7 @@
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
+# File created by rptp2ucm (compiled on Dec 27 2002)
 # from source files 34B003A4.RPMAP120 and 03A434B0.TPMAP110
 #
 <code_set_name>               "ibm-932_P120-1999"
@@ -18,7 +18,7 @@
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-932_VASCII_VSUB_VPUA"
 
-<icu:state>                   0-7f,80,81-9f:1,a0-df,fd-ff, e0-fc:1
+<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff
 <icu:state>                   40-7e, 80-fc
 
 CHARMAP
