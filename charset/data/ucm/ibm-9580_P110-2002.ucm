@@ -8,7 +8,7 @@
 # File created by rptp2ucm (compiled on May 31 2002)
 # from source files 34B0256C.RPMAP110 and 256C34B0.TPMAP100
 #
-<code_set_name>               "ibm-9580_P110-2000"
+<code_set_name>               "ibm-9580_P110-2002"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  2
 <mb_cur_min>                  1

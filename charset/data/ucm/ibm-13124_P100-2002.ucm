@@ -8,7 +8,7 @@
 # File created by rptp2ucm (compiled on May 31 2002)
 # from source files 34B03344.RPMAP100 and 334434B0.TPMAP100
 #
-<code_set_name>               "ibm-13124_P100-2000"
+<code_set_name>               "ibm-13124_P100-2002"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  1
 <mb_cur_min>                  1

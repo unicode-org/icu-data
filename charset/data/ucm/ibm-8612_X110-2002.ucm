@@ -8,7 +8,7 @@
 # File created by rptp2ucm (compiled on May 31 2002)
 # from source files 34B021A4.RXMAP110 and 21A434B0.TXMAP110
 #
-<code_set_name>               "ibm-8612_X110-2000"
+<code_set_name>               "ibm-8612_X110-2002"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  1
 <mb_cur_min>                  1

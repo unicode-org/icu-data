@@ -8,7 +8,7 @@
 # File created by rptp2ucm (compiled on May 31 2002)
 # from source files 34B003AD.RPMAP13A and 03AD34B0.TPMAP12A
 #
-<code_set_name>               "ibm-941_P13A-2000"
+<code_set_name>               "ibm-941_P13A-2002"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  2
 <mb_cur_min>                  2

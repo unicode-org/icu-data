@@ -8,7 +8,7 @@
 # File created by rptp2ucm (compiled on May 31 2002)
 # from source files 44B0356C.RPMAP102 and 356C44B0.TPMAP102
 #
-<code_set_name>               "ibm-13676_P102-2000"
+<code_set_name>               "ibm-13676_P102-2002"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  2
 <mb_cur_min>                  1

@@ -8,7 +8,7 @@
 # File created by rptp2ucm (compiled on May 31 2002)
 # from source files 34B013A2.RPMAP120 and 13A234B0.TPMAP110
 #
-<code_set_name>               "ibm-5026_P120-2000"
+<code_set_name>               "ibm-5026_P120-2002"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  2
 <mb_cur_min>                  1

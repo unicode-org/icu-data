@@ -8,7 +8,7 @@
 # File created by rptp2ucm (compiled on May 31 2002)
 # from source files 34B003A4.RPMAP12A and 03A434B0.TPMAP12A
 #
-<code_set_name>               "ibm-932_P12A-2000"
+<code_set_name>               "ibm-932_P12A-2002"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  2
 <mb_cur_min>                  1

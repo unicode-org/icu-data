@@ -8,7 +8,7 @@
 # File created by rptp2ucm (compiled on May 31 2002)
 # from source files 34b004e4.rpmap100 and 04e434b0.tpmap100
 #
-<code_set_name>               "ibm-1252_P100-2000"
+<code_set_name>               "ibm-1252_P100-2002"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  1
 <mb_cur_min>                  1
