@@ -89,7 +89,7 @@ void emitHeader(FILE* fp, const char* lpCodePageString, const CPINFO* nativeCPIn
             fprintf(fp, "\\x%02X", (unsigned char)nativeCPInfo->DefaultChar[i]);
         }
         fputs("\n", fp);
-        fprintf(fp, "<lead_bytes>                  \\x%02X\n", (unsigned char)nativeCPInfo->LeadByte[0]);
+        fprintf(fp, "# <lead_bytes>                  \\x%02X\n", (unsigned char)nativeCPInfo->LeadByte[0]);
     }
     fputs("#\n", fp);
     fputs("CHARMAP\n", fp);
