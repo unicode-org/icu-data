@@ -41,15 +41,20 @@ compareMappings(const void *left, const void *right) {
     const Mapping *l=(const Mapping *)left, *r=(const Mapping *)right;
     long result;
 
-    /* shift right 16 with sign-extend to take care of int possibly being 16 bits wide */
-    result=(long)(l->u-r->u);
+    /* the code points use fewer than 32 bits, just cast them to signed values and subtract */
+    result=(long)(l->u)-(long)(r->u);
     if(result!=0) {
+        /* shift right 16 with sign-extend to take care of int possibly being 16 bits wide */
         return (int)(result>>16)|1;
     }
-    result=(long)(l->b-r->b);
-    if(result!=0) {
-        return (int)(result>>16)|1;
+
+    /* the b fields may use all 32 bits as unsigned long, so result=(long)(l->b-r->b) would not work (try l->b=0x80000000 and r->b=1) */
+    if(l->b<r->b) {
+        return -1;
+    } else if(l->b>r->b) {
+        return 1;
     }
+
     return (int)(l->f-r->f);
 }
 
