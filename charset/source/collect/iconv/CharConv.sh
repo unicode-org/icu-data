@@ -4,6 +4,9 @@ OS_INFO="`uname -a`"
 OS_VERSION="`uname -r`"
 OS_TYPE="`uname`"
 
+# TODO: We should use `locale -m` to get the installed converters.
+
+
 export OS_INFO OS_VERSION
 
 echo "Collecting Unicode conversion mappings for $OS_TYPE"
