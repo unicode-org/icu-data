@@ -1,11 +1,11 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2002, International Business Machines
+# *   Copyright (C) 1995-2004, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
+# File created by rptp2ucm (compiled on Jan 14 2004)
 # from source files 44B053B3.RXMAP100 and 53B344B0.TXMAP100
 #
 <code_set_name>               "ibm-21427_X100-1999"
@@ -14,7 +14,6 @@
 <mb_cur_min>                  2
 <uconv_class>                 "DBCS"
 <subchar>                     \xC8\xFE
-<subchar1>                    \x7F
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-21427_VPUA"
 

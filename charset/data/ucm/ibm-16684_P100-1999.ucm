@@ -1,11 +1,11 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2002, International Business Machines
+# *   Copyright (C) 1995-2004, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
+# File created by rptp2ucm (compiled on Jan 14 2004)
 # from source files 44B0412C.RPMAP100 and 412C44B0.TPMAP100
 #
 <code_set_name>               "ibm-16684_P100-1999"
@@ -14,9 +14,15 @@
 <mb_cur_min>                  2
 <uconv_class>                 "DBCS"
 <subchar>                     \xFE\xFE
-<subchar1>                    \x3F
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-16684_VPUA"
+
+# includes mappings for surrogate pairs
+<icu:state>                   0-3f:3, 40:2, 41-fe:1, ff:3, b3-b7:4
+<icu:state>                   41-fe
+<icu:state>                   40
+<icu:state>                   
+<icu:state>                   41-fe.p
 
 CHARMAP
 <U00A0> \xD6\x41 |0

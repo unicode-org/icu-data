@@ -1,11 +1,11 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2002, International Business Machines
+# *   Copyright (C) 1995-2004, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
+# File created by rptp2ucm (compiled on Jan 14 2004)
 # from source files 34B0035F.RPMAP100 and 035F34B0.TPMAP100
 #
 <code_set_name>               "ibm-863_P100-1995"
@@ -151,7 +151,6 @@ CHARMAP
 <U00A3> \x9C |0
 <U00A4> \x98 |0
 <U00A6> \xA0 |0
-<U00A7> \x15 |1
 <U00A7> \x8F |0
 <U00A8> \xA4 |0
 <U00AB> \xAE |0
@@ -162,7 +161,6 @@ CHARMAP
 <U00B2> \xFD |0
 <U00B3> \xA6 |0
 <U00B4> \xA1 |0
-<U00B6> \x14 |1
 <U00B6> \x86 |0
 <U00B7> \xFA |0
 <U00B8> \xA5 |0

@@ -1,11 +1,11 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2002, International Business Machines
+# *   Copyright (C) 1995-2004, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
+# File created by rptp2ucm (compiled on Jan 14 2004)
 # from source files 34B023B9.RXMAP110 and 23B934B0.TXMAP110
 #
 <code_set_name>               "ibm-9145_X110-1997"
@@ -14,7 +14,6 @@
 <mb_cur_min>                  2
 <uconv_class>                 "DBCS"
 <subchar>                     \xF4\xFE
-<subchar1>                    \x1A
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-9145_VPUA"
 
