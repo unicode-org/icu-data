@@ -2,7 +2,7 @@
 <!DOCTYPE characterMapping SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
 <characterMapping id="ibm-926_P100-2000" version="1">
  <history>
-  <modified version="1" date="2001-07-20">This file was generated with XMLSimpleGenerator.java.</modified>
+  <modified version="1" date="2002-12-27">This file was generated with XMLSimpleGenerator.java.</modified>
  </history>
  <validity>
   <state type="FIRST" next="THIRD" s="00" e="80" max="FFFF"/>
@@ -10,7 +10,7 @@
   <state type="FIRST" next="THIRD" s="FD" e="FF" max="FFFF"/>
   <state type="SECOND" next="VALID" s="40" e="7E" max="FFFF"/>
   <state type="SECOND" next="VALID" s="80" e="FC" max="FFFF"/>
-  <state type="THIRD" next="VALID" s="00" e="FF" max="FFFF"/>
+  <state type="THIRD" next="INVALID" s="00" e="FF" max="FFFF"/>
  </validity>
  <assignments sub="BF FC">
   <!-- One to one mappings -->
