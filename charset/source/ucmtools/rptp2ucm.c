@@ -63,10 +63,19 @@ typedef struct CCSIDStateTable {
     const char *table;
 } CCSIDStateTable;
 
-/**/
-#define japanesePCDBCSStates  "<icu:state>                   0-80:2, 81-fc:1, fd-ff:2\n"\
-                              "<icu:state>                   40-7e, 80-fc\n"\
-                              "<icu:state>\n"
+#define japanesePCDBCSStates \
+    "<icu:state>                   0-80:2, 81-fc:1, fd-ff:2\n" \
+    "<icu:state>                   40-7e, 80-fc\n" \
+    "<icu:state>\n"
+
+#define states1390 \
+    "# includes mappings for surrogate pairs\n" \
+    "<icu:state>                   0-ff, e:1.s, f:0.s\n" \
+    "<icu:state>                   initial, 0-3f:4, e:1.s, f:0.s, 40:3, 41-fe:2, ff:4, b3-b7:5\n" \
+    "<icu:state>                   0-40:1.i, 41-fe:1., ff:1.i\n" \
+    "<icu:state>                   0-ff:1.i, 40:1.\n" \
+    "<icu:state>                   0-ff:1.i\n" \
+    "<icu:state>                   0-40:1.i, 41-fe:1.p, ff:1.i\n"
 
 static const CCSIDStateTable
 knownStateTables[]={
@@ -172,6 +181,10 @@ knownStateTables[]={
 
     1386,  "<icu:state>                   0-80, 81-fe:1\n" /* Was 0-7f, 81-fe:1 */
            "<icu:state>                   40-7e, 80-fe\n",
+
+    1390, states1390,
+
+    1399, states1390,
 
     5039,  "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
            "<icu:state>                   40-7e, 80-fc\n",
@@ -816,7 +829,8 @@ writeBytes(char *s, uint32_t b) {
 static void
 writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     char buffer[200];
-    const char *s, *end;
+    char *key, *value;
+    const char *s, *end, *next;
 
     UCMStates *states;
 
@@ -922,18 +936,20 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
         fputs("\n", f);
 
         /* set the state table */
-        while(s!=NULL && *s!=0) {
+        while(*s!=0) {
             /* separate the state table string into lines */
             end=uprv_strchr(s, '\n');
             if(end!=NULL) {
-                uprv_memcpy(buffer, s, end-s);
-                buffer[end-s]=0;
-                s=end+1;
+                next=end+1;
             } else {
-                uprv_strcpy(buffer, s);
-                s=NULL;
+                end=uprv_strchr(s, 0);
+                next=end;
             }
-            ucm_addState(states, buffer);
+
+            uprv_memcpy(buffer, s, end-s);
+            buffer[end-s]=0;
+            ucm_parseHeaderLine(fromUFile, buffer, &key, &value);
+            s=next;
         }
     }
 
