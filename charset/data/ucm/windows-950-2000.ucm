@@ -33,7 +33,7 @@
 #<icu:alias>                  "windows-950_VPUA"
 
 <icu:state>                   0-80, 81-fe:1, ff
-<icu:state>                   40-7e, 81-fe
+<icu:state>                   40-7e, 80-fe
 
 # The following was the generated state table.
 # This does not account for unassigned characters

@@ -33,8 +33,8 @@
 #<icu:alias>                  "macos-2566_VPUA"
 
 <icu:state>                   0-7f, 81-fe:1, 88-8b:2, 8d-a0:2, c8:2, fa-fe:2
-<icu:state>                   40-7e, 80-fe
-<icu:state>                   40-7e.p, 80-a0, a1-fe.p
+<icu:state>                   40-7e, a1-fe
+<icu:state>                   40-7e.p, a1-fe.p
 
 # The following was the generated state table.
 # This does not account for unassigned characters
