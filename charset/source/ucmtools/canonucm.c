@@ -26,10 +26,10 @@
 *   a more elaborate build using the ICU common (icuuc) and toolutil libraries.
 *   On Windows (on one line):
 *
-*   cl -nologo
+*   cl -nologo -MD
 *      -I..\..\..\icu\source\common
 *      -I..\..\..\icu\source\tools\toolutil
-*      canonucm.c -link /LIBPATH:..\..\..\icu\lib icuucd.lib icutud.libcanonucm.c
+*      canonucm.c -link /LIBPATH:..\..\..\icu\lib icuuc.lib icutu.lib
 */
 
 #include "unicode/utypes.h"
