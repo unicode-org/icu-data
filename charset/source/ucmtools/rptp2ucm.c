@@ -356,9 +356,28 @@ parseMappings(FILE *f, Mapping *mappings) {
             }
 
             /* get modified date */
-            s=strstr(line, "Modified   :");
+            Modified   :
+            s=strstr(line, "Modified");
+            if(s!=NULL && strstr(s, ":") != NULL) {
+                int len = strlen(s);
+                while (!isdigit(s[len])) {
+                    len--;
+                }
+                year=strtoul(s+len-4, &end, 10);
+                if(end<s+4 || year < MIN_YEAR || MAX_YEAR < year) {
+                    fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
+                    exit(2);
+                }
+                isYearModificationDate=1;
+                continue;
+            }
+
+            s=strstr(line, "Updated      :");
             if(s!=NULL) {
                 int len = strlen(s);
+                while (s[len] != '(') {
+                    len--;
+                }
                 while (!isdigit(s[len])) {
                     len--;
                 }
