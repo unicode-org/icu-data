@@ -5,7 +5,8 @@ import java.text.*;
 public class XMLGenerator {
     static final int ERROR_LIMIT = 100;
     static final String INDEX_DIR = "../../";
-    static final String XML_DIR = INDEX_DIR + "CharMaps-XML/";
+    static final String XML_DIR = INDEX_DIR + "data/xml/";
+//    static final String XML_DIR = INDEX_DIR + "CharMaps-XML/";
 //    static final String SOURCE_DIR = "C:/Development/icu/data/";
 //    static final String SOURCE_DIR = INDEX_DIR + "CharMaps-UCM/";
     static final String SOURCE_DIR = INDEX_DIR + "data/ucm/";
