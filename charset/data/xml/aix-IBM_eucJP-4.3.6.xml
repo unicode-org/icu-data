@@ -2,23 +2,28 @@
 <!DOCTYPE characterMapping SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
 <characterMapping id="aix-IBM_eucJP-4.3.6" version="1">
  <history>
-  <modified version="1" date="2001-04-18">This file was generated with XMLSimpleGenerator.java.</modified>
+  <modified version="1" date="2001-07-20">This file was generated with XMLSimpleGenerator.java.</modified>
  </history>
  <validity>
-  <state type="FIRST" next="VALID" s="0" e="8D" max="FFFF"/>
+  <state type="FIRST" next="VALID" s="00" e="8D" max="FFFF"/>
   <state type="FIRST" next="THIRD" s="8E" max="FFFF"/>
   <state type="FIRST" next="FOURTH" s="8F" max="FFFF"/>
   <state type="FIRST" next="VALID" s="90" e="9F" max="FFFF"/>
   <state type="FIRST" next="SECOND" s="A1" e="FE" max="FFFF"/>
   <state type="SECOND" next="VALID" s="A1" e="FE" max="FFFF"/>
   <state type="THIRD" next="VALID" s="A1" e="E4" max="FFFF"/>
-  <state type="FOURTH" next="SECOND" s="A1" e="FE" max="FFFF"/>
   <state type="FOURTH" next="FIFTH" s="A1" max="FFFF"/>
+  <state type="FOURTH" next="SECOND" s="A2" max="FFFF"/>
   <state type="FOURTH" next="FIFTH" s="A3" e="AF" max="FFFF"/>
+  <state type="FOURTH" next="SECOND" s="B0" e="B5" max="FFFF"/>
   <state type="FOURTH" next="FIFTH" s="B6" max="FFFF"/>
+  <state type="FOURTH" next="SECOND" s="B7" e="D5" max="FFFF"/>
   <state type="FOURTH" next="FIFTH" s="D6" max="FFFF"/>
+  <state type="FOURTH" next="SECOND" s="D7" e="D9" max="FFFF"/>
   <state type="FOURTH" next="FIFTH" s="DA" e="DB" max="FFFF"/>
+  <state type="FOURTH" next="SECOND" s="DC" e="EC" max="FFFF"/>
   <state type="FOURTH" next="FIFTH" s="ED" e="F2" max="FFFF"/>
+  <state type="FOURTH" next="SECOND" s="F3" e="FE" max="FFFF"/>
   <state type="FIFTH" next="VALID" s="A1" e="FE" max="FFFF"/>
  </validity>
  <assignments sub="F4 FE">

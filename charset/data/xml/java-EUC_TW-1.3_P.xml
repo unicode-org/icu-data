@@ -2,18 +2,19 @@
 <!DOCTYPE characterMapping SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
 <characterMapping id="java-EUC_TW-1.3_P" version="1">
  <history>
-  <modified version="1" date="2001-04-20">This file was generated with XMLSimpleGenerator.java.</modified>
+  <modified version="1" date="2001-07-20">This file was generated with XMLSimpleGenerator.java.</modified>
  </history>
  <validity>
-  <state type="FIRST" next="VALID" s="0" e="8D" max="FFFF"/>
+  <state type="FIRST" next="VALID" s="00" e="8D" max="FFFF"/>
   <state type="FIRST" next="THIRD" s="8E" max="FFFF"/>
   <state type="FIRST" next="VALID" s="90" e="9F" max="FFFF"/>
-  <state type="FIRST" next="SECOND" s="A1" e="FE" max="FFFF"/>
+  <state type="FIRST" next="SECOND" s="A1" e="A9" max="FFFF"/>
   <state type="FIRST" next="SIXTH" s="AA" e="C1" max="FFFF"/>
+  <state type="FIRST" next="SECOND" s="C2" max="FFFF"/>
   <state type="FIRST" next="SIXTH" s="C3" max="FFFF"/>
+  <state type="FIRST" next="SECOND" s="C4" e="FD" max="FFFF"/>
   <state type="FIRST" next="SIXTH" s="FE" max="FFFF"/>
   <state type="SECOND" next="VALID" s="A1" e="FE" max="FFFF"/>
-  <state type="THIRD" next="FOURTH" s="A1" e="B0" max="FFFF"/>
   <state type="THIRD" next="FIFTH" s="A1" max="FFFF"/>
   <state type="THIRD" next="NINTH" s="A2" max="FFFF"/>
   <state type="THIRD" next="FIFTH" s="A3" e="AB" max="FFFF"/>

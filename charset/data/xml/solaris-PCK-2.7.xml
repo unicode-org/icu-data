@@ -2,9 +2,17 @@
 <!DOCTYPE characterMapping SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
 <characterMapping id="solaris-PCK-2.7" version="1">
  <history>
-  <modified version="1" date="2001-05-21">This file was generated with XMLSimpleGenerator.java.</modified>
+  <modified version="1" date="2001-07-20">This file was generated with XMLSimpleGenerator.java.</modified>
  </history>
- <!-- Unknown validity -->
+ <validity>
+  <state type="FIRST" next="VALID" s="00" e="80" max="FFFF"/>
+  <state type="FIRST" next="SECOND" s="81" e="9F" max="FFFF"/>
+  <state type="FIRST" next="VALID" s="A0" e="DF" max="FFFF"/>
+  <state type="FIRST" next="SECOND" s="E0" e="FC" max="FFFF"/>
+  <state type="FIRST" next="VALID" s="FD" e="FF" max="FFFF"/>
+  <state type="SECOND" next="VALID" s="40" e="7E" max="FFFF"/>
+  <state type="SECOND" next="VALID" s="80" e="FC" max="FFFF"/>
+ </validity>
  <assignments sub="3F">
   <!-- One to one mappings -->
   <a u="0000" b="00"/>
