@@ -23,9 +23,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
-//#include <sys/debug.h>
+/*#include <sys/debug.h>*/
 
-//#define DEBUG // for assert macro
+/*#define DEBUG /* for assert macro */
 #define BUFFER 16
 
 enum boolean { FALSE_, TRUE_ };
@@ -182,10 +182,19 @@ void convertChar(/* IN  */  const char* UTF8name,
                  /* OUT */  size_t *lenToByteArray)
 {
     char *tptr = (char *)toByteArray;
-    const char **fptr = (const char **)&fromByteArray;
-    size_t ileft = lenFromByteArray;
+    const char **fptr = NULL;
+    size_t ileft = 0;
     size_t oleft = BUFFER;
     size_t retValue;
+
+    /* reset to initial state, which is needed by Solaris */
+    retValue = iconv(conversionDescripter, fptr, &ileft,
+        &tptr, &oleft);
+
+    tptr = (char *)toByteArray;
+    fptr = (const char **)&fromByteArray;
+    ileft = lenFromByteArray;
+    oleft = BUFFER;
 
     /* do the actual conversion here */
     retValue = iconv(conversionDescripter, fptr, &ileft,
@@ -232,12 +241,12 @@ analyzeCharMappingAndWriteOneLine(/* IN */ unsigned int uniScalar,
         } else {
             isFallback = TRUE_;
         }
-    } else if (!strcmp((char*)startUTF8char, (char*)endUTF8char)) { // roundtrip
+    } else if (!strcmp((char*)startUTF8char, (char*)endUTF8char)) { /* roundtrip */
         isFallback = FALSE_;
-    } else if (!strcmp((char*)galleyChar3, (char*)CPchar) ||        // mapping to galleyChar
+    } else if (!strcmp((char*)galleyChar3, (char*)CPchar) ||        /* mapping to galleyChar */
         !strcmp((char*)galleyChar2, (char*)CPchar)) {
         return;
-    } else {                                                        // fallback
+    } else {                                                        /* fallback */
         isFallback = TRUE_;
     }
 
@@ -276,7 +285,7 @@ pointer to the string "toCodepageName" which is latter used as an argument to
 the iconv_open function.  Currently, the conversion file names are obtained
 using a script which pipes them as command line args to this program.
 Here is the script:
-	 find /usr/lib/iconv -name "UTF-8%*.so" | xargs a.out
+     find /usr/lib/iconv -name "UTF-8%*.so" | xargs a.out
 As you can see we are only interested in conversion files that begin with
 "UTF-8" since these make up the bulk of unicode conversions available on SUN OS.
 */
@@ -450,8 +459,8 @@ void getGalleyChars(/* IN  */  const char *UTF8name,
     /* set initial shift state then convert twice to avoid shift characters
        in output
      */
-    //convertChar(UTF8name, cd, UTF8name, NULL, lenStartUTF8char, 
-    //            codePageName, galleyChar2, lenGalleyChar2);
+    /*convertChar(UTF8name, cd, UTF8name, NULL, lenStartUTF8char, 
+                codePageName, galleyChar2, lenGalleyChar2);*/
     convertChar(UTF8name, cd, UTF8name, startUTF8char, lenStartUTF8char, 
         codePageName, galleyChar2, lenGalleyChar2);
     convertChar(UTF8name, cd, UTF8name, startUTF8char, lenStartUTF8char, 
@@ -466,8 +475,8 @@ void getGalleyChars(/* IN  */  const char *UTF8name,
     /* set initial shift state then convert twice to avoid shift characters
        in output
      */
-    //convertChar(UTF8name, cd, UTF8name, NULL, lenStartUTF8char, 
-    //            codePageName, galleyChar3, lenGalleyChar3);
+    /*convertChar(UTF8name, cd, UTF8name, NULL, lenStartUTF8char, 
+                codePageName, galleyChar3, lenGalleyChar3);*/
     convertChar(UTF8name, cd, UTF8name, startUTF8char, lenStartUTF8char, 
         codePageName, galleyChar3, lenGalleyChar3);
     convertChar(UTF8name, cd, UTF8name, startUTF8char, lenStartUTF8char, 
@@ -706,8 +715,8 @@ int main(int argc, char **argv)
             }
 
             /* UTF-8 --> codePageName */
-            //convertChar(UTF8name, toCP, UTF8name, NULL, lenStartUTF8char, 
-            //            codePageName, CPchar, &lenCPchar);
+            /*convertChar(UTF8name, toCP, UTF8name, NULL, lenStartUTF8char, 
+                        codePageName, CPchar, &lenCPchar);*/
             convertChar(UTF8name, toCP, UTF8name, startUTF8char, lenStartUTF8char, 
                 codePageName, CPcharWithShiftState, &lenCPcharWithShiftState);
             convertChar(UTF8name, toCP, UTF8name, startUTF8char, lenStartUTF8char, 
