@@ -1,0 +1,152 @@
+#________________________________________________________________________
+#
+# (C) COPYRIGHT International Business Machines Corp. 2001
+#     All Rights Reserved
+#
+#________________________________________________________________________
+#
+# File created on Thu Apr 05 09:38:59 PDT 2001
+#
+# File created by CharConv tool.
+# Platform: Linux redhat2 2.2.12-20 #1 Mon Sep 27 10:40:35 EDT 1999 i686 unkglibc-
+#
+# Table Version : 1.0
+# The 1st column is the Unicode scalar value.
+# The 2nd column is the codepage byte sequence.
+# The 3rd column is the fallback indicator.
+# The fallback indicator can have one of the following values:
+#   |0 for exact 1-1 roundtrip mapping
+#   |1 for the best fallback codepage byte sequence.
+#   |2 for the substitution character
+#   |3 for the best reverse fallback Unicode scaler value
+#
+<code_set_name>               "INIS_CYRILLIC"
+<mb_cur_max>                  1
+<mb_cur_min>                  1
+<uconv_class>                 "SBCS"
+<subchar>                     \x1A
+#
+CHARMAP
+#
+#
+#UNICODE INIS_CYRILLIC
+#_______ _________
+<U0000>  \x00 |0
+<U0001>  \x01 |0
+<U0002>  \x02 |0
+<U0003>  \x03 |0
+<U0004>  \x04 |0
+<U0005>  \x05 |0
+<U0006>  \x06 |0
+<U0007>  \x07 |0
+<U0008>  \x08 |0
+<U0009>  \x09 |0
+<U000A>  \x0A |0
+<U000B>  \x0B |0
+<U000C>  \x0C |0
+<U000D>  \x0D |0
+<U000E>  \x0E |0
+<U000F>  \x0F |0
+<U0010>  \x10 |0
+<U0011>  \x11 |0
+<U0012>  \x12 |0
+<U0013>  \x13 |0
+<U0014>  \x14 |0
+<U0015>  \x15 |0
+<U0016>  \x16 |0
+<U0017>  \x17 |0
+<U0018>  \x18 |0
+<U0019>  \x19 |0
+<U001A>  \x1A |0
+<U001B>  \x1B |0
+<U001C>  \x1C |0
+<U001D>  \x1D |0
+<U001E>  \x1E |0
+<U001F>  \x1F |0
+<U0020>  \x20 |0
+<U007F>  \x7F |0
+<U0394>  \x3A |0
+<U039B>  \x3B |0
+<U039E>  \x39 |0
+<U03A3>  \x34 |0
+<U03A9>  \x3C |0
+<U03B1>  \x30 |0
+<U03B2>  \x31 |0
+<U03B3>  \x32 |0
+<U03B4>  \x33 |0
+<U03BC>  \x35 |0
+<U03BD>  \x36 |0
+<U03C0>  \x38 |0
+<U03C9>  \x37 |0
+<U0410>  \x61 |0
+<U0411>  \x62 |0
+<U0412>  \x77 |0
+<U0413>  \x67 |0
+<U0414>  \x64 |0
+<U0415>  \x65 |0
+<U0416>  \x76 |0
+<U0417>  \x7A |0
+<U0418>  \x69 |0
+<U0419>  \x6A |0
+<U041A>  \x6B |0
+<U041B>  \x6C |0
+<U041C>  \x6D |0
+<U041D>  \x6E |0
+<U041E>  \x6F |0
+<U041F>  \x70 |0
+<U0420>  \x72 |0
+<U0421>  \x73 |0
+<U0422>  \x74 |0
+<U0423>  \x75 |0
+<U0424>  \x66 |0
+<U0425>  \x68 |0
+<U0426>  \x63 |0
+<U0427>  \x7E |0
+<U0428>  \x7B |0
+<U0429>  \x7D |0
+<U042A>  \x3D |0
+<U042B>  \x79 |0
+<U042C>  \x78 |0
+<U042D>  \x7C |0
+<U042E>  \x60 |0
+<U042F>  \x71 |0
+<U0430>  \x41 |0
+<U0431>  \x42 |0
+<U0432>  \x57 |0
+<U0433>  \x47 |0
+<U0434>  \x44 |0
+<U0435>  \x45 |0
+<U0436>  \x56 |0
+<U0437>  \x5A |0
+<U0438>  \x49 |0
+<U0439>  \x4A |0
+<U043A>  \x4B |0
+<U043B>  \x4C |0
+<U043C>  \x4D |0
+<U043D>  \x4E |0
+<U043E>  \x4F |0
+<U043F>  \x50 |0
+<U0440>  \x52 |0
+<U0441>  \x53 |0
+<U0442>  \x54 |0
+<U0443>  \x55 |0
+<U0444>  \x46 |0
+<U0445>  \x48 |0
+<U0446>  \x43 |0
+<U0447>  \x5E |0
+<U0448>  \x5B |0
+<U0449>  \x5D |0
+<U044A>  \x5F |0
+<U044B>  \x59 |0
+<U044C>  \x58 |0
+<U044D>  \x5C |0
+<U044E>  \x40 |0
+<U044F>  \x51 |0
+<U207A>  \x3F |0
+<U207B>  \x3E |0
+<U2192>  \x2E |0
+<U221A>  \x2C |0
+<U222B>  \x2F |0
+#
+END CHARMAP
+#

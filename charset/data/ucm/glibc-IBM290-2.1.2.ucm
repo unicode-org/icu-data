@@ -1,0 +1,231 @@
+#________________________________________________________________________
+#
+# (C) COPYRIGHT International Business Machines Corp. 2001
+#     All Rights Reserved
+#
+#________________________________________________________________________
+#
+# File created on Thu Apr 05 09:38:59 PDT 2001
+#
+# File created by CharConv tool.
+# Platform: Linux redhat2 2.2.12-20 #1 Mon Sep 27 10:40:35 EDT 1999 i686 unkglibc-
+#
+# Table Version : 1.0
+# The 1st column is the Unicode scalar value.
+# The 2nd column is the codepage byte sequence.
+# The 3rd column is the fallback indicator.
+# The fallback indicator can have one of the following values:
+#   |0 for exact 1-1 roundtrip mapping
+#   |1 for the best fallback codepage byte sequence.
+#   |2 for the substitution character
+#   |3 for the best reverse fallback Unicode scaler value
+#
+<code_set_name>               "IBM290"
+<mb_cur_max>                  1
+<mb_cur_min>                  1
+<uconv_class>                 "SBCS"
+<subchar>                     \x3F
+#
+CHARMAP
+#
+#
+#UNICODE IBM290
+#_______ _________
+<U0000>  \x00 |0
+<U0001>  \x01 |0
+<U0002>  \x02 |0
+<U0003>  \x03 |0
+<U0004>  \x37 |0
+<U0005>  \x2D |0
+<U0006>  \x2E |0
+<U0007>  \x2F |0
+<U0008>  \x16 |0
+<U0009>  \x05 |0
+<U000A>  \x25 |0
+<U000B>  \x0B |0
+<U000C>  \x0C |0
+<U000D>  \x0D |0
+<U000E>  \x0E |0
+<U000F>  \x0F |0
+<U0010>  \x10 |0
+<U0011>  \x11 |0
+<U0012>  \x12 |0
+<U0013>  \x13 |0
+<U0014>  \x3C |0
+<U0015>  \x3D |0
+<U0016>  \x32 |0
+<U0017>  \x26 |0
+<U0018>  \x18 |0
+<U0019>  \x19 |0
+<U001A>  \x3F |0
+<U001B>  \x27 |0
+<U001C>  \x1C |0
+<U001D>  \x1D |0
+<U001E>  \x1E |0
+<U001F>  \x1F |0
+<U0020>  \x40 |0
+<U0021>  \x5A |0
+<U0022>  \x7F |0
+<U0023>  \x7B |0
+<U0024>  \xE0 |0
+<U0025>  \x6C |0
+<U0026>  \x50 |0
+<U0027>  \x7D |0
+<U0028>  \x4D |0
+<U0029>  \x5D |0
+<U002A>  \x5C |0
+<U002B>  \x4E |0
+<U002C>  \x6B |0
+<U002D>  \x60 |0
+<U002E>  \x4B |0
+<U002F>  \x61 |0
+<U0030>  \xF0 |0
+<U0031>  \xF1 |0
+<U0032>  \xF2 |0
+<U0033>  \xF3 |0
+<U0034>  \xF4 |0
+<U0035>  \xF5 |0
+<U0036>  \xF6 |0
+<U0037>  \xF7 |0
+<U0038>  \xF8 |0
+<U0039>  \xF9 |0
+<U003A>  \x7A |0
+<U003B>  \x5E |0
+<U003C>  \x4C |0
+<U003D>  \x7E |0
+<U003E>  \x6E |0
+<U003F>  \x6F |0
+<U0040>  \x7C |0
+<U0041>  \xC1 |0
+<U0042>  \xC2 |0
+<U0043>  \xC3 |0
+<U0044>  \xC4 |0
+<U0045>  \xC5 |0
+<U0046>  \xC6 |0
+<U0047>  \xC7 |0
+<U0048>  \xC8 |0
+<U0049>  \xC9 |0
+<U004A>  \xD1 |0
+<U004B>  \xD2 |0
+<U004C>  \xD3 |0
+<U004D>  \xD4 |0
+<U004E>  \xD5 |0
+<U004F>  \xD6 |0
+<U0050>  \xD7 |0
+<U0051>  \xD8 |0
+<U0052>  \xD9 |0
+<U0053>  \xE2 |0
+<U0054>  \xE3 |0
+<U0055>  \xE4 |0
+<U0056>  \xE5 |0
+<U0057>  \xE6 |0
+<U0058>  \xE7 |0
+<U0059>  \xE8 |0
+<U005A>  \xE9 |0
+<U005F>  \x6D |0
+<U0060>  \x79 |0
+<U007C>  \x4F |0
+<U007F>  \x07 |0
+<U0080>  \x20 |0
+<U0081>  \x21 |0
+<U0082>  \x22 |0
+<U0083>  \x23 |0
+<U0084>  \x24 |0
+<U0085>  \x15 |0
+<U0086>  \x06 |0
+<U0087>  \x17 |0
+<U0088>  \x28 |0
+<U0089>  \x29 |0
+<U008A>  \x2A |0
+<U008B>  \x2B |0
+<U008C>  \x2C |0
+<U008D>  \x09 |0
+<U008E>  \x0A |0
+<U008F>  \x1B |0
+<U0090>  \x30 |0
+<U0091>  \x31 |0
+<U0092>  \x1A |0
+<U0093>  \x33 |0
+<U0094>  \x34 |0
+<U0095>  \x35 |0
+<U0096>  \x36 |0
+<U0097>  \x08 |0
+<U0098>  \x38 |0
+<U0099>  \x39 |0
+<U009A>  \x3A |0
+<U009B>  \x3B |0
+<U009C>  \x04 |0
+<U009D>  \x14 |0
+<U009E>  \x3E |0
+<U009F>  \xFF |0
+<U00A3>  \x4A |0
+<U00A5>  \x5B |0
+<U00A6>  \x6A |0
+<U00AC>  \x5F |0
+<U203E>  \xA1 |0
+<U3001>  \x44 |0
+<U3002>  \x41 |0
+<U300C>  \x42 |0
+<U300D>  \x43 |0
+<U309B>  \xBE |0
+<U309C>  \xBF |0
+<U30A1>  \x47 |0
+<U30A2>  \x81 |0
+<U30A3>  \x48 |0
+<U30A4>  \x82 |0
+<U30A5>  \x49 |0
+<U30A6>  \x83 |0
+<U30A7>  \x51 |0
+<U30A8>  \x84 |0
+<U30A9>  \x52 |0
+<U30AA>  \x85 |0
+<U30AB>  \x86 |0
+<U30AD>  \x87 |0
+<U30AF>  \x88 |0
+<U30B1>  \x89 |0
+<U30B3>  \x8A |0
+<U30B5>  \x8C |0
+<U30B7>  \x8D |0
+<U30B9>  \x8E |0
+<U30BB>  \x8F |0
+<U30BD>  \x90 |0
+<U30BF>  \x91 |0
+<U30C1>  \x92 |0
+<U30C3>  \x56 |0
+<U30C4>  \x93 |0
+<U30C6>  \x94 |0
+<U30C8>  \x95 |0
+<U30CA>  \x96 |0
+<U30CB>  \x97 |0
+<U30CC>  \x98 |0
+<U30CD>  \x99 |0
+<U30CE>  \x9A |0
+<U30CF>  \x9D |0
+<U30D2>  \x9E |0
+<U30D5>  \x9F |0
+<U30D8>  \xA2 |0
+<U30DB>  \xA3 |0
+<U30DE>  \xA4 |0
+<U30DF>  \xA5 |0
+<U30E0>  \xA6 |0
+<U30E1>  \xA7 |0
+<U30E2>  \xA8 |0
+<U30E3>  \x53 |0
+<U30E4>  \xA9 |0
+<U30E5>  \x54 |0
+<U30E6>  \xAA |0
+<U30E7>  \x55 |0
+<U30E8>  \xAC |0
+<U30E9>  \xAD |0
+<U30EA>  \xAE |0
+<U30EB>  \xAF |0
+<U30EC>  \xBA |0
+<U30ED>  \xBB |0
+<U30EF>  \xBC |0
+<U30F2>  \x46 |0
+<U30F3>  \xBD |0
+<U30FB>  \x45 |0
+<U30FC>  \x58 |0
+#
+END CHARMAP
+#

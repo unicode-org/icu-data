@@ -1,0 +1,163 @@
+#________________________________________________________________________
+#
+# (C) COPYRIGHT International Business Machines Corp. 2001
+#     All Rights Reserved
+#
+#________________________________________________________________________
+#
+# File created on Thu Apr 05 09:39:05 PDT 2001
+#
+# File created by CharConv tool.
+# Platform: Linux redhat2 2.2.12-20 #1 Mon Sep 27 10:40:35 EDT 1999 i686 unkglibc-
+#
+# Table Version : 1.0
+# The 1st column is the Unicode scalar value.
+# The 2nd column is the codepage byte sequence.
+# The 3rd column is the fallback indicator.
+# The fallback indicator can have one of the following values:
+#   |0 for exact 1-1 roundtrip mapping
+#   |1 for the best fallback codepage byte sequence.
+#   |2 for the substitution character
+#   |3 for the best reverse fallback Unicode scaler value
+#
+<code_set_name>               "GREEK7_OLD"
+<mb_cur_max>                  1
+<mb_cur_min>                  1
+<uconv_class>                 "SBCS"
+<subchar>                     \x1A
+#
+CHARMAP
+#
+#
+#UNICODE GREEK7_OLD
+#_______ _________
+<U0000>  \x00 |0
+<U0001>  \x01 |0
+<U0002>  \x02 |0
+<U0003>  \x03 |0
+<U0004>  \x04 |0
+<U0005>  \x05 |0
+<U0006>  \x06 |0
+<U0007>  \x07 |0
+<U0008>  \x08 |0
+<U0009>  \x09 |0
+<U000A>  \x0A |0
+<U000B>  \x0B |0
+<U000C>  \x0C |0
+<U000D>  \x0D |0
+<U000E>  \x0E |0
+<U000F>  \x0F |0
+<U0010>  \x10 |0
+<U0011>  \x11 |0
+<U0012>  \x12 |0
+<U0013>  \x13 |0
+<U0014>  \x14 |0
+<U0015>  \x15 |0
+<U0016>  \x16 |0
+<U0017>  \x17 |0
+<U0018>  \x18 |0
+<U0019>  \x19 |0
+<U001A>  \x1A |0
+<U001B>  \x1B |0
+<U001C>  \x1C |0
+<U001D>  \x1D |0
+<U001E>  \x1E |0
+<U001F>  \x1F |0
+<U0020>  \x20 |0
+<U0021>  \x21 |0
+<U0022>  \x22 |0
+<U0024>  \x24 |0
+<U0025>  \x25 |0
+<U0026>  \x26 |0
+<U0027>  \x27 |0
+<U0028>  \x28 |0
+<U0029>  \x29 |0
+<U002A>  \x2A |0
+<U002B>  \x2B |0
+<U002C>  \x2C |0
+<U002D>  \x2D |0
+<U002E>  \x2E |0
+<U002F>  \x2F |0
+<U0030>  \x30 |0
+<U0031>  \x31 |0
+<U0032>  \x32 |0
+<U0033>  \x33 |0
+<U0034>  \x34 |0
+<U0035>  \x35 |0
+<U0036>  \x36 |0
+<U0037>  \x37 |0
+<U0038>  \x38 |0
+<U0039>  \x39 |0
+<U003A>  \x3A |0
+<U003B>  \x3B |0
+<U003C>  \x3C |0
+<U003D>  \x3D |0
+<U003E>  \x3E |0
+<U003F>  \x3F |0
+<U005F>  \x5F |0
+<U0060>  \x60 |0
+<U007E>  \x5E |0
+<U007F>  \x7F |0
+<U00A3>  \x23 |0
+<U00A8>  \x7E |0
+<U00B4>  \x40 |0
+<U00B7>  \x77 |0
+<U037A>  \x51 |0
+<U0391>  \x61 |0
+<U0392>  \x62 |0
+<U0393>  \x67 |0
+<U0394>  \x64 |0
+<U0395>  \x65 |0
+<U0396>  \x7A |0
+<U0397>  \x68 |0
+<U0398>  \x75 |0
+<U0399>  \x69 |0
+<U039A>  \x6B |0
+<U039B>  \x6C |0
+<U039C>  \x6D |0
+<U039D>  \x6E |0
+<U039E>  \x6A |0
+<U039F>  \x6F |0
+<U03A0>  \x70 |0
+<U03A1>  \x72 |0
+<U03A3>  \x73 |0
+<U03A4>  \x74 |0
+<U03A5>  \x79 |0
+<U03A6>  \x66 |0
+<U03A7>  \x78 |0
+<U03A8>  \x63 |0
+<U03A9>  \x76 |0
+<U03B1>  \x41 |0
+<U03B2>  \x42 |0
+<U03B3>  \x47 |0
+<U03B4>  \x44 |0
+<U03B5>  \x45 |0
+<U03B6>  \x5A |0
+<U03B7>  \x48 |0
+<U03B8>  \x55 |0
+<U03B9>  \x49 |0
+<U03BA>  \x4B |0
+<U03BB>  \x4C |0
+<U03BC>  \x4D |0
+<U03BD>  \x4E |0
+<U03BE>  \x4A |0
+<U03BF>  \x4F |0
+<U03C0>  \x50 |0
+<U03C1>  \x52 |0
+<U03C2>  \x57 |0
+<U03C3>  \x53 |0
+<U03C4>  \x54 |0
+<U03C5>  \x59 |0
+<U03C6>  \x46 |0
+<U03C7>  \x58 |0
+<U03C8>  \x43 |0
+<U03C9>  \x56 |0
+<U1FBF>  \x5C |0
+<U1FCE>  \x5D |0
+<U1FCF>  \x5B |0
+<U1FDE>  \x7D |0
+<U1FDF>  \x7B |0
+<U1FFE>  \x7C |0
+#
+END CHARMAP
+#

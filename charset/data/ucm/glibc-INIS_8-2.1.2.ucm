@@ -1,0 +1,108 @@
+#________________________________________________________________________
+#
+# (C) COPYRIGHT International Business Machines Corp. 2001
+#     All Rights Reserved
+#
+#________________________________________________________________________
+#
+# File created on Thu Apr 05 09:39:06 PDT 2001
+#
+# File created by CharConv tool.
+# Platform: Linux redhat2 2.2.12-20 #1 Mon Sep 27 10:40:35 EDT 1999 i686 unkglibc-
+#
+# Table Version : 1.0
+# The 1st column is the Unicode scalar value.
+# The 2nd column is the codepage byte sequence.
+# The 3rd column is the fallback indicator.
+# The fallback indicator can have one of the following values:
+#   |0 for exact 1-1 roundtrip mapping
+#   |1 for the best fallback codepage byte sequence.
+#   |2 for the substitution character
+#   |3 for the best reverse fallback Unicode scaler value
+#
+<code_set_name>               "INIS_8"
+<mb_cur_max>                  1
+<mb_cur_min>                  1
+<uconv_class>                 "SBCS"
+<subchar>                     \x1A
+#
+CHARMAP
+#
+#
+#UNICODE INIS_8
+#_______ _________
+<U0000>  \x00 |0
+<U0001>  \x01 |0
+<U0002>  \x02 |0
+<U0003>  \x03 |0
+<U0004>  \x04 |0
+<U0005>  \x05 |0
+<U0006>  \x06 |0
+<U0007>  \x07 |0
+<U0008>  \x08 |0
+<U0009>  \x09 |0
+<U000A>  \x0A |0
+<U000B>  \x0B |0
+<U000C>  \x0C |0
+<U000D>  \x0D |0
+<U000E>  \x0E |0
+<U000F>  \x0F |0
+<U0010>  \x10 |0
+<U0011>  \x11 |0
+<U0012>  \x12 |0
+<U0013>  \x13 |0
+<U0014>  \x14 |0
+<U0015>  \x15 |0
+<U0016>  \x16 |0
+<U0017>  \x17 |0
+<U0018>  \x18 |0
+<U0019>  \x19 |0
+<U001A>  \x1A |0
+<U001B>  \x1B |0
+<U001C>  \x1C |0
+<U001D>  \x1D |0
+<U001E>  \x1E |0
+<U001F>  \x1F |0
+<U0020>  \x20 |0
+<U007F>  \x7F |0
+<U00B2>  \x62 |0
+<U00B3>  \x63 |0
+<U00B9>  \x61 |0
+<U0394>  \x6D |0
+<U039B>  \x6E |0
+<U039E>  \x3E |0
+<U03A3>  \x7A |0
+<U03A9>  \x6F |0
+<U03B1>  \x3A |0
+<U03B2>  \x3B |0
+<U03B3>  \x3C |0
+<U03B4>  \x3D |0
+<U03BC>  \x7B |0
+<U03BD>  \x7C |0
+<U03C0>  \x7E |0
+<U03C9>  \x7D |0
+<U2070>  \x60 |0
+<U2074>  \x64 |0
+<U2075>  \x65 |0
+<U2076>  \x66 |0
+<U2077>  \x67 |0
+<U2078>  \x68 |0
+<U2079>  \x69 |0
+<U207A>  \x6A |0
+<U207B>  \x6B |0
+<U2080>  \x70 |0
+<U2081>  \x71 |0
+<U2082>  \x72 |0
+<U2083>  \x73 |0
+<U2084>  \x74 |0
+<U2085>  \x75 |0
+<U2086>  \x76 |0
+<U2087>  \x77 |0
+<U2088>  \x78 |0
+<U2089>  \x79 |0
+<U2192>  \x5E |0
+<U222B>  \x5F |0
+<U30EB>  \x6C |0
+#
+END CHARMAP
+#
