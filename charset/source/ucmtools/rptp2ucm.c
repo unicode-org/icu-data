@@ -211,6 +211,26 @@ knownStateTables[]={
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
 
+    5487,  "<icu:state>                   81-fe:1\n"
+           "<icu:state>                   30-39:2\n"
+           "<icu:state>                   81-fe:3\n"
+           "<icu:state>                   30-39\n",
+
+    5488,  "<icu:state> 0-7f, 81:7, 82:8, 83:9, 84:a, 85-fe:4\n"    /* Modified form of ICU's gb18030 */
+           "<icu:state> 30-39:2, 40-7e, 80-fe\n"
+           "<icu:state> 81-fe:3\n"
+           "<icu:state> 30-39\n"
+           "<icu:state> 30-39:5, 40-7e, 80-fe\n"
+           "<icu:state> 81-fe:6\n"
+           "<icu:state> 30-39\n"
+           "<icu:state> 30:2, 31-35:5, 36-39:2, 40-7e, 80-fe\n"
+           "<icu:state> 30-35:2, 36-39:5, 40-7e, 80-fe\n"
+           "<icu:state> 30-35:5, 36:2, 37-39:5, 40-7e, 80-fe\n"
+           "<icu:state> 30-31:2, 32-39:5, 40-7e, 80-fe\n",
+
+    9577,  "<icu:state>                   81-fe:1\n"
+           "<icu:state>                   40-7e, 80-fe\n",
+
     16684, states16684,
 
     21427, "<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
@@ -345,6 +365,7 @@ parseMappings(FILE *f, UCMFile *ucm) {
     char line[200];
     char *s, *end;
     int32_t lineNum=0;
+    int32_t startSkipLineNum=0, endSkipLineNum;
     UBool isOK;
 
     UCMapping m={ 0 };
@@ -361,9 +382,26 @@ parseMappings(FILE *f, UCMFile *ucm) {
         s=(char *)u_skipWhitespace(line);
         lineNum++;
 
-        /* skip empty lines */
-        if(*s==0 || *s=='\n' || *s=='\r') {
+        /* skip empty lines or EOF characters */
+        if(*s==0 || *s=='\n' || *s=='\r' || *s=='\x7F') {
             continue;
+        }
+
+        /* Skip useless mappings! */
+        /* You'll see things like, "* only. They do not constitute part of the official UCS-2 to 1275 table."
+                                or "* only. They do not constitute part of the official UCS2 table." */
+        if(uprv_strstr(s, "* only. They do not constitute part of the official UCS")!=NULL) {
+            startSkipLineNum = lineNum;
+            /* Ignore the next few mappings. They have no value */
+            while(fgets(line, sizeof(line), f)!=NULL) {
+                s=(char *)u_skipWhitespace(line);
+                lineNum++;
+                if(uprv_strstr(s, "* The official table starts here:")!=NULL) {
+                    break;  /* continue with outer loop */
+                }
+            }
+            endSkipLineNum = lineNum-1;
+            fprintf(stderr, "Warning: skipped lines %d-%d, since it doesn't seem to be real data\n", startSkipLineNum, endSkipLineNum);
         }
 
         /* explicit end of table */
@@ -506,6 +544,7 @@ parseMappings(FILE *f, UCMFile *ucm) {
             }
             if(byte>0xff) {
                 /* special EUC prefix which does not result in a byte */
+                s+=2;
                 continue;
             }
 
@@ -551,7 +590,7 @@ parseMappings(FILE *f, UCMFile *ucm) {
             if(end==s) {
                 if(uprv_strncmp(s, "????", 4)==0 || uprv_strstr(s, "UNASSIGNED")!=NULL) {
                     /* this is a non-entry, do not add it to the mapping table */
-                    continue;
+                    goto continueOuterLoop;
                 }
                 fprintf(stderr, "%d: error parsing Unicode code point on \"%s\"\n", lineNum, line);
                 isOK=FALSE;
@@ -596,6 +635,14 @@ parseMappings(FILE *f, UCMFile *ucm) {
         m.uLen=uLen;
 
         ucm_addMapping(ucm->base, &m, codePoints, bytes);
+continueOuterLoop:
+        ;
+    }
+
+    if (endSkipLineNum >= lineNum - 20) {
+        /* Usually there are at least a few mappings. Let's say that 20 is the minimum */
+        fprintf(stderr, "Internal Error: Skipped too many lines\n");
+        isOK = FALSE;
     }
 
     if(!isOK) {
@@ -728,6 +775,13 @@ analyzeTable() {
                 charsetFamily=U_EBCDIC_FAMILY;
             }
         }
+        if(minCharLength==4 && maxCharLength==4) {
+            /* guess the charset family for QBCS according to typical byte distributions */
+            if (ccsid == 5487) {
+                /* Special partial gb18030 table */
+                charsetFamily=U_ASCII_FAMILY;
+            }
+        }
         if(charsetFamily==U_UNKNOWN_CHARSET_FAMILY) {
             fprintf(stderr, "error: unable to determine the charset family\n");
             exit(3);
@@ -850,7 +904,7 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     fprintf(f,
         "# ***************************************************************************\n"
         "# *\n"
-        "# *   Copyright (C) 1995-2003, International Business Machines\n"
+        "# *   Copyright (C) 1995-2004, International Business Machines\n"
         "# *   Corporation and others.  All Rights Reserved.\n"
         "# *\n"
         "# ***************************************************************************\n"
@@ -901,7 +955,12 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     }
 
     if(subchar1!=0) {
-        fprintf(f, "<subchar1>                    \\x%02X\n", subchar1);
+        if (minCharLength>1) {
+            fprintf(stderr, "warning: <subchar1> \\x%02X is ignored for charsets without an SBCS portion.\n", subchar1);
+        }
+        else {
+            fprintf(f, "<subchar1>                    \\x%02X\n", subchar1);
+        }
     }
 
     /* write charset family */
@@ -1046,7 +1105,7 @@ processTable(const char *arg) {
         ccsid=(uint16_t)(value>>16);
     } else {
         unicode=value>>16;
-        if(unicode==13488 || unicode==17584) {
+        if(unicode==13488 || unicode==17584 || unicode==1200) {
             ccsid=(uint16_t)(value&0xffff);
         } else {
             fprintf(stderr, "error: \"%s\" is not a Unicode conversion table\n", basename);
