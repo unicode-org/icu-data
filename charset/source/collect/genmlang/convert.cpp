@@ -164,8 +164,10 @@ int get_supported_encodings(vector<cp_id>& encodings, map<cp_id, encoding_info_p
     
     hr = CoInitialize(NULL);
     
-    if (FAILED(hr))
+    if (FAILED(hr)) {
+        fprintf(stderr, "Error initializing OLE subsystem: %d\n", hr);
         exit(1);
+    }
     
     hr = CoCreateInstance(
         CLSID_CMultiLanguage,     //REFCLSID rclsid,     //Class identifier (CLSID) of the object

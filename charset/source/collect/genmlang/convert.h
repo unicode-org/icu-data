@@ -13,7 +13,7 @@ using namespace std;
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 #include <olestd.h>
 
-#include "mlang.h"
+#include <mlang.h>
 
 #endif // _WIN32
 
