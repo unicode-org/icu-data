@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE characterMapping SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
-<characterMapping id="gb-18030-2000" version="1">
+<characterMapping id="gb-18030-2000" version="3">
  <history>
   <modified version="3" date="2001-02-21">
    0x80 appears to be a valid (and unassigned) single-byte code, added to the validity.
@@ -30889,6 +30889,10 @@
   <a u="FFE3" b="A3 FE"/>
   <a u="FFE4" b="A9 57"/>
   <a u="FFE5" b="A3 A4"/>
+  <!-- Fallback mappings from Unicode to bytes -->
+  <!-- NONE -->
+  <!-- Fallback mappings from bytes to Unicode -->
+  <!-- NONE -->
   <!-- Roundtrip-mappings that can be enumerated
        Note that GB 18030 defines roundtrip mappings for all Unicode code points U+0000..U+10ffff.
        This would require 1.1 million <a> elements.
@@ -30908,9 +30912,5 @@
   <range uFirst="FA2A" uLast="FE2F"  bFirst="84 30 9C 38" bLast="84 31 85 37"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
   <range uFirst="FFE6" uLast="FFFF"  bFirst="84 31 A2 34" bLast="84 31 A4 39"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
   <range uFirst="10000" uLast="10FFFF"  bFirst="90 30 81 30" bLast="E3 32 9A 35"  bMin="81 30 81 30" bMax="FE 39 FE 39"/>
-  <!-- Fallback mappings from Unicode to bytes -->
-  <!-- NONE -->
-  <!-- Fallback mappings from bytes to Unicode -->
-  <!-- NONE -->
  </assignments>
 </characterMapping>
