@@ -58,16 +58,17 @@ main(int argc, const char *argv[]) {
 
     /* parse the input file from stdin */
     /* read and copy header */
-    do {
+    for(;;) {
         if(gets(line)==NULL) {
             fprintf(stderr, "error: no mapping section");
             return 1;
         }
+        if(0==uprv_strcmp(line, "CHARMAP")) {
+            break;
+        }
         puts(line);
-    } while(ucm_parseHeaderLine(ucm, line, &key, &value) ||
-            0!=uprv_strcmp(line, "CHARMAP"));
-
-    ucm_processStates(&ucm->states);
+        ucm_parseHeaderLine(ucm, line, &key, &value);
+    }
 
     /*
      * If there is _no_ <icu:base> base table name, then parse the base table
@@ -90,24 +91,17 @@ main(int argc, const char *argv[]) {
         }
 
         baseStates=&ucm->states;
+        ucm_processStates(baseStates);
 
-        /* process the base charmap section, start with the line read above */
+        /* parse the base charmap section, start with the line read above */
         for(;;) {
             /* ignore empty and comment lines */
             if(line[0]!=0 && line[0]!='#') {
                 if(0!=uprv_strcmp(line, "END CHARMAP")) {
                     if(!ucm_addMappingFromLine(ucm, line, TRUE, baseStates)) {
-                        exit(U_INVALID_TABLE_FORMAT);
-                    }
-                } else {
-                    /* sort and write all mappings */
-                    if(!ucm_checkBaseExt(baseStates, ucm->base, ucm->ext, TRUE)) {
                         return U_INVALID_TABLE_FORMAT;
                     }
-                    ucm_printTable(ucm->base, stdout, byUnicode);
-
-                    /* output "END CHARMAP" */
-                    puts(line);
+                } else {
                     break;
                 }
             }
@@ -142,7 +136,7 @@ main(int argc, const char *argv[]) {
                     if(line[0]!=0 && line[0]!='#') {
                         if(0!=uprv_strcmp(line, "END CHARMAP")) {
                             if(!ucm_addMappingFromLine(ucm, line, FALSE, baseStates)) {
-                                exit(U_INVALID_TABLE_FORMAT);
+                                return U_INVALID_TABLE_FORMAT;
                             }
                         } else {
                             break;
@@ -157,15 +151,19 @@ main(int argc, const char *argv[]) {
         }
     }
 
+    /* sort and write all mappings */
+    if(!ucm_checkBaseExt(baseStates, ucm->base, ucm->ext, TRUE)) {
+        return U_INVALID_TABLE_FORMAT;
+    }
+
+    puts("CHARMAP");
+    ucm_printTable(ucm->base, stdout, byUnicode);
+    puts("END CHARMAP");
+
     if(ucm->ext->mappingsLength>0) {
         puts("\nCHARMAP");
-
-        /* sort and write all extension mappings */
-        ucm_sortTable(ucm->ext);
         ucm_printTable(ucm->ext, stdout, byUnicode);
-
-        /* output "END CHARMAP" */
-        puts(line);
+        puts("END CHARMAP");
     }
 
     ucm_close(ucm);
