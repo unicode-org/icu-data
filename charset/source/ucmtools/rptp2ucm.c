@@ -41,7 +41,8 @@ knownSubchars[]={
     "274_P100", 0x3f, 0,
     "850_P100", 0x7f, 0,
     "913_P100", 0x1a, 0,
-    "1047_P100", 0x3f, 0
+    "1047_P100", 0x3f, 0,
+    "8612_X110", 0x3f, 0
 };
 
 typedef struct CCSIDStateTable {
@@ -49,8 +50,6 @@ typedef struct CCSIDStateTable {
     const char *table;
 } CCSIDStateTable;
 
-/*Year when the ucm files were produced using this tool*/
-#define YEAR "2002"
 /**/
 #define japanesePCDBCSStates  "<icu:state>                   0-ff:2, 81-9f:1, a0-fc:1\n"\
                               "<icu:state>                   40-7e, 80-fc\n"\
@@ -180,6 +179,7 @@ knownStateTables[]={
     21427, "<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
            "<icu:state>                   40-7e, 80-fe\n"
            "<icu:state>\n",
+
     25546, "<icu:state>                   0-7f, e:1.s, f:0.s\n"
            "<icu:state>                   initial, 0-20:3, e:1.s, f:0.s, 21-7e:2, 7f-ff:3\n"
            "<icu:state>                   0-20:1.i, 21-7e:1., 7f-ff:1.i\n"
@@ -209,6 +209,8 @@ typedef struct Mapping {
 } Mapping;
 
 #define MAX_MAPPINGS_COUNT 200000
+#define MAX_YEAR 2900
+#define MIN_YEAR 1940
 
 static Mapping
 fromUMappings[MAX_MAPPINGS_COUNT], toUMappings[MAX_MAPPINGS_COUNT];
@@ -217,6 +219,9 @@ static long fromUMappingsTop, toUMappingsTop;
 
 static unsigned long subchar, subchar1;
 static unsigned int ccsid;
+
+/*Year when the ucm files were produced using this tool*/
+static unsigned int year;
 
 enum {
     ASCII,
@@ -234,7 +239,8 @@ variantASCII,
 variantControls,
 variantSUB,
 is7Bit,
-is_0xe_0xf_Stateful;
+is_0xe_0xf_Stateful,
+isYearModificationDate;
 
 static void
 init() {
@@ -242,6 +248,7 @@ init() {
 
     subchar=subchar1=0;
     ccsid=0;
+    year=0;
 
     minCharLength=4;
     maxCharLength=0;
@@ -253,6 +260,7 @@ init() {
     variantSUB=0;
     is7Bit=0;
     is_0xe_0xf_Stateful=0;
+    isYearModificationDate=0;
 }
 
 /* lexically compare Mappings for sorting */
@@ -345,6 +353,37 @@ parseMappings(FILE *f, Mapping *mappings) {
                     fprintf(stderr, "error finding subchar on \"%s\"\n", line);
                     exit(2);
                 }
+            }
+
+            /* get modified date */
+            s=strstr(line, "Modified   :");
+            if(s!=NULL) {
+                int len = strlen(s);
+                while (!isdigit(s[len])) {
+                    len--;
+                }
+                year=strtoul(s+len-4, &end, 10);
+                if(end<s+4 || year < MIN_YEAR || MAX_YEAR < year) {
+                    fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
+                    exit(2);
+                }
+                isYearModificationDate=1;
+                continue;
+            }
+
+            /* get creation date */
+            s=strstr(line, "Creation date:");
+            if(s!=NULL && !isYearModificationDate) {
+                int len = strlen(s);
+                while (!isdigit(s[len])) {
+                    len--;
+                }
+                year=strtoul(s+len-4, &end, 10);
+                if(end<s+4 || year < MIN_YEAR || MAX_YEAR < year) {
+                    fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
+                    exit(2);
+                }
+                continue;
             }
 
             continue;
@@ -913,14 +952,17 @@ processTable(const char *arg) {
     filename[length++]=toupper(basename[14]);  /* last 3 suffix characters */
     filename[length++]=toupper(basename[15]);
     filename[length++]=toupper(basename[16]);
-    filename[length++]='-';
     filename[length]=0;
-    /*concatenate year*/
-    strcat(filename,YEAR);
     /* find the subchar if still necessary - necessary before merging for correct |2 */
     if(subchar==0 && !getSubchar(filename+4)) {
         fprintf(stderr, "warning: missing subchar in \"%s\" (CCSID=0x%04X)\n", filename, ccsid);
     }
+    /*concatenate year*/
+    if (year <= 0) {
+        fprintf(stderr, "warning: missing creation/modification date in \"%s\" (CCSID=0x%04X)\n", filename, ccsid);
+        year=2002;
+    }
+    sprintf(filename+length, "-%d", year);
 
     /* merge the mappings */
     mergeMappings();
