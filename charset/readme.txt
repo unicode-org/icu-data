@@ -11,7 +11,7 @@ Known problems for the UCM files:
 * Some files are missing the substitution character.
 
 Known problems for the XML files:
-* The validity tables for these files are usually guessed, and they are based
+* The validity tables for these files are preliminary, and they are based
     upon the set of known validity tables that ICU already knows about.
 * The XML format cannot express a stateful character set mapping at this time.
 
