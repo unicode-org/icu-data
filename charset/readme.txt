@@ -9,10 +9,12 @@ Known problems for the UCM files:
 * Some of the MBCS and stateful character sets are currently missing the
     <icu:state> and <uconv_class> tags.
 * Some files are missing the substitution character.
+* Some ibm-*.ucm had an incorrect year for the version. The old files
+    are in the attic.
 
 Known problems for the XML files:
 * The validity tables for these files are preliminary, and they are based
     upon the set of known validity tables that ICU already knows about.
 * The XML format cannot express a stateful character set mapping at this time.
 
-Updated by George Rhoten,   April 18, 2001
+Updated by George Rhoten,   December 3, 2002
