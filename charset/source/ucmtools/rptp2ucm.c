@@ -142,7 +142,7 @@ knownStateTables[]={
            "<icu:state>\n",
 
     1370,  "<icu:state>                   0-80, 81-fe:1\n"
-           "<icu:state>                   40-7e, 81-fe\n",
+           "<icu:state>                   40-7e, 80-fe\n",
 
     1373,  "<icu:state>                   0-7f, 81-fe:1\n"
            "<icu:state>                   40-7e, 81-fe\n",
