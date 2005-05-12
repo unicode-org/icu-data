@@ -65,7 +65,7 @@ typedef struct _cp_info
 
 // platform converter wrapper class
 
-#define CONVERTER_USE_SUBST_CHAR 0  // use built-in substitution char
+#define CONVERTER_USE_SUBST_CHAR 1  // use built-in substitution char
 
 #ifdef _WIN32
 
@@ -77,13 +77,13 @@ typedef int32_t cp_id;  // codepage identifier
 #elif defined(U_DARWIN)
 
 #define CP_ID_IS_INT 1
-#define CONVERTER_USE_DEF_CHAR CONVERTER_USE_SUBST_CHAR
+#define CONVERTER_USE_DEF_CHAR 0
 typedef TextEncoding cp_id;  // codepage identifier
 
 #else
 
 #define CP_ID_IS_INT 0
-#define CONVERTER_USE_DEF_CHAR CONVERTER_USE_SUBST_CHAR
+#define CONVERTER_USE_DEF_CHAR 0
 typedef char * cp_id;
 
 #endif

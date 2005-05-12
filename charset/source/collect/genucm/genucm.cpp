@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2003, International Business Machines
+*   Copyright (C) 2000-2005, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -91,9 +91,14 @@ uint32_t getEncodingFeatures(UHashtable *uni_to_cp, UBool used_PUA);
 
 int main(int argc, const char* const argv[])
 {
+    int collectAtIndex = -1;
     UErrorCode status = U_ZERO_ERROR;
-    UVector encodings(200, status);
     UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
+#if CP_ID_IS_INT
+    UVector encodings(200, status);
+#else
+    UVector encodings(NULL, uhash_compareChars, 200, status);
+#endif
 
     argc--; argv++;
     if (U_FAILURE(status))
@@ -107,7 +112,12 @@ int main(int argc, const char* const argv[])
     {
         return 1;
     }
-    
+    if (argc > 0) {
+#if CP_ID_IS_INT
+#else
+        collectAtIndex = encodings.indexOf((void*)argv[0]);
+#endif
+    }
     for (int i = 0; i < encodings.size(); i++) 
     {
 
@@ -116,6 +126,9 @@ int main(int argc, const char* const argv[])
         size_t max_byte_size = 0;
         UBool used_PUA = FALSE;
         
+        if (collectAtIndex >= 0 && collectAtIndex != i) {
+            continue;
+        }
 #if CP_ID_IS_INT
         cp_id cp = encodings.elementAti(i);
         encoding_info *encoding_info = (struct encoding_info *)uhash_iget(pmap_encoding_info, cp);
@@ -866,6 +879,7 @@ save_byte_range(byte_info_ptr byte_info, char *str, size_t offset, size_t size)
             if (byte_info->byte[c] == BYTE_INFO_CONTINUE)
             {
                 // You have a stateful encoding like ISCII, iso-2022, hz, EBCDIC_STATEFUL
+                // or it's something like EUC-JP
                 printf("\n Overwriting state info at %X ", c);
             }
             byte_info->byte[c] = BYTE_INFO_END; 

@@ -1,8 +1,14 @@
 /*
- * Oddities that you will find while using the iconv interface.
- *
- * 
- */
+*******************************************************************************
+*
+*   Copyright (C) 2000-2005, International Business Machines
+*   Corporation and others.  All Rights Reserved.
+*
+*******************************************************************************
+* Oddities that you will find while using the iconv interface.
+*
+* 
+*/
 #include "convert.h"
 #include "unicode/ustring.h"
 #include <stdio.h>
@@ -169,26 +175,24 @@ source, const UChar* source_limit, unsigned int flags)
     targ_size = sizeof(buff_UTF8) - targ_left;
     if ((size_t)-1 == ret_val)
     {
-        targ_size = 0;
-        if (errno == EINVAL)
-        {
+        if (!((flags & CONVERTER_USE_SUBST_CHAR) && errno == EILSEQ)) {
+            targ_size = 0;
+        }
+        if (errno == EINVAL) {
             printf("EINVAL error: incomplete character or shift sequence "
                 "at the end of the input buffer!\n");
         }
-        else if (errno == E2BIG)
-        {
+        else if (errno == E2BIG) {
             printf("E2BIG error:  lack of space in output buffer!\n");
         }
-        else if (errno == EILSEQ)
-        {
-//            printf("EILSEQ error:  byte sequence does not belong to input code set!\n");
+        else if (errno == EILSEQ) {
+            //printf("EILSEQ error:  byte sequence does not belong to input code set!\n");
         }
         else if (errno == EBADF) {
             printf("EBADF error:  invalid conversion descriptor!\n");
         }
-        else
-        {
-            printf("undefined error\n");
+        else {
+            printf("undefined error %s\n", strerror(errno));
         }
     }
 /*    else {
@@ -228,8 +232,8 @@ source, const char* source_limit)
     targ_size = sizeof(buff_UTF8) - targ_left;
     if ((size_t)-1 == ret_val)
     {
-        writeByteSeqInHex(stdout, source, strlen(source));
-        printf(" failed\n");
+//        writeByteSeqInHex(stdout, source, strlen(source));
+//        printf(" failed\n");
         targ_size = 0;
         if (errno == EINVAL)
         {
@@ -275,11 +279,40 @@ source, const char* source_limit)
 char *
 converter::get_default_char(UChar *default_uchar)
 {
+    static const UChar primarySubst[1] = {0xFFFD};
+    static const UChar secondarySubst[1] = {0x1A};
+    static char buff1[80];
+    size_t num_bytes1, num_bytes2;
+
+    *default_uchar = 0;
+    buff1[0] = 0;
+
+    // use converter's own default char
+    num_bytes1 = from_unicode(buff1, buff1+80, primarySubst, primarySubst+1, CONVERTER_USE_SUBST_CHAR);
+
+    if (num_bytes1 == 0) {
+        // do not return a default char - string unconvertable characters
+        buff1[0] = 0;
+        num_bytes2 = from_unicode(buff1, buff1+80, secondarySubst, secondarySubst+1, CONVERTER_USE_SUBST_CHAR);
+        if (num_bytes2 != 0) {
+            *default_uchar = secondarySubst[0];
+        }
+        else {
+            puts("substitution not found");
+        }
+    }
+    else {
+        *default_uchar = primarySubst[0];
+    }
+
+    return buff1;
 }
 
-int 
+int
 converter::get_cp_info(cp_id cp, cp_info& cp_inf)
 {
+    strcpy(cp_inf.default_char, get_default_char(&cp_inf.default_uchar));
+    return 0;
 }
 
 UBool 
@@ -292,6 +325,11 @@ UBool
 converter::is_ignorable() const
 {
     return strcmp(m_enc_info->web_charset_name, "GB18030") == 0
+        || strcmp(m_enc_info->web_charset_name, "ISO_10646") == 0
+//#ifdef U_LINUX
+        // TODO Fix the converter so that it can handle all the EUC encodings.
+//        || strstr(m_enc_info->web_charset_name, "EUC") != 0
+//#endif
         || strcmp(m_enc_info->web_charset_name, UTF8_NAME) == 0;
 }
 
@@ -341,14 +379,15 @@ converter::get_OS_variant()
             return "";
         }
         ptr = strchr(buf, '-')+1;
-        char *dash = strchr(ptr, '-');
+        char *dash = strchr(ptr, '\n');
+        if(dash)
+        {
+            *dash=0;
+        }
+        dash = strchr(ptr, '-');
         if (dash)
         {
-            *dash = '_';
-        }
-        if(buf[strlen(buf)-1]=='\n')
-        {
-            buf[strlen(buf)-1]=0;
+            *dash = 0;
         }
     }
     return ptr;
