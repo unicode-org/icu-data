@@ -56,7 +56,8 @@ converter::get_supported_encodings(UVector *p_encodings,
 #ifdef U_AIX
     static const char cmd[] = "/bin/ls /usr/lib/nls/loc/uconvTable/";
 #else
-    static const char cmd[] = "locale -m";
+    //static const char cmd[] = "locale -m";
+    static const char cmd[] = "grep 'module.*INTERNAL.*//' /usr/lib/gconv/gconv-modules | grep -o '[^[:space:]]*//' | cut -d / -f 1 | sort";
 #endif
     static char buf[4096] = "UTF-8";
     size_t n;
@@ -268,7 +269,7 @@ source, const char* source_limit)
                 buff_UTF8, targ_size, &status);
     if (U_FAILURE(status)) {
         writeByteSeqInHex(stdout, buff_UTF8, targ_size);
-        printf("Error %s:%d %s\n", __FILE__, __LINE__, u_errorName(status));
+        printf(" Error %s:%d %s\n", __FILE__, __LINE__, u_errorName(status));
         return 0;
     }
     target[targ_len] = 0;
@@ -326,10 +327,20 @@ converter::is_ignorable() const
 {
     return strcmp(m_enc_info->web_charset_name, "GB18030") == 0
         || strcmp(m_enc_info->web_charset_name, "ISO_10646") == 0
-//#ifdef U_LINUX
-        // TODO Fix the converter so that it can handle all the EUC encodings.
-//        || strstr(m_enc_info->web_charset_name, "EUC") != 0
-//#endif
+        || strcmp(m_enc_info->web_charset_name, "UNICODE") == 0
+        || strncmp(m_enc_info->web_charset_name, "UTF-", 4) == 0
+        // TODO Collect stateful encodings.
+        || strncmp(m_enc_info->web_charset_name, "ISO-2022", 8) == 0
+        || strcmp(m_enc_info->web_charset_name, "IBM930") == 0
+        || strcmp(m_enc_info->web_charset_name, "IBM933") == 0
+        || strcmp(m_enc_info->web_charset_name, "IBM935") == 0
+        || strcmp(m_enc_info->web_charset_name, "IBM937") == 0
+#ifdef U_LINUX
+        // TODO Fix the collection process for the following.
+        || strstr(m_enc_info->web_charset_name, "EUC-TW") != 0
+        // TODO glibc 2.3.3 has a bug with IBM939 and converting \uFFFF
+        || strstr(m_enc_info->web_charset_name, "IBM939") != 0
+#endif
         || strcmp(m_enc_info->web_charset_name, UTF8_NAME) == 0;
 }
 

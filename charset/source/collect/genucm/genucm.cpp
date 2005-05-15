@@ -83,6 +83,11 @@ typedef enum {
     ERR_UNKNOWN     = 0x8000    // Didn't collect it properly
 } EncodingFeature;
 
+/*
+ Can a byte state be both an end byte and a continuation byte?
+ */
+static UBool isMultistate = FALSE;
+
 /**
  * Get the EncodingFeatures from the \u -> \x mappings.
  */
@@ -350,9 +355,13 @@ int main(int argc, const char* const argv[])
         // generate ucm file
         
         const char* p_ucm_filename = gen_canonical_name(cnv);
-        if (uhash_count(uni_to_cp) < 0x7f) {
-            fprintf(stdout, "Incomplete mapping.  Not generating %s\n", p_ucm_filename);
+        if (uhash_count(uni_to_cp) < MIN_NUM_MAPPINGS) {
+            // There are some 7-bit encodings that don't use the whole 7-bit range.
+            fprintf(stdout, "Incomplete mapping (count = %d).  Not generating %s\n", uhash_count(uni_to_cp), p_ucm_filename);
             continue;
+        }
+        if (uhash_count(uni_to_cp) < 0x7F) {
+            fprintf(stdout, "WARNING: There are less than 127 mappings (count = %d).\n", uhash_count(uni_to_cp));
         }
         FILE *fp = open_ucm(p_ucm_filename);
         cp_info cp_inf;
@@ -460,31 +469,34 @@ uint32_t getEncodingFeatures(UHashtable *uni_to_cp, UBool used_PUA)
     uint32_t feature = 0;
     int32_t uni;
 
-    if (uhash_count(uni_to_cp) < 0x7f) {
+    if (uhash_count(uni_to_cp) < MIN_NUM_MAPPINGS) {
         fprintf(stdout, "Incomplete mapping\n");
         return ERR_UNKNOWN;
     }
 
-    char *letterA = (char *)uhash_iget(uni_to_cp, 0x41);
-    char *newline = (char *)uhash_iget(uni_to_cp, 0x0A);
+    {
+        char *letterA = (char *)uhash_iget(uni_to_cp, 0x41);
+        char *newline = (char *)uhash_iget(uni_to_cp, 0x0A);
 
-    if ( letterA == NULL || newline == NULL) {
-        fprintf(stdout, "Can't find A or \\n\n");
-        return ERR_UNKNOWN;
-    }
-
-    if(letterA[1] == 0) {
-        if(letterA[0]==0x41) {
-            feature |= ASCII;
-        } else if(letterA[0]==(char)0xc1) {
-            feature |= EBCDIC;
+        if ( letterA == NULL || newline == NULL) {
+            fprintf(stdout, "Can't find A or \\n\n");
+            // Some unusual 7-bit encodings don't use the complete 7 bits.
         }
-    }
-    if(newline[1]==0) {
-        if(newline[0]==0x25) {
-            feature |= EBCDIC;
-        } else if(newline[0]==0x15) {
-            feature |= (EBCDIC | EBCDIC_NLLF);
+        else {
+            if(letterA[1] == 0) {
+                if(letterA[0]==0x41) {
+                    feature |= ASCII;
+                } else if(letterA[0]==(char)0xc1) {
+                    feature |= EBCDIC;
+                }
+            }
+            if(newline[1]==0) {
+                if(newline[0]==0x25) {
+                    feature |= EBCDIC;
+                } else if(newline[0]==0x15) {
+                    feature |= (EBCDIC | EBCDIC_NLLF);
+                }
+            }
         }
     }
 
@@ -545,7 +557,8 @@ get_strings(char *str, byte_info_ptr pbyte_range, UVector &cp_data)
 
     for (int l = 0 ; l < 0x100 ; l++)
     {
-        if ( pbyte_range->byte[l] == BYTE_INFO_END )
+        if ( pbyte_range->byte[l] == BYTE_INFO_END
+            || pbyte_range->byte[l] == BYTE_INFO_CONTINUE_AND_END )
         {
             char *final_str = (char*)uprv_malloc(new_str_size);
             uprv_strcpy(final_str, str);
@@ -559,7 +572,8 @@ get_strings(char *str, byte_info_ptr pbyte_range, UVector &cp_data)
                 printf("Error %s:%d %s", __FILE__, __LINE__, u_errorName(status));
             }
         }
-        else if ( pbyte_range->byte[l] == BYTE_INFO_CONTINUE )
+        if ( pbyte_range->byte[l] == BYTE_INFO_CONTINUE
+            || pbyte_range->byte[l] == BYTE_INFO_CONTINUE_AND_END )
         {
             char new_str[MAX_BYTE_LEN + 1];
             uprv_strcpy(new_str, str);
@@ -778,6 +792,9 @@ void
 print_icu_state(byte_info_ptr info, FILE* fp)
 {
     fputs("\n# The following was the generated state table.\n# This does not account for unassigned characters\n" ,fp);
+    if (isMultistate) {
+        fputs("# WARNING! This is a multistate encoding, and the generated table probably merged some states incorrectly.\n" ,fp);
+    }
     for (int i = 0; i < MAX_BYTE_LEN && print_ranges(info->byte, 0x100, 1, i, fp); i++, info++ )
     {
     }
@@ -869,9 +886,12 @@ save_byte_range(byte_info_ptr byte_info, char *str, size_t offset, size_t size)
             {
                 // You have a stateful encoding like ISCII, iso-2022, hz, EBCDIC_STATEFUL
                 printf("\n Overwriting state info at %X ", c);
+                isMultistate = TRUE;
+                byte_info->byte[c] = BYTE_INFO_CONTINUE_AND_END; 
             }
-            byte_info->byte[c] = BYTE_INFO_CONTINUE;
-            
+            if (byte_info->byte[c] == BYTE_INFO_UNKNOWN) {
+                byte_info->byte[c] = BYTE_INFO_CONTINUE;
+            }
             save_byte_range(byte_info+1, str, offset+1, size);
         }
         else
@@ -881,8 +901,12 @@ save_byte_range(byte_info_ptr byte_info, char *str, size_t offset, size_t size)
                 // You have a stateful encoding like ISCII, iso-2022, hz, EBCDIC_STATEFUL
                 // or it's something like EUC-JP
                 printf("\n Overwriting state info at %X ", c);
+                isMultistate = TRUE;
+                byte_info->byte[c] = BYTE_INFO_CONTINUE_AND_END; 
             }
-            byte_info->byte[c] = BYTE_INFO_END; 
+            if (byte_info->byte[c] == BYTE_INFO_UNKNOWN) {
+                byte_info->byte[c] = BYTE_INFO_END; 
+            }
         }
         
     }
@@ -923,7 +947,7 @@ probe_lead_bytes(converter& cnv, byte_info_ptr byte_range)
             source_limit = source + 2;
             
             target = uni;
-            target_limit = uni+1;
+            target_limit = uni+(sizeof(uni)/sizeof(uni[0]));
             
             targ_size = cnv.to_unicode(target, target_limit, source, source_limit);
             

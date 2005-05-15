@@ -39,7 +39,8 @@ typedef struct encoding_info {
 
 // codepage structure information
 
-#define BYTE_INFO_CONTINUE 0x7f
+#define BYTE_INFO_CONTINUE_AND_END 0x7f
+#define BYTE_INFO_CONTINUE 0x7e
 #define BYTE_INFO_END 1
 #define BYTE_INFO_UNKNOWN 0
 
@@ -136,5 +137,11 @@ private:
    Windows can't support any surrogates yet.
  */
 #define MAX_UNICODE_VALUE 0x10FFFF
+
+/* What is considered the minimum number of mappings before
+   it's considered usable.
+   FYI INIS-8 seems to be registered with only 72 characters instead of 127.
+ */
+#define MIN_NUM_MAPPINGS 0x48
 
 
