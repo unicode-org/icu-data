@@ -45,6 +45,7 @@ void gen_cp_strings(byte_info_ptr byte_range_ptr, UVector &cp_data);
  * Given a byte sequence, write the escaped from to outBuff and return it.
  */
 char *gen_hex_escape(char *str, char *outBuff, size_t size);
+char *gen_hex_uchar_escape(UChar *str, char *outBuff, size_t size);
 
 void print_icu_state(byte_info_ptr info, FILE* fp);
 const char *print_icu_features(char *featureBuf, uint32_t features, const converter &cnv);
@@ -130,6 +131,7 @@ int main(int argc, const char* const argv[])
         size_t min_byte_size = 0xffff;
         size_t max_byte_size = 0;
         UBool used_PUA = FALSE;
+        static char outputBufferForUChars[256];
         
         if (collectAtIndex >= 0 && collectAtIndex != i) {
             continue;
@@ -143,6 +145,7 @@ int main(int argc, const char* const argv[])
 #endif
         
         memset(byte_range, 0, MAX_BYTE_LEN * sizeof(byte_info));
+        memset(outputBufferForUChars, 0, sizeof(outputBufferForUChars));
         
         // create a system Unicode <-> cp converter
         
@@ -243,7 +246,7 @@ int main(int argc, const char* const argv[])
         // generate code page char iterator
 
         // A vector of strings
-        UVector cp_data(uhash_freeBlock, NULL, 255, status);;
+        UVector cp_data(uhash_freeBlock, NULL, 256, status);;
         if (U_FAILURE(status)) {
             printf("Error %s:%d %s", __FILE__, __LINE__, u_errorName(status));
         }
@@ -291,14 +294,8 @@ int main(int argc, const char* const argv[])
                 if (targ_size > 1) 
                 {
                     if (!UTF_IS_SURROGATE(unibuff[0])) {
-                        int idx = 0;
-                        puts("");
-                        while (unibuff[idx])
-                        {
-                            printf("<U%04X>", unibuff[idx++]);
-                        }
-
-                        printf(" is not a surrogate. Ignoring this mapping.", unibuff[0]);
+                        printf("\n%s is not a surrogate. Ignoring this mapping.",
+                            gen_hex_uchar_escape(unibuff, outputBufferForUChars, sizeof(outputBufferForUChars)));
                         continue;
                     }
                     UTF16_GET_CHAR_SAFE(unibuff, 0, 0, 2, uni32, TRUE);
@@ -596,8 +593,32 @@ gen_cp_strings(byte_info_ptr pbyte_range, UVector &cp_data)
     get_strings(start_str, pbyte_range, cp_data);
 }
 
-// generate hex escape sequences for code page data in ucm format
+// generate hex escape sequences for Unicode data in ucm format
+char *gen_hex_uchar_escape(UChar *str, char *outBuff, size_t size)
+{
+    static char hex[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+    size_t currIdx = 0;
 
+    // quick fix - empty string really means one NULL
+
+    if ( str[0] == 0 )
+    {
+        uprv_strcpy(outBuff, "<U0000>");
+    }
+    else {
+        size_t str_len = u_strlen(str);
+        UChar32 ch = 0;
+        for ( size_t i = 0 ; i < str_len ; )
+        {
+            U16_NEXT(str, i, str_len, ch);
+            currIdx += sprintf(outBuff + currIdx, "<U%04X>", ch);
+        }
+    }
+
+    return outBuff;
+}
+
+// generate hex escape sequences for code page data in ucm format
 char *gen_hex_escape(char *str, char *outBuff, size_t size)
 {
     static char hex[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
