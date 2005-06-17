@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2003, International Business Machines
+*   Copyright (C) 2000-2005, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -118,8 +118,8 @@ knownStateTables[]={
            "<icu:state>                   40-7e, 80-fe\n"
            "<icu:state>                   80-fe.u,fc",
 
-    947,   "<icu:state>                   0-7f, 80-fe:1\n"
-           "<icu:state>                   40-7e, 80-fe\n",
+    947,   "<icu:state>                   81-fe:1\n"
+           "<icu:state>                   81-fe\n",
 
     948,   "<icu:state>                   0-80, 81-fb:1,fc:2,fd-fe\n"
            "<icu:state>                   40-7e, 80-fe\n"
@@ -907,7 +907,7 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     fprintf(f,
         "# ***************************************************************************\n"
         "# *\n"
-        "# *   Copyright (C) 1995-2004, International Business Machines\n"
+        "# *   Copyright (C) 1995-2005, International Business Machines\n"
         "# *   Corporation and others.  All Rights Reserved.\n"
         "# *\n"
         "# ***************************************************************************\n"
@@ -1108,7 +1108,7 @@ processTable(const char *arg) {
         ccsid=(uint16_t)(value>>16);
     } else {
         unicode=value>>16;
-        if(unicode==13488 || unicode==17584 || unicode==1200 || unicode==61956) {
+        if(unicode==13488 || unicode==17584 || unicode==1200 || unicode==61956 || unicode==21680) {
             ccsid=(uint16_t)(value&0xffff);
         } else {
             fprintf(stderr, "error: \"%s\" is not a Unicode conversion table\n", basename);
