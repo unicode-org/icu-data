@@ -1,11 +1,11 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2004, International Business Machines
+# *   Copyright (C) 1995-2005, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Jan 14 2004)
+# File created by rptp2ucm (compiled on Jun 21 2005)
 # from source files 34B003B3.RPMAP100 and 03B334B0.TPMAP100
 #
 <code_set_name>               "ibm-947_P100-1995"
@@ -17,7 +17,7 @@
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-947_VPUA"
 
-<icu:state>                   0-7f, 80-fe:1
+<icu:state>                   81-fe:1
 <icu:state>                   40-7e, 80-fe
 
 CHARMAP
