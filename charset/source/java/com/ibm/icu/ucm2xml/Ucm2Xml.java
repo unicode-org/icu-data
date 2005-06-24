@@ -96,7 +96,7 @@ public final class Ucm2Xml {
 		ucm = openUcm(filename);
 
 		UcmHeader header = new UcmHeader();
-		UcmCharmap mapping = new UcmCharmap(true);
+		UcmCharmap mapping = new UcmCharmap(false);
         StateTable stateTable = new StateTable();
 
 		header.parse(ucm);
@@ -177,9 +177,9 @@ public final class Ucm2Xml {
         }
         
         xml.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + eol);
-//        xml.write("<!DOCTYPE characterMapping SYSTEM \"http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd\">" + eol);
+        xml.write("<!DOCTYPE characterMapping SYSTEM \"http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd\">" + eol);
 //        xml.write("<!DOCTYPE characterMapping SYSTEM \"http://www.unicode.org/unicode/reports/tr22/CharacterMapping-3.dtd\">" + eol);
-      xml.write("<!DOCTYPE characterMapping SYSTEM \"CharacterMapping-3.dtd\">" + eol);
+//        xml.write("<!DOCTYPE characterMapping SYSTEM \"CharacterMapping-3.dtd\">" + eol);
         xml.write("<characterMapping id=\"" + fileBaseName + "\" version=\"1\">" + eol);
         xml.write(" <history>" + eol);
         xml.write("  <modified version=\"1\" date=\"" + date+ "\">");
