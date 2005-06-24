@@ -23,9 +23,9 @@ import java.util.Locale;
 
 import com.ibm.icu.ucm2xml.UcmCharmap.Illformed_CHARMAP_Line;
 import com.ibm.icu.ucm2xml.UcmHeader.Unknown_UCM_Header;
-import com.ibm.icu.ucm2xml.UcmStateTable.StateTable;
-import com.ibm.icu.ucm2xml.UcmStateTable.TooManyInitialState;
-import com.ibm.icu.ucm2xml.UcmStateTable.UnknownRow;
+import com.ibm.icu.ucm2xml.StateTable;
+import com.ibm.icu.ucm2xml.TooManyInitialState;
+import com.ibm.icu.ucm2xml.UnknownRow;
 
 public final class Ucm2Xml {
 
@@ -106,7 +106,7 @@ public final class Ucm2Xml {
 			stateTable.parse(header,mapping);
 		} catch (TooManyInitialState e) {
             throw new Unknown_UCM_Header(e);
-		} catch (Unknown_Row e) {
+		} catch (UnknownRow e) {
             throw new Unknown_UCM_Header(e);
 		}
         

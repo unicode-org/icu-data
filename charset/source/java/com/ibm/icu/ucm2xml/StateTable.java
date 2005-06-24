@@ -20,7 +20,7 @@ public final class StateTable {
         initialStates = new ArrayList();
     }
     
-    public void parse(UcmHeader header, UcmCharmap mapping)throws TooManyInitialState, Unknown_Row {
+    public void parse(UcmHeader header, UcmCharmap mapping)throws TooManyInitialState, UnknownRow {
         List states;
         String uconv_class;
         states = header.icu_states;
@@ -34,7 +34,7 @@ public final class StateTable {
             if (uconv_class.equals("SBCS") && mapping.hasMaxSbValue() && mapping.maxSbValue() <= 0x7F){
                 states.add("0-7f");
             } else if (uconv_class.equals("MBCS")){
-                throw new Unknown_Row();
+                throw new UnknownRow();
             }else {
                 getDefaultUcmStateTable(states, uconv_class);
             }

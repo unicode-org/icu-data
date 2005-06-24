@@ -12,8 +12,8 @@ import com.ibm.icu.utility.ByteTranslator;
 
 
 class Entry {
-	class Unknown_Entry extends Exception {
-        Unknown_Entry(String msg){
+	class UnknownEntry extends Exception {
+        UnknownEntry(String msg){
             super(msg);
         }
     }
@@ -25,15 +25,15 @@ class Entry {
 	final int next_state;
 	final char action;
 
-    static Entry fromFormattedEntry(String entry) throws Unknown_Entry{
+    static Entry fromFormattedEntry(String entry) throws UnknownEntry{
         return new Entry(entry, true);
     }
     
-    static Entry fromRawEntry(String entry) throws Unknown_Entry{
+    static Entry fromRawEntry(String entry) throws UnknownEntry{
         return new Entry(entry, false);
     }
     
-	private Entry(String entry, boolean isFormatted) throws Unknown_Entry {
+	private Entry(String entry, boolean isFormatted) throws UnknownEntry {
 		// Defined two customed actions to help processing
 		// '-'      non-terminated
 		// 'v'      terminated and valid
@@ -57,10 +57,10 @@ class Entry {
                 ) {
                 entry = entry.substring(0, i);
 			} else {
-				throw new Unknown_Entry("Unkonwn action.");
+				throw new UnknownEntry("Unkonwn action.");
 			}
 		} else {
-			throw new Unknown_Entry("'.' followed by more than one char.");
+			throw new UnknownEntry("'.' followed by more than one char.");
 		}
 
 		i = entry.indexOf(':');
@@ -81,7 +81,7 @@ class Entry {
             //                    But this assumption is NOT true for siso tables. 
             byte b = ByteTranslator.Hex2Byte(entry.substring(i + 1)); 
             if (b < 0){ // nextstate = 0..7F
-                throw new Unknown_Entry("Next state larger than 0x7F.");
+                throw new UnknownEntry("Next state larger than 0x7F.");
             }
 			next_state = 0xFF & b;    // 0xFF is to help read 
 			entry = entry.substring(0, i);
@@ -99,7 +99,7 @@ class Entry {
 			end =  0xFF & ByteTranslator.Hex2Byte(entry.substring(i + 1));
 		}
 		if (start > end){
-			throw new Unknown_Entry("Start larger than End.");
+			throw new UnknownEntry("Start larger than End.");
 		}
 	}
     

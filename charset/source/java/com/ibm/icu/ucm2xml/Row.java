@@ -8,7 +8,7 @@ package com.ibm.icu.ucm2xml;
 
 import java.util.Locale;
 
-import com.ibm.icu.ucm2xml.Entry.Unknown_Entry;
+import com.ibm.icu.ucm2xml.Entry.UnknownEntry;
 import com.ibm.icu.utility.ByteTranslator;
 
 class Row {
@@ -21,7 +21,7 @@ class Row {
     private String[]    ucmEntries;
     private Entry[]     entries;
     
-	Row(int stateNumber, String rawUcmRow) throws Unknown_Row{
+	Row(int stateNumber, String rawUcmRow) throws UnknownRow{
         this.rowNumber = stateNumber;
         unwindRawUcmRow(rawUcmRow);
         
@@ -29,7 +29,7 @@ class Row {
 		setEntries();
 	}
     
-	private void unwindRawUcmRow(String rawUcmRow) throws Unknown_Row{
+	private void unwindRawUcmRow(String rawUcmRow) throws UnknownRow{
         initJumpingMap();
         
         if (rowNumber == 0) {
@@ -63,8 +63,8 @@ class Row {
     			Entry entry = Entry.fromRawEntry(raw_entry);
     			modifyJumpingMap(entry);
     		}
-        } catch(Entry.Unknown_Entry e){
-            throw new Unknown_Row("Unkonw row: " + rawUcmRow, e);
+        } catch(Entry.UnknownEntry e){
+            throw new UnknownRow("Unkonw row: " + rawUcmRow, e);
         }
 	}
 
@@ -127,7 +127,7 @@ class Row {
             String entry = ucmEntries[i];
             entries[i] = Entry.fromFormattedEntry(entry);
         }
-        } catch(Unknown_Entry e){
+        } catch(UnknownEntry e){
             throw new Error("This should not happen.", e);
         }
     }

@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.ibm.icu.ucm2xml.UcmStateTable.StateTable;
-import com.ibm.icu.ucm2xml.UcmStateTable.TooManyInitialState;
-import com.ibm.icu.ucm2xml.utility.ByteSequence;
-import com.ibm.icu.ucm2xml.utility.ByteSequence.Illformed_EscSeq;
-import com.ibm.icu.ucm2xml.utility.ByteSequence.Illformed_HexSeq;
+import com.ibm.icu.ucm2xml.StateTable;
+import com.ibm.icu.ucm2xml.TooManyInitialState;
+import com.ibm.icu.utility.ByteSequence;
+import com.ibm.icu.utility.ByteSequence.Illformed_EscSeq;
+import com.ibm.icu.utility.ByteSequence.Illformed_HexSeq;
 
 public final class UcmHeader {
 	public static class Unknown_UCM_Header extends Exception {

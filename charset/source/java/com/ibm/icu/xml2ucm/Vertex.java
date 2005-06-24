@@ -1,10 +1,10 @@
 /*
  *******************************************************************************
- * Copyright (C) 2002-2004, International Business Machines Corporation and    *
+ * Copyright (C) 2002-2005, International Business Machines Corporation and    *
  * others. All Rights Reserved.                                                *
  *******************************************************************************
 */
-package com.ibm.icu.shanghai.xml2ucm;
+package com.ibm.icu.xml2ucm;
 
 import java.util.Iterator;
 import java.util.TreeSet;

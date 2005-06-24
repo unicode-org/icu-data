@@ -5,7 +5,7 @@
  *******************************************************************************
 */
 
-package com.ibm.icu.shanghai.xml2ucm;
+package com.ibm.icu.xml2ucm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
