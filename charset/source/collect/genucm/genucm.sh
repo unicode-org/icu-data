@@ -22,7 +22,7 @@ case "$OS_TYPE" in
         ;;
     HP-UX)
         FILES="genucm.cpp iconv.cpp"
-        aCC $ICU_ARGS -licuuc -licudata -ldld $FILES -o genucm
+        aCC $ICU_ARGS +DD64 -licuuc -licudata -ldld $FILES -o genucm
         SHLIB_PATH=$ICU_LIB_PATH genucm $*
         ;;
     Linux)

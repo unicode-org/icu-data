@@ -53,11 +53,13 @@ converter::get_supported_encodings(UVector *p_encodings,
                                    UHashtable *p_map_encoding_info,
                                    int argc, const char* const argv[])
 {
-#ifdef U_AIX
+#if defined(U_AIX)
     static const char cmd[] = "/bin/ls /usr/lib/nls/loc/uconvTable/";
-#else
+#elif defined(U_LINUX)
     //static const char cmd[] = "locale -m";
     static const char cmd[] = "grep 'module.*INTERNAL.*//' /usr/lib/gconv/gconv-modules | grep -o '[^[:space:]]*//' | cut -d / -f 1 | sort";
+#elif defined(U_HPUX)
+    static const char cmd[] = "/bin/ls /usr/lib/nls/iconv/tables.1/ucs2=* | cut -d = -f 2";
 #endif
     static char buf[4096] = "UTF-8";
     size_t n;
@@ -82,22 +84,30 @@ converter::get_supported_encodings(UVector *p_encodings,
 
     char *currTok = strtok(buf, "\n");
     char *nextTok;
+    int32_t tokLen;
     while (currTok != NULL)
     {
         UErrorCode status = U_ZERO_ERROR;
 
+        nextTok = strtok(NULL, "\n");
+        if (nextTok != NULL) {
+            tokLen = (int32_t)(nextTok - currTok) - 1;
+        }
+        else {
+            tokLen = strlen(currTok);
+        }
         encoding_info *pEncoding = new encoding_info;
-        strcpy(pEncoding->web_charset_name, currTok);
-        strcpy(pEncoding->charset_description, "");
+        memset(pEncoding, 0, sizeof(encoding_info));
+        strncpy(pEncoding->web_charset_name, currTok, tokLen);
 
-        p_encodings->addElement(currTok, status);
-        uhash_put(p_map_encoding_info, currTok, pEncoding, &status);
+        p_encodings->addElement(pEncoding->web_charset_name, status);
+        uhash_put(p_map_encoding_info, pEncoding->web_charset_name, pEncoding, &status);
         if (U_FAILURE(status)) {
             printf("Error %s:%d %s\n", __FILE__, __LINE__, u_errorName(status));
             return -1;
         }
 
-        currTok = strtok(NULL, "\n");
+        currTok = nextTok;
     }
     return 0;
 }
@@ -326,6 +336,7 @@ UBool
 converter::is_ignorable() const
 {
     return strcmp(m_enc_info->web_charset_name, "GB18030") == 0
+        || strcmp(m_enc_info->web_charset_name, "gb18030") == 0
         || strcmp(m_enc_info->web_charset_name, "ISO_10646") == 0
         || strcmp(m_enc_info->web_charset_name, "UNICODE") == 0
         || strncmp(m_enc_info->web_charset_name, "UTF-", 4) == 0
@@ -357,6 +368,8 @@ converter::get_OS_vendor()
     return "glibc";
 #elif defined(U_AIX)
     return "aix";
+#elif defined(U_HPUX)
+    return "hpux";
 #endif
 }
 
@@ -408,7 +421,6 @@ converter::get_OS_variant()
     static char ver[80] = "";
     static char rel[80] = "";
     static char buf[80] = "";
-    static char *ptr = NULL;
     size_t n;
     FILE *p;
 
@@ -446,6 +458,33 @@ converter::get_OS_variant()
         buf[strlen(buf)-1]=0;
 
     return buf;
+#elif defined(U_HPUX)
+    static const char r[] = "uname -r";
+    static char ver[80] = "";
+    char *ptr = ver;
+    size_t n;
+    FILE *p;
+
+    memset(ver, 0, sizeof(ver));
+    p = popen(r, "r");
+
+    if (p == NULL)
+    {
+        fprintf(stderr, "error using popen to get the HP-UX release\n");
+        return "";
+    }
+
+    n = fread(ver, sizeof(char), sizeof(ver), p);
+    pclose(p);
+
+    if(ver[strlen(ver)-1]=='\n')
+        ver[strlen(ver)-1]=0;
+
+    if(strncmp(ver, "B.", 2) == 0) {
+        ptr = ver + 2;
+    }
+
+    return ptr;
 #endif
 }
 
@@ -460,6 +499,10 @@ converter::get_OS_interface()
 #elif defined(U_AIX)
     static char buf[80];
     strcpy(buf, "AIX with iconv ");
+    return buf;
+#elif defined(U_HPUX)
+    static char buf[80];
+    strcpy(buf, "HP-UX with iconv ");
     return buf;
 #endif
 }

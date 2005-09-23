@@ -99,10 +99,11 @@ int main(int argc, const char* const argv[])
 {
     int collectAtIndex = -1;
     UErrorCode status = U_ZERO_ERROR;
-    UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
 #if CP_ID_IS_INT
+    UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
     UVector encodings(200, status);
 #else
+    UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashChars, uhash_compareChars, 65537, &status);
     UVector encodings(NULL, uhash_compareChars, 200, status);
 #endif
 
@@ -309,7 +310,7 @@ int main(int argc, const char* const argv[])
                     char *cp_data_uni_to_cp = (char *)uhash_iget(uni_to_cp, uni32);
                     if (NULL == cp_data_uni_to_cp || strcmp(cp_data_uni_to_cp, buff)!=0) {
                         /* A reverse fallback to \uFFFF? That's bad */
-                        printf("\nIgnoring the mapping to <U%04X>", uni32);
+                        //printf("\nIgnoring the mapping to <U%04X>", uni32);
                         continue;
                     }
                 }
@@ -401,13 +402,20 @@ int main(int argc, const char* const argv[])
                     else
                     {
                         f_fallback = (uni_vector->elementAti(0) != uni);
-                        fprintf(fp, "<U%04X> %s |%d\n", uni, gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1)), f_fallback);
+                        if (!f_fallback || strcmp(cp_inf.default_char, cp_data_uni_to_cp) != 0) {
+                            gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1));
+                            fprintf(fp, "<U%04X> %s |%d\n", uni, hex_buff1, f_fallback);
+                        }
+                        // else a fallback to the substitution character
                     }
                 }
                 else {
-                    gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1));
-                    printf("Missing mapping for <U%04X> %s\n", uni, hex_buff1);
-                    fprintf(fp, "<U%04X> %s |1 # No roundtrip\n", uni, hex_buff1);
+                    if (strcmp(cp_inf.default_char, cp_data_uni_to_cp) != 0) {
+                        gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1));
+                        printf("Missing mapping for <U%04X> %s\n", uni, hex_buff1);
+                        fprintf(fp, "<U%04X> %s |1 # No roundtrip\n", uni, hex_buff1);
+                    }
+                    // else a fallback to the substitution character
                 }
             }
             

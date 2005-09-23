@@ -134,9 +134,15 @@ private:
 
 
 /* The max Unicode value that we collect information on.
-   Windows can't support any surrogates yet.
+   Windows sometimes supports surrogates depending on the version.
  */
+#if defined(U_HPUX)
+/* HP-UX incorrectly truncates surrogates and turns them into fallbacks.
+   This includes gb18030. */
+#define MAX_UNICODE_VALUE 0xFFFF
+#else
 #define MAX_UNICODE_VALUE 0x10FFFF
+#endif
 
 /* What is considered the minimum number of mappings before
    it's considered usable.
