@@ -58,6 +58,8 @@ converter::get_supported_encodings(UVector *p_encodings,
 #elif defined(U_LINUX)
     //static const char cmd[] = "locale -m";
     static const char cmd[] = "grep 'module.*INTERNAL.*//' /usr/lib/gconv/gconv-modules | grep -o '[^[:space:]]*//' | cut -d / -f 1 | sort";
+#elif defined(U_SOLARIS)
+    static const char cmd[] = "/bin/ls -F /usr/lib/iconv/UTF-8%*.so | fgrep -v '@' | cut -d '%' -f 2 | sed 's/\\.so\\*//'";
 #elif defined(U_HPUX)
     static const char cmd[] = "/bin/ls /usr/lib/nls/iconv/tables.1/ucs2=* | cut -d = -f 2";
 #endif
@@ -132,8 +134,8 @@ converter::converter(cp_id cp, encoding_info *enc_info)
         toUTF8 = iconv_open(UTF8_NAME, cp);
         if (errorOnOpen(toUTF8)) {
             printf("Error %s:%d %s\n", __FILE__, __LINE__, cp);
-            iconv_close(toCP);
             m_err = -1;
+            // toCP will be cleaned up in destructor
         }
     }
 }
@@ -238,7 +240,7 @@ source, const char* source_limit)
     src_left = strlen(source) + (0 == source[0]);
 
     /* do the actual conversion here */
-    ret_val = iconv(toUTF8, &src_ptr, &src_left, &targ_ptr, &targ_left);
+    ret_val = iconv(toUTF8, (char **)&src_ptr, &src_left, &targ_ptr, &targ_left);
 
     targ_size = sizeof(buff_UTF8) - targ_left;
     if ((size_t)-1 == ret_val)
@@ -340,13 +342,21 @@ converter::is_ignorable() const
         || strcmp(m_enc_info->web_charset_name, "ISO_10646") == 0
         || strcmp(m_enc_info->web_charset_name, "UNICODE") == 0
         || strncmp(m_enc_info->web_charset_name, "UTF-", 4) == 0
+        || strncmp(m_enc_info->web_charset_name, "UCS-", 4) == 0
         // TODO Collect stateful encodings.
         || strncmp(m_enc_info->web_charset_name, "ISO-2022", 8) == 0
+        || strncmp(m_enc_info->web_charset_name, "iso2022", 7) == 0
+        || strcmp(m_enc_info->web_charset_name, "HZ-GB-2312") == 0
+        || strcmp(m_enc_info->web_charset_name, "ko_KR.iso2022-7") == 0
+        || strcmp(m_enc_info->web_charset_name, "zh_CN.iso2022-7") == 0
+        || strcmp(m_enc_info->web_charset_name, "zh_CN.iso2022-CN") == 0
+        || strcmp(m_enc_info->web_charset_name, "zh_TW-iso2022-7") == 0
+        || strcmp(m_enc_info->web_charset_name, "zh_TW.iso2022-7") == 0
         || strcmp(m_enc_info->web_charset_name, "IBM930") == 0
         || strcmp(m_enc_info->web_charset_name, "IBM933") == 0
         || strcmp(m_enc_info->web_charset_name, "IBM935") == 0
         || strcmp(m_enc_info->web_charset_name, "IBM937") == 0
-#ifdef U_LINUX
+#if defined(U_LINUX)
         // TODO Fix the collection process for the following.
         || strstr(m_enc_info->web_charset_name, "EUC-TW") != 0
         // TODO glibc 2.3.3 has a bug with IBM939 and converting \uFFFF
@@ -368,6 +378,8 @@ converter::get_OS_vendor()
     return "glibc";
 #elif defined(U_AIX)
     return "aix";
+#elif defined(U_SOLARIS)
+    return "solaris";
 #elif defined(U_HPUX)
     return "hpux";
 #endif
@@ -458,7 +470,7 @@ converter::get_OS_variant()
         buf[strlen(buf)-1]=0;
 
     return buf;
-#elif defined(U_HPUX)
+#elif defined(U_HPUX) || defined(U_SOLARIS)
     static const char r[] = "uname -r";
     static char ver[80] = "";
     char *ptr = ver;
@@ -497,13 +509,11 @@ converter::get_OS_interface()
     strcat(buf, get_OS_variant());
     return buf;
 #elif defined(U_AIX)
-    static char buf[80];
-    strcpy(buf, "AIX with iconv ");
-    return buf;
+    return "AIX with iconv";
+#elif defined(U_SOLARIS)
+    return "Solaris with iconv";
 #elif defined(U_HPUX)
-    static char buf[80];
-    strcpy(buf, "HP-UX with iconv ");
-    return buf;
+    return "HP-UX with iconv";
 #endif
 }
 

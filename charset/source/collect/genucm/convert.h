@@ -136,9 +136,12 @@ private:
 /* The max Unicode value that we collect information on.
    Windows sometimes supports surrogates depending on the version.
  */
-#if defined(U_HPUX)
+#if defined(U_HPUX) || defined(U_SOLARIS)
 /* HP-UX incorrectly truncates surrogates and turns them into fallbacks.
    This includes gb18030. */
+/* Solaris incorrectly converts surrogates individually and turns them into
+   substitution characters. This includes gb18030 and hkscs. The exception is
+   UTF-EBCDIC */
 #define MAX_UNICODE_VALUE 0xFFFF
 #else
 #define MAX_UNICODE_VALUE 0x10FFFF

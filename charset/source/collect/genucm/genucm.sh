@@ -17,7 +17,7 @@ case "$OS_TYPE" in
         ;;
     SunOS)
         FILES="genucm.cpp iconv.cpp"
-        g++ $ICU_ARGS $FILES -o genucm
+        CC $ICU_ARGS $FILES -xtarget=ultra -xarch=v9 -mt -o genucm
         LD_LIBRARY_PATH=$ICU_LIB_PATH genucm $*
         ;;
     HP-UX)
