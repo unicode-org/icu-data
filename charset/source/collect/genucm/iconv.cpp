@@ -14,6 +14,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* The definition of iconv varies by platform, and this helps fix the cast */
+#if defined(U_SOLARIS)
+#define ICONV_SRC_PARAM_CAST (const char **)
+#else
+#define ICONV_SRC_PARAM_CAST (char **)
+#endif
+
 static void
 writeByteSeqInHex(/* IN */ FILE *fp,
                   /* IN */ const char* byteSeq,
@@ -183,7 +190,7 @@ source, const UChar* source_limit, unsigned int flags)
     src_left = (size_t)targ_len;
 
     /* do the actual conversion here */
-    ret_val = iconv(toCP, (char **)&src_ptr, &src_left, &targ_ptr, &targ_left);
+    ret_val = iconv(toCP, ICONV_SRC_PARAM_CAST &src_ptr, &src_left, &targ_ptr, &targ_left);
 
     targ_size = sizeof(buff_UTF8) - targ_left;
     if ((size_t)-1 == ret_val)
@@ -240,7 +247,7 @@ source, const char* source_limit)
     src_left = strlen(source) + (0 == source[0]);
 
     /* do the actual conversion here */
-    ret_val = iconv(toUTF8, (char **)&src_ptr, &src_left, &targ_ptr, &targ_left);
+    ret_val = iconv(toUTF8, ICONV_SRC_PARAM_CAST &src_ptr, &src_left, &targ_ptr, &targ_left);
 
     targ_size = sizeof(buff_UTF8) - targ_left;
     if ((size_t)-1 == ret_val)
@@ -368,6 +375,24 @@ converter::is_ignorable() const
 const char *
 converter::get_premade_state_table() const
 {
+    if (strcmp(m_enc_num, "PCK") == 0) {
+        return
+        "<icu:state>                   0-7f, 81-9f:1, a0-df, e0-fc:1\n"
+        "<icu:state>                   40-7e, 80-fc\n";
+    }
+    else if (strcmp(m_enc_num, "eucJP") == 0) {
+        return
+        "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
+        "<icu:state>                   a1-fe\n"
+        "<icu:state>                   a1-e4\n"
+        "<icu:state>                   a1:4, a2-fe:1\n"
+        "<icu:state>                   a1-fe.u\n";
+    }
+    else if (strcmp(m_enc_num, "zh_TW-big5") == 0) {
+        return
+        "<icu:state>                   0-7f, 81-fe:1\n"
+        "<icu:state>                   40-7e, 80-fe\n";
+    }
     return NULL;
 }
 
