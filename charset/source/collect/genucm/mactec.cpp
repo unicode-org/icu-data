@@ -84,28 +84,33 @@ converter::converter(cp_id cp, encoding_info *enc_info)
     }
     macstatus = TECCreateConverter(&m_tecFromUnicode, utf16Encoding, cp);
     if (macstatus != noErr) {
-        printf("Error %s:%d %d\n", __FILE__, __LINE__, macstatus);
+        printf("Error %s:%d %d\n", __FILE__, __LINE__, OSStatus2Str(macstatus));
         m_err = 1;
     }
 //  TODO move flags to from_unicode/to_unicode
 //    macstatus = TECSetBasicOptions(m_tecFromUnicode, kUnicodeUseFallbacksBit);
-    if (macstatus != noErr) {
-        printf("Error %s:%d %d\n", __FILE__, __LINE__, macstatus);
-        m_err = 1;
-    }
+//    if (macstatus != noErr) {
+//        printf("Error %s:%d %d\n", __FILE__, __LINE__, OSStatus2Str(macstatus));
+//        m_err = 1;
+//    }
 
     macstatus = TECCreateConverter(&m_tecToUnicode, cp, utf16Encoding);
     if (macstatus != noErr) {
-        printf("Error %s:%d %d\n", __FILE__, __LINE__, macstatus);
+        printf("Error %s:%d %d\n", __FILE__, __LINE__, OSStatus2Str(macstatus));
         m_err = 1;
     }
 //  TODO move flags to from_unicode/to_unicode
 //    macstatus = TECSetBasicOptions(m_tecToUnicode, kUnicodeUseFallbacksBit);
-    if (macstatus != noErr) {
-        printf("Error %s:%d %d\n", __FILE__, __LINE__, macstatus);
-        m_err = 1;
+//    if (macstatus != noErr) {
+//        printf("Error %s:%d %d\n", __FILE__, __LINE__, OSStatus2Str(macstatus));
+//        m_err = 1;
+//    }
+    if (m_err) {
+        m_cp_inf.default_char[0] = 0;
     }
-    strcpy(m_cp_inf.default_char, get_default_char(&m_cp_inf.default_uchar));
+    else {
+        strcpy(m_cp_inf.default_char, get_default_char(&m_cp_inf.default_uchar));
+    }
 }
 
 converter::~converter()
@@ -242,7 +247,7 @@ size_t converter::from_unicode(char* target, char* target_limit, const UChar* so
         targSize = 0;
         /* TODO Is this correct for SBCS */
         if (macstatus != kTECPartialCharErr && macstatus != kTextMalformedInputErr) {
-            printf("Error %s:%d %s\n", __FILE__, __LINE__, OSStatus2Str(macstatus));
+            //printf("Error %s:%d %s\n", __FILE__, __LINE__, OSStatus2Str(macstatus));
         }
     }
     else {
@@ -356,6 +361,8 @@ converter::get_default_char(UChar *default_uchar)
     UChar* source;
     size_t num_bytes1;
 
+    memset(buff1, 0, sizeof(buff1));
+    memset(ubuff, 0, sizeof(ubuff));
     ubuff[0] = 0xfffd;
     source = ubuff;
 
@@ -411,26 +418,14 @@ converter::is_ignorable() const
       || m_enc_num == 0x20103/*A form of UNICODE-2-0*/
       || m_enc_num == 0x4000103/*UNICODE-2-0-UTF-7*/
       || m_enc_num == 0x8000103/*UNICODE-2-0-UTF-8*/
-      || m_enc_num == 0x104/*UNICODE-3-0*/
-      || m_enc_num == 0x20104/*A form of UNICODE-3-0*/
-      || m_enc_num == 0x30104
-      || m_enc_num == 0x80104
-      || m_enc_num == 0x90104
-      || m_enc_num == 0x4000104/*UNICODE-3-0-UTF-7*/
-      || m_enc_num == 0x8000104/*UNICODE-3-0-UTF-8*/
-      || m_enc_num == 0x106/*UNICODE-3-2*/
-      || m_enc_num == 0x20106/*A form of UNICODE-3-2*/
-      || m_enc_num == 0x30106
-      || m_enc_num == 0x80106
-      || m_enc_num == 0x90106
-      || m_enc_num == 0x4000106/*UNICODE-3-2-UTF-7*/
-      || m_enc_num == 0x8000106/*UNICODE-3-2-UTF-8*/
-      || m_enc_num == 1586/*gb18030*/
+      || m_enc_num == 0x632/*gb18030*/
+      || m_enc_num == 0xA05/*HZ-GB-2312*/
       || m_enc_num == 0xFFF)
     {
         return TRUE;
     }
-    return strstr(m_enc_info->web_charset_name, "ISO-2022") != NULL;
+    return strstr(m_enc_info->web_charset_name, "ISO-2022") != NULL ||
+        strncmp(m_enc_info->web_charset_name, "UTF-", 4) == 0;
 
 }
 
@@ -490,7 +485,7 @@ const char *
 converter::get_OS_variant()
 {
 #ifdef U_DARWIN
-    return "10.2";
+    return "10.4";
 #endif
 }
 
