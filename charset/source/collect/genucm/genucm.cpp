@@ -45,7 +45,7 @@ void gen_cp_strings(byte_info_ptr byte_range_ptr, UVector &cp_data);
  * Given a byte sequence, write the escaped from to outBuff and return it.
  */
 char *gen_hex_escape(char *str, char *outBuff, size_t size);
-char *gen_hex_uchar_escape(UChar *str, char *outBuff, size_t size);
+char *gen_hex_uchar_escape(const UChar *str, char *outBuff, size_t size);
 
 void print_icu_state(byte_info_ptr info, FILE* fp);
 const char *print_icu_features(char *featureBuf, uint32_t features, const converter &cnv);
@@ -67,6 +67,9 @@ void emit_ucm_tail(FILE* fp);
 const char *getPremadeStateTable(cp_id cp);
 
 int probe_lead_bytes(converter& cnv, byte_info_ptr byte_range);
+U_CDECL_BEGIN
+static int8_t U_CALLCONV compareUnicodeString(UHashTok tok1, UHashTok tok2);
+U_CDECL_END
 
 // Default reverse fallback character to Unicode
 #define DEFAULT_RFB_CHAR 0x30FB
@@ -169,6 +172,8 @@ int main(int argc, const char* const argv[])
             continue;
         }
 
+        // This contains the set of Unicode characters supported by this codepage.
+        UVector unicodeSetVect(uhash_deleteUnicodeString, uhash_compareUnicodeString, status);
         // lookup tables 
         UHashtable *uni_to_cp = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
         UHashtable *cp_to_uni_by_uni = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
@@ -209,6 +214,7 @@ int main(int argc, const char* const argv[])
                 char *scp = uprv_strdup(cp);
                 
                 uhash_iput(uni_to_cp, unicode_char, scp, &status);
+                unicodeSetVect.sortedInsert(new UnicodeString(source_uni, len_uni), compareUnicodeString, status);
                 
                 if (targ_size > MAX_BYTE_LEN)
                 {
@@ -314,14 +320,23 @@ int main(int argc, const char* const argv[])
                         continue;
                     }
                 }
+                UnicodeString unibuffStr(unibuff, targ_size);
+                const UnicodeString *unibuffStrPtr = NULL;
+                int32_t unicodeSetVectIdx = unicodeSetVect.indexOf(&unibuffStr);
+                if (unicodeSetVectIdx < 0) {
+                    // This is brand new. It must be a reverse fallback.
+                    unibuffStrPtr = new UnicodeString(unibuffStr);
+                    unicodeSetVect.sortedInsert((void*)unibuffStrPtr, compareUnicodeString, status);
+                    printf("\n%s does not roundtrip.",
+                        gen_hex_uchar_escape(unibuff, outputBufferForUChars, sizeof(outputBufferForUChars)));
+                }
+                else {
+                    unibuffStrPtr = (const UnicodeString *)unicodeSetVect.elementAt(unicodeSetVectIdx);
+                }
                 
                 if (IS_PUA(uni32)) {
                     used_PUA = TRUE;
                 }
-//                if (cp_to_uni_by_uni[uni32].size() > 0) {
-//                    printf("Double mapping %X\n", uni32);
-//                }
-//                cp_to_uni_by_uni[uni32].push_back(cp_data[j]);
                 UVector *pvect = (UVector *)uhash_iget(cp_to_uni_by_uni, uni32);
                 if (pvect == NULL)
                 {
@@ -335,7 +350,6 @@ int main(int argc, const char* const argv[])
                     printf("Error %s:%d %s", __FILE__, __LINE__, u_errorName(status));
                 }
                 
-//                cp_to_uni_by_cp[cp_data[j]].push_back(uni32);
                 pvect = (UVector *)uhash_get(cp_to_uni_by_cp, cp_data[j]);
                 if (pvect == NULL)
                 {
@@ -347,6 +361,8 @@ int main(int argc, const char* const argv[])
                 if (U_FAILURE(status)) {
                     printf("Error %s:%d %s", __FILE__, __LINE__, u_errorName(status));
                 }
+                UnicodeString(uni32);
+                
             }
         }
         
@@ -378,33 +394,35 @@ int main(int argc, const char* const argv[])
         
         uint32_t features = getEncodingFeatures(uni_to_cp, used_PUA);
         emit_ucm_header(fp, cnv, encoding_info, cp_inf, features);
+        int32_t unicodeSetLength = unicodeSetVect.size();
         
-        for ( UChar32 uni = 0 ; uni <= MAX_UNICODE_VALUE ; uni++ )
+        for (int32_t unisetNum = 0; unisetNum < unicodeSetLength; unisetNum++)
         {
-//            UChar32 uni;
             static char hex_buff1[MAX_BYTE_LEN * 4]; // byte -> \xNN
             bool f_fallback;
             char *cp_data_uni_to_cp;
+            UnicodeString *uni = (UnicodeString *)unicodeSetVect.elementAt(unisetNum);
             
-            cp_data_uni_to_cp = (char *)uhash_iget(uni_to_cp, uni);
+            cp_data_uni_to_cp = (char *)uhash_iget(uni_to_cp, uni->char32At(0));
             
             // check for primary or fallback mapping (uni -> code page)
             if ( cp_data_uni_to_cp != NULL ) 
             {
                 // is it a primary mapping or a fallback?
-//                vector<UChar32> uni_vector = cp_to_uni_by_cp[cp_data_uni_to_cp];
                 UVector *uni_vector = (UVector*)uhash_get(cp_to_uni_by_cp, cp_data_uni_to_cp);
                 if (uni_vector != NULL && uni_vector->size() > 0) {
                     if (uni_vector->size() > 1)
                     {
-                        fprintf(stdout, "Too many mappings for <U%04X> %s\n", uni, gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1)));
+                        fprintf(stdout, "Too many mappings for <U%04X> %s\n", uni->char32At(0), gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1)));
                     }
                     else
                     {
-                        f_fallback = (uni_vector->elementAti(0) != uni);
+                        f_fallback = (uni_vector->elementAti(0) != uni->char32At(0));
                         if (!f_fallback || strcmp(cp_inf.default_char, cp_data_uni_to_cp) != 0) {
                             gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1));
-                            fprintf(fp, "<U%04X> %s |%d\n", uni, hex_buff1, f_fallback);
+                            fprintf(fp, "%s %s |%d\n",
+                                gen_hex_uchar_escape(uni->getTerminatedBuffer(), outputBufferForUChars, sizeof(outputBufferForUChars)),
+                                hex_buff1, f_fallback);
                         }
                         // else a fallback to the substitution character
                     }
@@ -412,8 +430,10 @@ int main(int argc, const char* const argv[])
                 else {
                     if (strcmp(cp_inf.default_char, cp_data_uni_to_cp) != 0) {
                         gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1));
-                        printf("Missing mapping for <U%04X> %s\n", uni, hex_buff1);
-                        fprintf(fp, "<U%04X> %s |1 # No roundtrip\n", uni, hex_buff1);
+                        printf("Missing mapping for <U%04X> %s\n", uni->char32At(0), hex_buff1);
+                        fprintf(fp, "%s %s |1 # No roundtrip\n",
+                            gen_hex_uchar_escape(uni->getTerminatedBuffer(), outputBufferForUChars, sizeof(outputBufferForUChars)),
+                            hex_buff1);
                     }
                     // else a fallback to the substitution character
                 }
@@ -421,9 +441,9 @@ int main(int argc, const char* const argv[])
             
             // check for 'reverse fallback' mapping (code page -> uni)
             
-            if (uni != cp_inf.default_uchar && uni != DEFAULT_RFB_CHAR)
+            if (uni->char32At(0) != cp_inf.default_uchar && uni->char32At(0) != DEFAULT_RFB_CHAR)
             {
-                UVector *pvect_cp_to_uni = (UVector *)uhash_iget(cp_to_uni_by_uni, uni);
+                UVector *pvect_cp_to_uni = (UVector *)uhash_iget(cp_to_uni_by_uni, uni->char32At(0));
         
                 if ( pvect_cp_to_uni != NULL )
                 {
@@ -442,15 +462,17 @@ int main(int argc, const char* const argv[])
                         {
                             // Oddity
 /*                            if (!cp_data_uni_to_cp) {
-                                if (uni == (UChar)((uint8_t)cpdataCP2Uni[0])) {
+                                if (uni->char32At(0) == (UChar)((uint8_t)cpdataCP2Uni[0])) {
                                     // no roundtrip and it looks like only the first byte was converted!
-                                    printf("reverse fallback <U%04X> ignored\n", uni);
+                                    printf("reverse fallback <U%04X> ignored\n", uni->char32At(0));
                                     continue;
                                 }
-                                printf("Warning <U%04X> doesn't have a roundtrip\n", uni);
+                                printf("Warning <U%04X> doesn't have a roundtrip\n", uni->char32At(0));
                             }*/
 //                            string default_char = cp_inf.default_char;
-                            fprintf(fp, "<U%04X> %s |3\n", uni, gen_hex_escape(cpdataCP2Uni, hex_buff1, sizeof(hex_buff1)));
+                            fprintf(fp, "%s %s |3\n",
+                                gen_hex_uchar_escape(uni->getTerminatedBuffer(), outputBufferForUChars, sizeof(outputBufferForUChars)),
+                                gen_hex_escape(cpdataCP2Uni, hex_buff1, sizeof(hex_buff1)));
                         }
                     }
                 }
@@ -467,6 +489,18 @@ int main(int argc, const char* const argv[])
    
    return 0;
 }
+
+U_CDECL_BEGIN
+static int8_t U_CALLCONV compareUnicodeString(UHashTok tok1, UHashTok tok2) {
+    U_NAMESPACE_USE
+    const UnicodeString *str1 = (const UnicodeString*) tok1.pointer;
+    const UnicodeString *str2 = (const UnicodeString*) tok2.pointer;
+    if (str1 == str2) {
+        return 0;
+    }
+    return str1->compareCodePointOrder(*str2);
+}
+U_CDECL_END
 
 //int32_t getEncodingFeatures(map<UChar32, string> uni_to_cp, UBool used_PUA)
 uint32_t getEncodingFeatures(UHashtable *uni_to_cp, UBool used_PUA)
@@ -602,7 +636,7 @@ gen_cp_strings(byte_info_ptr pbyte_range, UVector &cp_data)
 }
 
 // generate hex escape sequences for Unicode data in ucm format
-char *gen_hex_uchar_escape(UChar *str, char *outBuff, size_t size)
+char *gen_hex_uchar_escape(const UChar *str, char *outBuff, size_t size)
 {
     static char hex[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     size_t currIdx = 0;

@@ -364,8 +364,6 @@ converter::is_ignorable() const
         || strcmp(m_enc_info->web_charset_name, "IBM935") == 0
         || strcmp(m_enc_info->web_charset_name, "IBM937") == 0
 #if defined(U_LINUX)
-        // TODO Fix the collection process for the following.
-        || strstr(m_enc_info->web_charset_name, "EUC-TW") != 0
         // TODO glibc 2.3.3 has a bug with IBM939 and converting \uFFFF
         || strstr(m_enc_info->web_charset_name, "IBM939") != 0
 #endif
@@ -375,8 +373,11 @@ converter::is_ignorable() const
 const char *
 converter::get_premade_state_table() const
 {
-    if (strcmp(m_enc_num, "PCK") == 0) {
-        return
+    if (strcmp(m_enc_num, "PCK") == 0
+        || strcmp(m_enc_num, "CP932") == 0
+        || strcmp(m_enc_num, "IBM943") == 0) {
+        return /* Shift-JIS */
+        // TODO Is a0 a valid single byte?
         "<icu:state>                   0-7f, 81-9f:1, a0-df, e0-fc:1\n"
         "<icu:state>                   40-7e, 80-fc\n";
     }
