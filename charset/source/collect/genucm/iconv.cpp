@@ -167,6 +167,7 @@ source, const UChar* source_limit, unsigned int flags)
     char *src_ptr;
     size_t src_left = 0;
     size_t targ_left = sizeof(buff_UTF8);
+    size_t orig_targ_left;
     int32_t targ_len = 0;
     size_t targ_size;
     size_t ret_val;
@@ -186,13 +187,14 @@ source, const UChar* source_limit, unsigned int flags)
 
     targ_ptr = target;
     targ_left = target_limit - target;
+    orig_targ_left = targ_left;
     src_ptr = buff_UTF8;
     src_left = (size_t)targ_len;
 
     /* do the actual conversion here */
     ret_val = iconv(toCP, ICONV_SRC_PARAM_CAST &src_ptr, &src_left, &targ_ptr, &targ_left);
 
-    targ_size = sizeof(buff_UTF8) - targ_left;
+    targ_size = orig_targ_left - targ_left;
     if ((size_t)-1 == ret_val)
     {
         if (!((flags & CONVERTER_USE_SUBST_CHAR) && errno == EILSEQ)) {
@@ -364,6 +366,7 @@ converter::is_ignorable() const
         || strcmp(m_enc_info->web_charset_name, "IBM935") == 0
         || strcmp(m_enc_info->web_charset_name, "IBM937") == 0
 #if defined(U_LINUX)
+        || strstr(m_enc_info->web_charset_name, "EUC-TW") != 0
         // TODO glibc 2.3.3 has a bug with IBM939 and converting \uFFFF
         || strstr(m_enc_info->web_charset_name, "IBM939") != 0
 #endif

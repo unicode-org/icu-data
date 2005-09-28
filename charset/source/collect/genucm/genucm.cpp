@@ -27,6 +27,8 @@
 
 #include <stdio.h>
 #include <time.h>
+#include "unicode/uchar.h"
+#include "unicode/uniset.h"
 #include "convert.h"
 
 void 
@@ -51,6 +53,22 @@ void print_icu_state(byte_info_ptr info, FILE* fp);
 const char *print_icu_features(char *featureBuf, uint32_t features, const converter &cnv);
 UBool print_ranges(int8_t arr[], size_t len, int print_threshold, int level, FILE* fp);
 
+U_CDECL_BEGIN
+static int8_t U_CALLCONV compareUnicodeString(UHashTok tok1, UHashTok tok2);
+U_CDECL_END
+
+/**
+ * Get all the required information for converting from a Unicode sequence to a byte sequence.
+ */
+static void collectFromUnicodeMapping(converter &cnv,
+                                      byte_info byte_range[MAX_BYTE_LEN],
+                                      UHashtable *uni_to_cp,
+                                      UVector *unicodeSetVect,
+                                      const UChar *source_uni, size_t len_uni,
+                                      char *cp, size_t size_cp,
+                                      size_t *min_byte_size, size_t *max_byte_size, UBool *used_PUA,
+                                      UErrorCode &status);
+
 // UCM file info
 
 FILE *open_ucm(const char* p_ucm_filename);
@@ -64,12 +82,7 @@ void emit_ucm_header(FILE* fp,
 
 void emit_ucm_tail(FILE* fp);
 
-const char *getPremadeStateTable(cp_id cp);
-
 int probe_lead_bytes(converter& cnv, byte_info_ptr byte_range);
-U_CDECL_BEGIN
-static int8_t U_CALLCONV compareUnicodeString(UHashTok tok1, UHashTok tok2);
-U_CDECL_END
 
 // Default reverse fallback character to Unicode
 #define DEFAULT_RFB_CHAR 0x30FB
@@ -102,6 +115,7 @@ int main(int argc, const char* const argv[])
 {
     int collectAtIndex = -1;
     UErrorCode status = U_ZERO_ERROR;
+    UnicodeSet joiningMarks("[[:gc=Mn:][:gc=Me:][:gc=Mc:]]", status);
 #if CP_ID_IS_INT
     UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
     UVector encodings(200, status);
@@ -172,11 +186,16 @@ int main(int argc, const char* const argv[])
             continue;
         }
 
-        // This contains the set of Unicode characters supported by this codepage.
+        // This contains the set of all Unicode characters supported by this codepage.
         UVector unicodeSetVect(uhash_deleteUnicodeString, uhash_compareUnicodeString, status);
+        // This contains the set of all multi-codepoint Unicode characters supported by this codepage.
+        UVector multiCharUnicodeSetVect(NULL, uhash_compareUnicodeString, status);
         // lookup tables 
-        UHashtable *uni_to_cp = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
-        UHashtable *cp_to_uni_by_uni = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
+        // n\u -> n\x fallback
+        UHashtable *uni_to_cp = uhash_openSize(uhash_hashUnicodeString, uhash_compareUnicodeString, 65537, &status);
+        // n\u <- \x roundtrip after fallback
+        UHashtable *cp_to_uni_by_uni = uhash_openSize(uhash_hashUnicodeString, uhash_compareUnicodeString, 65537, &status);
+        // n\u <- \x reverse fallback
         UHashtable *cp_to_uni_by_cp = uhash_openSize(uhash_hashChars, uhash_compareChars, 65537, &status);
         uhash_setValueDeleter(uni_to_cp, uhash_freeBlock);
         uhash_setValueDeleter(cp_to_uni_by_uni, uhash_deleteUVector);
@@ -203,45 +222,14 @@ int main(int argc, const char* const argv[])
             }
             status = U_ZERO_ERROR;
             
-            UTF16_APPEND_CHAR_SAFE(source_uni, len_uni, sizeof(source_uni), unicode_char);
+            UTF16_APPEND_CHAR_SAFE(source_uni, len_uni, sizeof(source_uni)/sizeof(source_uni[0]), unicode_char);
             source_uni[len_uni] = 0;
             
-            targ_size = cnv.from_unicode(cp, cp+sizeof(cp), source_uni, source_uni+len_uni);
-            cp[targ_size] = 0;   // NULL terminate just in case
-            
-            if (targ_size) 
-            {
-                char *scp = uprv_strdup(cp);
-                
-                uhash_iput(uni_to_cp, unicode_char, scp, &status);
-                unicodeSetVect.sortedInsert(new UnicodeString(source_uni, len_uni), compareUnicodeString, status);
-                
-                if (targ_size > MAX_BYTE_LEN)
-                {
-                    size_t u;
-                    printf("targ_size overflow! Uni: ");
-                    for (u = 0; u < len_uni; u++)
-                        printf("%04X ", source_uni[u]);
-                    fputs("cp: ", stderr);
-                    for (u = 0; u < targ_size; u++)
-                        printf("%02X ", ((unsigned char) cp[u]));
-                    fputs("\n", stderr);
-                }
-                else {
-                    save_byte_range(&byte_range[0], scp, 0, targ_size);
-                    if (IS_PUA(unicode_char)) {
-                        used_PUA = TRUE;
-                    }
-                }
-                
-                if (targ_size < min_byte_size)
-                    min_byte_size = targ_size;
-                
-                if (targ_size > max_byte_size)
-                    max_byte_size = targ_size;
-                
-            }
-            
+            collectFromUnicodeMapping(cnv, byte_range, uni_to_cp, &unicodeSetVect,
+                                      source_uni, len_uni,
+                                      cp, sizeof(cp),
+                                      &min_byte_size, &max_byte_size, &used_PUA,
+                                      status);
         } // unicode chars
         
         fprintf(stdout, "%d-%d bytes ", min_byte_size, max_byte_size);
@@ -298,51 +286,62 @@ int main(int argc, const char* const argv[])
             
             if (targ_size)
             {
-                if (targ_size > 1) 
-                {
-                    if (!UTF_IS_SURROGATE(unibuff[0])) {
-                        printf("\n%s is not a surrogate. Ignoring this mapping.",
-                            gen_hex_uchar_escape(unibuff, outputBufferForUChars, sizeof(outputBufferForUChars)));
-                        continue;
-                    }
-                    UTF16_GET_CHAR_SAFE(unibuff, 0, 0, 2, uni32, TRUE);
+                UnicodeString unibuffStr(unibuff, targ_size);
+                const UnicodeString *unibuffStrPtr = NULL;
+                const UHashElement *strToFind = uhash_find(uni_to_cp, &unibuffStr);
+                if (strToFind == NULL) {
+                    // This is brand new. It must be a reverse fallback.
+                    unibuffStrPtr = new UnicodeString(unibuffStr);
+                    unicodeSetVect.sortedInsert((void*)unibuffStrPtr, compareUnicodeString, status);
+//                    printf("\n%s does not roundtrip.",
+//                        gen_hex_uchar_escape(unibuff, outputBufferForUChars, sizeof(outputBufferForUChars)));
                 }
-                else
-                {
-                    uni32 = (UChar32)unibuff[0];
+                else {
+                    unibuffStrPtr = (const UnicodeString *)strToFind->key.pointer;
                 }
+                uni32 = unibuffStrPtr->char32At(0);
+                
                 if (uni32 == 0xFFFF || uni32 == 0xFFFE || uni32 == 0xFFFD) {
                     /* looks suspicious */
-                    char *cp_data_uni_to_cp = (char *)uhash_iget(uni_to_cp, uni32);
+                    char *cp_data_uni_to_cp = (char *)uhash_get(uni_to_cp, unibuffStrPtr);
                     if (NULL == cp_data_uni_to_cp || strcmp(cp_data_uni_to_cp, buff)!=0) {
                         /* A reverse fallback to \uFFFF? That's bad */
                         //printf("\nIgnoring the mapping to <U%04X>", uni32);
                         continue;
                     }
                 }
-                UnicodeString unibuffStr(unibuff, targ_size);
-                const UnicodeString *unibuffStrPtr = NULL;
-                int32_t unicodeSetVectIdx = unicodeSetVect.indexOf(&unibuffStr);
-                if (unicodeSetVectIdx < 0) {
-                    // This is brand new. It must be a reverse fallback.
-                    unibuffStrPtr = new UnicodeString(unibuffStr);
-                    unicodeSetVect.sortedInsert((void*)unibuffStrPtr, compareUnicodeString, status);
-                    printf("\n%s does not roundtrip.",
-                        gen_hex_uchar_escape(unibuff, outputBufferForUChars, sizeof(outputBufferForUChars)));
+                if (targ_size > 1 && !UTF_IS_SURROGATE(unibuff[0])) {
+                    UBool containsJoiner = FALSE;
+                    for (int32_t idx = 0; idx < unibuffStrPtr->length(); idx++) {
+                        if (joiningMarks.contains(unibuffStrPtr->char32At(idx))) {
+                            containsJoiner = TRUE;
+                        }
+                    }
+#if 1
+                    if (containsJoiner) {
+                        printf("\n%s is a multi-codepoint mapping, but it contains a joiner.",
+                            gen_hex_uchar_escape(unibuff, outputBufferForUChars, sizeof(outputBufferForUChars)));
+                        multiCharUnicodeSetVect.sortedInsert((void*)unibuffStrPtr, compareUnicodeString, status);
+                    }
+                    else
+#endif
+                    {
+                        printf("\n%s Ignoring this multi-codepoint mapping.",
+                            gen_hex_uchar_escape(unibuff, outputBufferForUChars, sizeof(outputBufferForUChars)));
+                        continue;
+                    }
                 }
-                else {
-                    unibuffStrPtr = (const UnicodeString *)unicodeSetVect.elementAt(unicodeSetVectIdx);
+                for (int32_t idx = 0; idx < unibuffStrPtr->length(); idx++) {
+                    if (IS_PUA(unibuffStrPtr->char32At(idx))) {
+                        used_PUA = TRUE;
+                    }
                 }
-                
-                if (IS_PUA(uni32)) {
-                    used_PUA = TRUE;
-                }
-                UVector *pvect = (UVector *)uhash_iget(cp_to_uni_by_uni, uni32);
+                UVector *pvect = (UVector *)uhash_get(cp_to_uni_by_uni, unibuffStrPtr);
                 if (pvect == NULL)
                 {
                     /* It's not there yet, let's add it. */
                     pvect = new UVector(1, status);
-                    uhash_iput(cp_to_uni_by_uni, uni32, pvect, &status);
+                    uhash_put(cp_to_uni_by_uni, (void*)unibuffStrPtr, pvect, &status);
                 }
                 /* else we have a multiple mapping */
                 pvect->addElement(cp_data[j], status);
@@ -357,15 +356,32 @@ int main(int argc, const char* const argv[])
                     pvect = new UVector(1, status);
                     uhash_put(cp_to_uni_by_cp, cp_data[j], pvect, &status);
                 }
-                pvect->addElement(uni32, status);
+                pvect->addElement((void*)unibuffStrPtr, status);
                 if (U_FAILURE(status)) {
                     printf("Error %s:%d %s", __FILE__, __LINE__, u_errorName(status));
                 }
-                UnicodeString(uni32);
-                
             }
         }
         
+        // Unicode to code page loop one last time to get the multi Unicode codepoint mappings.
+        
+        int32_t multiCharUnicodeSetLength = multiCharUnicodeSetVect.size();
+        for (int32_t unisetNum = 0; unisetNum < multiCharUnicodeSetLength; unisetNum++)
+        {
+            char cp[80];
+            UnicodeString *uni = (UnicodeString *)multiCharUnicodeSetVect.elementAt(unisetNum);
+            if (uni == NULL) {
+                /* This shouldn't happen. Why did we get NULL? */
+                printf("Error %s:%d Shouldn't get NULL at index = %d\n", __FILE__, __LINE__, unisetNum);
+		continue;
+            }
+            collectFromUnicodeMapping(cnv, byte_range, uni_to_cp, &unicodeSetVect,
+                                      uni->getTerminatedBuffer(), uni->length(),
+                                      cp, sizeof(cp),
+                                      &min_byte_size, &max_byte_size, &used_PUA,
+                                      status);
+        } // unicode chars
+
         // generate ucm file
         
         const char* p_ucm_filename = gen_canonical_name(cnv);
@@ -403,7 +419,7 @@ int main(int argc, const char* const argv[])
             char *cp_data_uni_to_cp;
             UnicodeString *uni = (UnicodeString *)unicodeSetVect.elementAt(unisetNum);
             
-            cp_data_uni_to_cp = (char *)uhash_iget(uni_to_cp, uni->char32At(0));
+            cp_data_uni_to_cp = (char *)uhash_get(uni_to_cp, uni);
             
             // check for primary or fallback mapping (uni -> code page)
             if ( cp_data_uni_to_cp != NULL ) 
@@ -413,11 +429,13 @@ int main(int argc, const char* const argv[])
                 if (uni_vector != NULL && uni_vector->size() > 0) {
                     if (uni_vector->size() > 1)
                     {
-                        fprintf(stdout, "Too many mappings for <U%04X> %s\n", uni->char32At(0), gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1)));
+                        fprintf(stdout, "Too many mappings for %s %s\n",
+                            gen_hex_uchar_escape(uni->getTerminatedBuffer(), outputBufferForUChars, sizeof(outputBufferForUChars)),
+                            gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1)));
                     }
                     else
                     {
-                        f_fallback = (uni_vector->elementAti(0) != uni->char32At(0));
+                        f_fallback = (((const UnicodeString*)uni_vector->elementAt(0))->compare(*uni));
                         if (!f_fallback || strcmp(cp_inf.default_char, cp_data_uni_to_cp) != 0) {
                             gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1));
                             fprintf(fp, "%s %s |%d\n",
@@ -430,7 +448,9 @@ int main(int argc, const char* const argv[])
                 else {
                     if (strcmp(cp_inf.default_char, cp_data_uni_to_cp) != 0) {
                         gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1));
-                        printf("Missing mapping for <U%04X> %s\n", uni->char32At(0), hex_buff1);
+                        printf("Missing mapping for %s %s\n",
+                            gen_hex_uchar_escape(uni->getTerminatedBuffer(), outputBufferForUChars, sizeof(outputBufferForUChars)),
+                            hex_buff1);
                         fprintf(fp, "%s %s |1 # No roundtrip\n",
                             gen_hex_uchar_escape(uni->getTerminatedBuffer(), outputBufferForUChars, sizeof(outputBufferForUChars)),
                             hex_buff1);
@@ -443,7 +463,7 @@ int main(int argc, const char* const argv[])
             
             if (uni->char32At(0) != cp_inf.default_uchar && uni->char32At(0) != DEFAULT_RFB_CHAR)
             {
-                UVector *pvect_cp_to_uni = (UVector *)uhash_iget(cp_to_uni_by_uni, uni->char32At(0));
+                UVector *pvect_cp_to_uni = (UVector *)uhash_get(cp_to_uni_by_uni, uni);
         
                 if ( pvect_cp_to_uni != NULL )
                 {
@@ -502,7 +522,72 @@ static int8_t U_CALLCONV compareUnicodeString(UHashTok tok1, UHashTok tok2) {
 }
 U_CDECL_END
 
-//int32_t getEncodingFeatures(map<UChar32, string> uni_to_cp, UBool used_PUA)
+static void collectFromUnicodeMapping(converter &cnv,
+                                      byte_info byte_range[MAX_BYTE_LEN],
+                                      UHashtable *uni_to_cp,
+                                      UVector *unicodeSetVect,
+                                      const UChar *source_uni, size_t len_uni,
+                                      char *cp, size_t size_cp,
+                                      size_t *min_byte_size, size_t *max_byte_size, UBool *used_PUA,
+                                      UErrorCode &status)
+{
+    size_t targ_size;
+    char outputBufferForUChars[256];
+    UnicodeString source_uni_str(source_uni, len_uni);
+
+    memset(cp, 0, size_cp);
+    targ_size = cnv.from_unicode(cp, cp+size_cp, source_uni, source_uni+len_uni);
+    cp[targ_size] = 0;   // NULL terminate just in case
+    
+    if (targ_size) 
+    {
+        if (targ_size > MAX_BYTE_LEN)
+        {
+            size_t u;
+            printf("\ntarg_size overflow! Uni: ");
+            for (u = 0; u < len_uni; u++)
+                printf("%04X ", source_uni[u]);
+            printf("\ncp (size_cp = %d, targ_size = %d): ", size_cp, targ_size);
+            for (u = 0; u < targ_size; u++)
+                printf("%02X ", ((unsigned char) cp[u]));
+            puts("");
+        }
+        else {
+            char *scp = uprv_strdup(cp);
+            UnicodeString *unicode_key = NULL;
+            const UHashElement *strToFind = uhash_find(uni_to_cp, &source_uni_str);
+            if (strToFind == NULL) {
+                // This is brand new. This is normal.
+                unicode_key = new UnicodeString(source_uni_str);
+                if (unicode_key->length() == 1 || unicode_key->char32At(0) > 0xFFFF) {
+                    // This was generated on the first conversion from Unicode
+                    unicodeSetVect->sortedInsert(unicode_key, compareUnicodeString, status);
+                }
+            }
+            else {
+                // This isn't brand new. This is not normal.
+                unicode_key = (UnicodeString *)strToFind->key.pointer;
+                printf("Duplicate Unicode conversion %s\n",
+                    gen_hex_uchar_escape(unicode_key->getTerminatedBuffer(), outputBufferForUChars, sizeof(outputBufferForUChars)));
+            }
+            
+            uhash_put(uni_to_cp, unicode_key, scp, &status);
+            
+            save_byte_range(&byte_range[0], scp, 0, targ_size);
+            for (int32_t idx = 0; idx < len_uni; idx++) {
+                if (IS_PUA(source_uni_str.char32At(idx))) {
+                    *used_PUA = TRUE;
+                }
+            }
+            if (targ_size < *min_byte_size)
+                *min_byte_size = targ_size;
+            
+            if (targ_size > *max_byte_size)
+                *max_byte_size = targ_size;
+        }
+    }
+}
+
 uint32_t getEncodingFeatures(UHashtable *uni_to_cp, UBool used_PUA)
 {
     uint32_t feature = 0;
@@ -514,8 +599,10 @@ uint32_t getEncodingFeatures(UHashtable *uni_to_cp, UBool used_PUA)
     }
 
     {
-        char *letterA = (char *)uhash_iget(uni_to_cp, 0x41);
-        char *newline = (char *)uhash_iget(uni_to_cp, 0x0A);
+        UnicodeString letterAStr((UChar)0x41);
+        UnicodeString newlineStr((UChar)0x0A);
+        char *letterA = (char *)uhash_get(uni_to_cp, &letterAStr);
+        char *newline = (char *)uhash_get(uni_to_cp, &newlineStr);
 
         if ( letterA == NULL || newline == NULL) {
             fprintf(stdout, "Can't find A or \\n\n");
@@ -541,7 +628,8 @@ uint32_t getEncodingFeatures(UHashtable *uni_to_cp, UBool used_PUA)
 
     if ((feature & EBCDIC) == 0) {
         for (uni = 0; uni < 0x80; uni++) {
-            char *cp_data_uni_to_cp = (char *)uhash_iget(uni_to_cp, uni);
+            UnicodeString uniStr((UChar)uni);
+            char *cp_data_uni_to_cp = (char *)uhash_get(uni_to_cp, &uniStr);
 
             if ( cp_data_uni_to_cp == NULL ) 
             {
