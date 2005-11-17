@@ -366,7 +366,8 @@ int main(int argc, const char* const argv[])
         // Unicode to code page loop one last time to get the multi Unicode codepoint mappings.
         
         int32_t multiCharUnicodeSetLength = multiCharUnicodeSetVect.size();
-        for (int32_t unisetNum = 0; unisetNum < multiCharUnicodeSetLength; unisetNum++)
+        int32_t unisetNum;
+        for (unisetNum = 0; unisetNum < multiCharUnicodeSetLength; unisetNum++)
         {
             char cp[80];
             UnicodeString *uni = (UnicodeString *)multiCharUnicodeSetVect.elementAt(unisetNum);
@@ -412,7 +413,7 @@ int main(int argc, const char* const argv[])
         emit_ucm_header(fp, cnv, encoding_info, cp_inf, features);
         int32_t unicodeSetLength = unicodeSetVect.size();
         
-        for (int32_t unisetNum = 0; unisetNum < unicodeSetLength; unisetNum++)
+        for (unisetNum = 0; unisetNum < unicodeSetLength; unisetNum++)
         {
             static char hex_buff1[MAX_BYTE_LEN * 4]; // byte -> \xNN
             bool f_fallback;
