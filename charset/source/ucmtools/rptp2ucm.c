@@ -63,6 +63,10 @@ typedef struct CCSIDStateTable {
     const char *table;
 } CCSIDStateTable;
 
+#define Big5DBCSStates \
+    "<icu:state>                   81-fe:1\n" \
+    "<icu:state>                   40-7e, 80-fe\n"
+
 #define japanesePCDBCSStates \
     "<icu:state>                   0-80:2, 81-fc:1, fd-ff:2\n" \
     "<icu:state>                   40-7e, 80-fc\n" \
@@ -118,8 +122,7 @@ knownStateTables[]={
            "<icu:state>                   40-7e, 80-fe\n"
            "<icu:state>                   80-fe.u,fc",
 
-    947,   "<icu:state>                   81-fe:1\n"
-           "<icu:state>                   40-7e, 80-fe\n",
+    947,   Big5DBCSStates,
 
     948,   "<icu:state>                   0-80, 81-fb:1,fc:2,fd-fe\n"
            "<icu:state>                   40-7e, 80-fe\n"
@@ -177,6 +180,8 @@ knownStateTables[]={
     1373,  "<icu:state>                   0-7f, 81-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
+    1374,  Big5DBCSStates,
+
     1375,  "<icu:state>                   0-7f, 81-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
@@ -209,6 +214,8 @@ knownStateTables[]={
     5067,  "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
+
+    5470,  Big5DBCSStates,
 
     5478,  "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
@@ -1144,6 +1151,7 @@ processTable(const char *arg) {
     if(tpmap==NULL) {
         /* next, try reducing the second to last digit by 1 */
         --filename[length-2];
+        fprintf(stderr, "warning: Guessing that \"%s\" is used with \"%s\"\n", arg, filename);
         tpmap=fopen(filename, "r");
         if(tpmap==NULL) {
             /* there is no TPMAP */
