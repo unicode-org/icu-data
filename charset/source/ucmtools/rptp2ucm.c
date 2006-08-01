@@ -622,11 +622,13 @@ parseMappings(FILE *f, UCMFile *ucm) {
                 continue;
             }
 
-            s=uprv_strstr(line, "Updated      :");
-            if(s!=NULL) {
+            s=uprv_strstr(line, "Updated");
+            if(s!=NULL && uprv_strstr(s, ":") != NULL) {
                 int len = uprv_strlen(s);
-                while (s[len] != '(') {
-                    len--;
+                if (uprv_strstr(s, "(")) {
+                    while (s[len] != '(') {
+                        len--;
+                    }
                 }
                 while (!isdigit(s[len-1])) {
                     len--;
