@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2005, International Business Machines
+*   Copyright (C) 2000-2006, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -44,6 +44,128 @@
 
 #define LENGTHOF(array) (int32_t)(sizeof(array)/sizeof((array)[0]))
 
+typedef const char *TMAParray[4];
+
+typedef struct RMAPtoTMAP {
+    const uint16_t ccsid;
+    const char *RMAP;
+    const TMAParray TMAP;
+} RMAPtoTMAP;
+
+/* This table is here because the .package files are not consistently machine parseable. */
+/* Also not all package files exist for all combinations. */
+/* TODO: I wish there was a less manual process to get the mapping table information. */
+static const RMAPtoTMAP
+knownRMAPtoTMAP[] = {
+    {0x0112, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x011E, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x01A4, "RXMAP110", {"TXMAP110", NULL, NULL, NULL}},
+    {0x01A4, "RXMAP120", {"TXMAP110", NULL, NULL, NULL}},
+    {0x01A9, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x0360, "RXMAP110", {"TXMAP110", NULL, NULL, NULL}},
+    {0x0391, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x039E, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03A2, "RPMAP120", {"TPMAP110", "TPMAP12A", NULL, NULL}},
+    {0x03A2, "RXMAP120", {"TXMAP110", NULL, NULL, NULL}},
+    {0x03A3, "RPMAP120", {"TPMAP110", NULL, NULL, NULL}},
+    {0x03A3, "RXMAP120", {"TXMAP110", NULL, NULL, NULL}},
+    {0x03A4, "RPMAP120", {"TPMAP110", NULL, NULL, NULL}},
+    {0x03A4, "RPMAP12A", {"TPMAP11A", "TPMAP12A", NULL, NULL}},
+    {0x03A5, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03A5, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x03A7, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03A7, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x03A9, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03A9, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x03AB, "RPMAP120", {"TPMAP110", "TPMAP12A", NULL, NULL}},
+    {0x03AB, "RXMAP120", {"TXMAP110", NULL, NULL, NULL}},
+    {0x03AD, "RPMAP130", {"TPMAP120", NULL, NULL, NULL}},
+    {0x03AD, "RPMAP13A", {"TPMAP12A", NULL, NULL, NULL}},
+    {0x03AE, "RPMAP120", {"TPMAP110", NULL, NULL, NULL}},
+    {0x03AE, "RPMAP12A", {"TPMAP11A", "TPMAP12A", NULL, NULL}},
+    {0x03AF, "RPMAP130", {"TPMAP120", NULL, NULL, NULL}},
+    {0x03AF, "RPMAP14A", {"TPMAP13A", NULL, NULL, NULL}},
+    {0x03AF, "RPMAP15A", {"TPMAP14A", NULL, NULL, NULL}},
+    {0x03B4, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03B4, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x03B5, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03B5, "RPMAP11A", {"TPMAP10A", NULL, NULL, NULL}},
+    {0x03B5, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x03B6, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03B6, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x03B9, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03BA, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x03C0, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03C4, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03C4, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x03CA, "RPMAP110", {"TPMAP100", "TPMAP110", NULL, NULL}},
+    {0x03FC, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03FD, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x03FF, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x044C, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x044D, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x044E, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x044F, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0450, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0451, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0452, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0453, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0471, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0471, "RPMAPMOD", {"TPMAP100", NULL, NULL, NULL}},
+    {0x048B, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x048D, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x048E, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x048F, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0490, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0565, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0565, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x0567, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0567, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
+    {0x056A, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x056A, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x1328, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x1345, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x1350, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x1351, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x135A, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x135B, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x135C, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x135D, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x135E, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x135F, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x1361, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x1362, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x1363, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x13A2, "RPMAP120", {"TPMAP110", NULL, NULL, NULL}},
+    {0x13A2, "RXMAP120", {"TXMAP110", NULL, NULL, NULL}},
+    {0x13AB, "RPMAP120", {"TPMAP110", "TPMAP12A", NULL, NULL}},// package is missing. Is this correct?
+    {0x13AB, "RXMAP120", {"TXMAP110", NULL, NULL, NULL}},// package is missing. Is this correct?
+    {0x13BA, "RPMAP120", {"TPMAP110", NULL, NULL, NULL}},// package text is garbled. Is this correct?
+    {0x13BA, "RPMAP12A", {"TPMAP11A", NULL, NULL, NULL}},// package text is garbled. Is this correct?
+    {0x21A4, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x21A4, "RXMAP110", {"TXMAP110", NULL, NULL, NULL}},
+    {0x2352, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x2368, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x245A, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x256C, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
+    {0x3344, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x3344, "RPMAP10A", {"TPMAP100", NULL, NULL, NULL}},
+    {0x3345, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x3354, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x3357, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x3359, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x3364, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x3365, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x336A, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x4345, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x4358, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x5360, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0x8122, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x83BA, "RPMAP120", {"TPMAP110", NULL, NULL, NULL}},// package is missing. Is this correct?
+    {0x83BA, "RPMAP12A", {"TPMAP11A", "TPMAP12A", NULL, NULL}},// package is missing. Is this correct?
+    {0xD1B5, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}}
+};
+
 typedef struct UCMSubchar {
     const char *name;
     uint32_t subchar, subchar1;
@@ -51,11 +173,19 @@ typedef struct UCMSubchar {
 
 static const UCMSubchar
 knownSubchars[]={
-    "274_P100", 0x3f, 0,
+    "274_P100_P100", 0x3f, 0,
     "850_P100", 0x7f, 0,
-    "913_P100", 0x1a, 0,
+    "913_P100_P100", 0x1a, 0,
     "1047_P100", 0x3f, 0,
-    "8612_X110", 0x3f, 0
+    "1114_P100", 0x1A, 0,
+    "1137_PMOD_P100", 0x3F, 0,
+    "1166_P100_P100", 0x3F, 0,
+    "1167_P100_P100", 0x1A, 0,
+    "1168_P100_P100", 0x1A, 0,
+    "8612_X110_P110", 0x3f, 0,
+    "9444_P100", 0x1A, 0,
+    "9447_P100", 0x1A, 0,
+    "9449_P100", 0x1A, 0
 };
 
 typedef struct CCSIDStateTable {
@@ -291,8 +421,7 @@ static UBool
     variantControls,
     variantSUB,
     is7Bit,
-    is_0xe_0xf_Stateful,
-    isYearModificationDate;
+    is_0xe_0xf_Stateful;
 
 static void
 init() {
@@ -318,7 +447,12 @@ init() {
     variantSUB=0;
     is7Bit=0;
     is_0xe_0xf_Stateful=0;
-    isYearModificationDate=0;
+}
+
+static void
+cleanup() {
+    ucm_close(fromUFile);
+    ucm_close(toUFile);
 }
 
 static int32_t
@@ -370,12 +504,26 @@ parseByte(char c1, char c2, UBool firstByte) {
     return (d1<<4)|d2;
 }
 
+static uint16_t
+parseYear(const char *yearToParse, const char *line) {
+    char *end;
+    uint16_t localYear=(uint16_t)uprv_strtoul(yearToParse, &end, 10);
+    if(end!=yearToParse+4 || localYear < MIN_YEAR || MAX_YEAR < localYear) {
+        fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, localYear);
+        exit(2);
+    }
+    if (localYear > year) {
+        year = localYear;
+    }
+    return localYear;
+}
+
 static void
 parseMappings(FILE *f, UCMFile *ucm) {
     char line[200];
     char *s, *end;
     int32_t lineNum=0;
-    int32_t startSkipLineNum=0, endSkipLineNum;
+    int32_t startSkipLineNum=0, endSkipLineNum = 0;
     UBool isOK;
 
     UCMapping m={ 0 };
@@ -401,6 +549,7 @@ parseMappings(FILE *f, UCMFile *ucm) {
         /* You'll see things like, "* only. They do not constitute part of the official UCS-2 to 1275 table."
                                 or "* only. They do not constitute part of the official UCS2 table." */
         if(uprv_strstr(s, "* only. They do not constitute part of the official UCS")!=NULL) {
+            UBool nonCommentFound = FALSE;
             startSkipLineNum = lineNum;
             /* Ignore the next few mappings. They have no value */
             while(fgets(line, sizeof(line), f)!=NULL) {
@@ -409,9 +558,14 @@ parseMappings(FILE *f, UCMFile *ucm) {
                 if(uprv_strstr(s, "* The official table starts here:")!=NULL) {
                     break;  /* continue with outer loop */
                 }
+                if (s[0] != '*') {
+                    nonCommentFound = TRUE;
+                }
             }
             endSkipLineNum = lineNum-1;
-            fprintf(stderr, "Warning: skipped lines %d-%d, since it doesn't seem to be real data\n", startSkipLineNum, endSkipLineNum);
+            if (nonCommentFound) {
+                fprintf(stderr, "Warning: skipped lines %d-%d, since it doesn't seem to be real data\n", startSkipLineNum, endSkipLineNum);
+            }
         }
 
         /* explicit end of table */
@@ -464,12 +618,7 @@ parseMappings(FILE *f, UCMFile *ucm) {
                 while (!isdigit(s[len-1])) {
                     len--;
                 }
-                year=(uint16_t)uprv_strtoul(s+len-4, &end, 10);
-                if(end!=s+len || year < MIN_YEAR || MAX_YEAR < year) {
-                    fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
-                    exit(2);
-                }
-                isYearModificationDate=1;
+                parseYear(s+len-4, line);
                 continue;
             }
 
@@ -482,27 +631,18 @@ parseMappings(FILE *f, UCMFile *ucm) {
                 while (!isdigit(s[len-1])) {
                     len--;
                 }
-                year=(uint16_t)uprv_strtoul(s+len-4, &end, 10);
-                if(end!=s+len || year < MIN_YEAR || MAX_YEAR < year) {
-                    fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
-                    exit(2);
-                }
-                isYearModificationDate=1;
+                parseYear(s+len-4, line);
                 continue;
             }
 
             /* get creation date */
             s=uprv_strstr(line, "Creation date:");
-            if(s!=NULL && !isYearModificationDate) {
+            if(s!=NULL) {
                 int len = uprv_strlen(s);
                 while (!isdigit(s[len-1])) {
                     len--;
                 }
-                year=(uint16_t)uprv_strtoul(s+len-4, &end, 10);
-                if(end!=s+len || year < MIN_YEAR || MAX_YEAR < year) {
-                    fprintf(stderr, "error parsing year from \"%s\"; year is %d\n", line, year);
-                    exit(2);
-                }
+                parseYear(s+len-4, line);
                 continue;
             }
 
@@ -914,7 +1054,7 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     fprintf(f,
         "# ***************************************************************************\n"
         "# *\n"
-        "# *   Copyright (C) 1995-2005, International Business Machines\n"
+        "# *   Copyright (C) 1995-2006, International Business Machines\n"
         "# *   Corporation and others.  All Rights Reserved.\n"
         "# *\n"
         "# ***************************************************************************\n"
@@ -1070,13 +1210,121 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     }
 }
 
+static const TMAParray *
+findTPMAPs(const char *rmapExtention) {
+    int32_t idx;
+    for (idx = 0; idx < (int32_t)(sizeof(knownRMAPtoTMAP)/sizeof(knownRMAPtoTMAP[0])); idx++) {
+        if (knownRMAPtoTMAP[idx].ccsid == ccsid && strcmp(rmapExtention, knownRMAPtoTMAP[idx].RMAP) == 0) {
+            return &(knownRMAPtoTMAP[idx].TMAP);
+        }
+    }
+    return NULL;
+}
+
+static char **
+createTPMAPNames(const char *origRpmapFilename, int32_t *numFiles, UBool *multiplePossible) {
+    char *rpmapFilename = strdup(origRpmapFilename);
+    char *packageFilename;
+    char *extension;
+    char *rpmapExtension;
+    FILE *packageFile = NULL;
+    char **tpmapFiles = NULL;
+    int32_t length;
+    const TMAParray *TMAPs;
+
+    *numFiles = 0;
+    *multiplePossible = FALSE;
+    packageFilename = malloc(strlen(origRpmapFilename) + 8);
+    length = strlen(rpmapFilename);
+
+    rpmapExtension = strrchr(origRpmapFilename, '.') + 1;
+    uprv_memmove(rpmapFilename+length-17, origRpmapFilename+length-13, 4);
+    uprv_memmove(rpmapFilename+length-13, origRpmapFilename+length-17, 4);
+    strcpy(packageFilename, origRpmapFilename);
+    uprv_memmove(packageFilename+length-17, origRpmapFilename+length-13, 4);
+    uprv_memmove(packageFilename+length-13, origRpmapFilename+length-17, 4);
+    packageFilename[length-9] = 0;
+    strcat(packageFilename, ".PACKAGE");
+    extension = strrchr(packageFilename, '.');
+    packageFile = fopen(packageFilename, "r");
+    TMAPs = findTPMAPs(rpmapExtension);
+    if (TMAPs != NULL || packageFile != NULL) {
+        int32_t idx;
+        TMAPs = findTPMAPs(rpmapExtension);
+        if (TMAPs == NULL) {
+            fprintf(stderr, "error: \"%s\" has a package, but has no recognized TPMAP table\n", rpmapFilename);
+            exit(1);
+        }
+        if (packageFile != NULL) {
+            fprintf(stderr, "warning: This tool doesn't read package files yet. So the correct list of alternate mapping files may be out of date.\n");
+        }
+        while ((*TMAPs)[*numFiles] != NULL) {
+            (*numFiles)++;
+        }
+        tpmapFiles = malloc(sizeof(FILE*)*(*numFiles));
+        for (idx = 0; idx < *numFiles; idx++) {
+            tpmapFiles[idx] = strdup(rpmapFilename);
+            strcpy(tpmapFiles[idx]+(length-8), (*TMAPs)[idx]);
+        }
+        *multiplePossible = TRUE;
+        if (packageFile) {
+            fclose(packageFile);
+        }
+    }
+    else {
+        /* No Package information. Use the default name. */
+        tpmapFiles = malloc(sizeof(FILE*));
+        tpmapFiles[0] = strdup(rpmapFilename);
+        if(tpmapFiles[0][length-8]=='R') {
+            tpmapFiles[0][length-8]='T';
+        } else {
+            tpmapFiles[0][length-8]='t';
+        }
+        *numFiles = 1;
+    }
+
+    free(rpmapFilename);
+    free(packageFilename);
+    return tpmapFiles;
+}
+
+static 
+freeTPMAPNames(char **tpmapFiles, int32_t numFiles) {
+    int32_t idx;
+    for (idx = 0; idx < numFiles; idx++) {
+        free(tpmapFiles[idx]);
+    }
+    free(tpmapFiles);
+}
+
+static void
+setCCSID(uint32_t value) {
+    uint32_t unicode;
+    /* is this really a Unicode conversion table? - get the CCSID */
+    unicode=value&0xffff;
+    if(unicode==13488 || unicode==17584) {
+        ccsid=(uint16_t)(value>>16);
+    } else {
+        unicode=value>>16;
+        if(unicode==13488 || unicode==17584 || unicode==1200 || unicode==61956 || unicode==21680) {
+            ccsid=(uint16_t)(value&0xffff);
+        } else {
+            fprintf(stderr, "error: %X is not a Unicode conversion table\n", value);
+            exit(1);
+        }
+    }
+}
+
 static void
 processTable(const char *arg) {
     char filename[1024], tpname[32];
     const char *basename, *s;
     FILE *rpmap, *tpmap, *ucm;
-    uint32_t value, unicode;
-    int length;
+    uint32_t value;
+    int length, idx;
+    char **tpmapFileStrings;
+    int32_t tpmapFileStringsNum;
+    UBool multipleTablesPossible;
 
     init();
 
@@ -1109,130 +1357,116 @@ processTable(const char *arg) {
         exit(1);
     }
 
-    /* is this really a Unicode conversion table? - get the CCSID */
-    unicode=value&0xffff;
-    if(unicode==13488 || unicode==17584) {
-        ccsid=(uint16_t)(value>>16);
-    } else {
-        unicode=value>>16;
-        if(unicode==13488 || unicode==17584 || unicode==1200 || unicode==61956 || unicode==21680) {
-            ccsid=(uint16_t)(value&0xffff);
-        } else {
-            fprintf(stderr, "error: \"%s\" is not a Unicode conversion table\n", basename);
+    setCCSID(value);
+
+    /* try to find all the TPMAP files for this RPMAP */
+    tpmapFileStrings = createTPMAPNames(arg, &tpmapFileStringsNum, &multipleTablesPossible);
+
+    cleanup();
+
+    for (idx = 0; idx < tpmapFileStringsNum; idx++) {
+        init();
+        setCCSID(value);
+
+        /* try to open the RPMAP file */
+        rpmap=fopen(arg, "r");
+        if(rpmap==NULL) {
+            fprintf(stderr, "error: unable to open \"%s\"\n", arg);
             exit(1);
         }
-    }
 
-    /* try to open the RPMAP file */
-    rpmap=fopen(arg, "r");
-    if(rpmap==NULL) {
-        fprintf(stderr, "error: unable to open \"%s\"\n", arg);
-        exit(1);
-    }
-
-    /* try to open the TPMAP file */
-    uprv_strcpy(filename, arg);
-    length=uprv_strlen(filename);
-
-    /* guess the TPMAP filename; note that above we have checked the format of the basename */
-    /* replace the R in RPMAP by T, keep upper- or lowercase */
-    if(filename[length-8]=='R') {
-        filename[length-8]='T';
-    } else {
-        filename[length-8]='t';
-    }
-
-    /* reverse the CCSIDs */
-    uprv_memcpy(filename+length-17, basename+4, 4);
-    uprv_memcpy(filename+length-13, basename, 4);
-
-    /* first, keep the same suffix */
-    tpmap=fopen(filename, "r");
-    if(tpmap==NULL) {
-        /* next, try reducing the second to last digit by 1 */
-        --filename[length-2];
-        fprintf(stderr, "warning: Guessing that \"%s\" is used with \"%s\"\n", arg, filename);
-        tpmap=fopen(filename, "r");
-        if(tpmap==NULL) {
+        tpmap=fopen(tpmapFileStrings[idx], "r");
+        if (tpmap == NULL) {
             /* there is no TPMAP */
-            fprintf(stderr, "error: unable to find the TPMAP file for \"%s\"\n", arg);
+            fprintf(stderr, "error: unable to find the TPMAP file \"%s\" for \"%s\"\n", tpmapFileStrings[idx], arg);
             exit(1);
         }
-    }
-    puts(filename);
-    uprv_strcpy(tpname, filename+length-17);
+        puts(tpmapFileStrings[idx]);
+        length=uprv_strlen(tpmapFileStrings[idx]);
+        uprv_strcpy(tpname, tpmapFileStrings[idx]+length-17);
 
-    /* parse both files */
-    parseMappings(rpmap, fromUFile);
-    parseMappings(tpmap, toUFile);
-    fclose(tpmap);
-    fclose(rpmap);
+        /* parse both files */
+        parseMappings(rpmap, fromUFile);
+        parseMappings(tpmap, toUFile);
+        fclose(tpmap);
+        fclose(rpmap);
 
-    /* if there is no subchar, then try to get it from the corresponding UPMAP */
-    if(subchar==0) {
-        FILE *f;
+        /* if there is no subchar, then try to get it from the corresponding UPMAP */
+        if(subchar==0) {
+            FILE *f;
 
-        /* restore the RPMAP filename and just replace the R by U */
-        uprv_strcpy(filename+length-17, basename);
-        if(filename[length-8]=='R') {
-            filename[length-8]='U';
-        } else {
-            filename[length-8]='u';
-        }
+            /* restore the RPMAP filename and just replace the R by U */
+            uprv_strcpy(filename+length-17, basename);
+            if(filename[length-8]=='R') {
+                filename[length-8]='U';
+            } else {
+                filename[length-8]='u';
+            }
 
-        f=fopen(filename, "r");
-        if(f==NULL) {
-            /* try reversing the CCSIDs */
-            uprv_memcpy(filename+length-17, basename+4, 4);
-            uprv_memcpy(filename+length-13, basename, 4);
             f=fopen(filename, "r");
+            if(f==NULL) {
+                /* try reversing the CCSIDs */
+                uprv_memcpy(filename+length-17, basename+4, 4);
+                uprv_memcpy(filename+length-13, basename, 4);
+                f=fopen(filename, "r");
+            }
+            if(f!=NULL) {
+                getSubcharFromUPMAP(f);
+                fclose(f);
+            }
         }
-        if(f!=NULL) {
-            getSubcharFromUPMAP(f);
-            fclose(f);
+
+        /* generate the .ucm filename - necessary before getSubchar() */
+        length=sprintf(filename, "ibm-%u_", ccsid);
+
+        /* uppercase and append the suffix */
+        /* TODO: When there is more than one RPMAP/TPMAP to choose from, specify both RPMAP and TPMAP used. */
+        filename[length++]=toupper(basename[10]);  /* P or X */
+        filename[length++]=toupper(basename[14]);  /* last 3 suffix characters */
+        filename[length++]=toupper(basename[15]);
+        filename[length++]=toupper(basename[16]);
+        if (multipleTablesPossible) {
+            filename[length++]='_';
+            filename[length++]=toupper(tpmapFileStrings[idx][strlen(tpmapFileStrings[idx])-4]);  /* P or X */
+            filename[length++]=toupper(tpmapFileStrings[idx][strlen(tpmapFileStrings[idx])-3]);  /* last 3 suffix characters */
+            filename[length++]=toupper(tpmapFileStrings[idx][strlen(tpmapFileStrings[idx])-2]);
+            filename[length++]=toupper(tpmapFileStrings[idx][strlen(tpmapFileStrings[idx])-1]);
         }
+        filename[length]=0;
+        /* find the subchar if still necessary - necessary before merging for correct |2 */
+        if(subchar==0 && !getSubchar(filename+4)) {
+            fprintf(stderr, "warning: missing subchar in \"%s\" (CCSID=0x%04X)\n", filename, ccsid);
+        }
+        /*concatenate year*/
+        if (year <= 0) {
+            fprintf(stderr, "warning: missing creation/modification date in \"%s\" (CCSID=0x%04X)\n", filename, ccsid);
+            year=2002;
+        }
+        sprintf(filename+length, "-%d", year);
+
+        /* merge the mappings */
+        mergeMappings();
+
+        /* analyze the conversion table */
+        analyzeTable();
+
+        /* open the .ucm file */
+        uprv_strcat(filename, ".ucm");
+        ucm=fopen(filename, "w");
+        if(ucm==NULL) {
+            fprintf(stderr, "error: unable to open output file \"%s\"\n", filename);
+            exit(4);
+        }
+
+        /* remove the .ucm from the filename for the following processing */
+        filename[uprv_strlen(filename)-4]=0;
+
+        /* write the .ucm file */
+        writeUCM(ucm, filename, basename, tpname);
+        fclose(ucm);
+        cleanup();
     }
-
-    /* generate the .ucm filename - necessary before getSubchar() */
-    length=sprintf(filename, "ibm-%u_", ccsid);
-
-    /* uppercase and append the suffix */
-    filename[length++]=toupper(basename[10]);  /* P or X */
-    filename[length++]=toupper(basename[14]);  /* last 3 suffix characters */
-    filename[length++]=toupper(basename[15]);
-    filename[length++]=toupper(basename[16]);
-    filename[length]=0;
-    /* find the subchar if still necessary - necessary before merging for correct |2 */
-    if(subchar==0 && !getSubchar(filename+4)) {
-        fprintf(stderr, "warning: missing subchar in \"%s\" (CCSID=0x%04X)\n", filename, ccsid);
-    }
-    /*concatenate year*/
-    if (year <= 0) {
-        fprintf(stderr, "warning: missing creation/modification date in \"%s\" (CCSID=0x%04X)\n", filename, ccsid);
-        year=2002;
-    }
-    sprintf(filename+length, "-%d", year);
-
-    /* merge the mappings */
-    mergeMappings();
-
-    /* analyze the conversion table */
-    analyzeTable();
-
-    /* open the .ucm file */
-    uprv_strcat(filename, ".ucm");
-    ucm=fopen(filename, "w");
-    if(ucm==NULL) {
-        fprintf(stderr, "error: unable to open output file \"%s\"\n", filename);
-        exit(4);
-    }
-
-    /* remove the .ucm from the filename for the following processing */
-    filename[uprv_strlen(filename)-4]=0;
-
-    /* write the .ucm file */
-    writeUCM(ucm, filename, basename, tpname);
-    fclose(ucm);
+    freeTPMAPNames(tpmapFileStrings, tpmapFileStringsNum);
 }
 
 extern int
