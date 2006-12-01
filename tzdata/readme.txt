@@ -1,10 +1,10 @@
 // Copyright (c) 2006 IBM and Others. All Rights Reserved
 
-icutz readme
+This directory contains updated zoneinfo.txt, binary versions, and a Makefile which will
+automatically fetch new tzdata and compile it.
 
-
-10 second setup:
-----------------
+10 second setup for building new versions of the data:
+------------------------------------------------------
 
 0. build and install ICU somewhere.
 
@@ -15,6 +15,6 @@ icutz readme
 3. now run:
 3a.  "make update" to fetch latest tzdata via FTP, and build it
 3b.  or just "make update-mirror" to only fetch via FTP
-3c.  or just "make update-icu4c" to only update the icu4c with any tzdata in your mirror directory
+3c.  or just "make update-icu" to only update the icu4c with any tzdata in your mirror directory
 
 4.  run "svn commit" to check the results back in.
