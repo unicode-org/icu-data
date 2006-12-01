@@ -1,9 +1,10 @@
-# Copyright (c) 2006 IBM and Others. All Rights Reserved
+// Copyright (c) 2006 IBM and Others. All Rights Reserved
 
 icutz readme
 
 
 10 second setup:
+----------------
 
 0. build and install ICU somewhere.
 
