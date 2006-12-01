@@ -18,10 +18,10 @@ update-mirror:
 	cd mirror && wget -nc -nd 'ftp://elsie.nci.nih.gov/pub/tzcode*'
 	svn add mirror/tzcode*.tar.gz
 
-update-icu4c:
-	@for tzver in `ls mirror/tzdata*.tar.gz` ; do tzver=`basename $$tzver .tar.gz | cut -c7-`; $(MAKE) icu4c/$$tzver/zoneinfo.txt; done
+update-icu:
+	@for tzver in `ls mirror/tzdata*.tar.gz` ; do tzver=`basename $$tzver .tar.gz | cut -c7-`; $(MAKE) icu/$$tzver/zoneinfo.txt; done
 
-icu4c/%/zoneinfo.txt: mirror/tzdata%.tar.gz
+icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz
 	@test ! -f $@ || (echo Remove $(@D)  and $@ manually - will not overwrite. ; touch $@ ;  false)
 	@test ! -d $(@D) || (echo Remove $(@D)  manually - will not overwrite. ;   false)
 	@echo "#" building $(@D) .. results are in ./$(shell basename $(@D)).log
@@ -41,7 +41,7 @@ icu4c/%/zoneinfo.txt: mirror/tzdata%.tar.gz
 	find $(@D)/* -type f
 	svn add $(@D)
 
-update: update-mirror update-icu4c
+update: update-mirror update-icu
 
 clean:
 	-rm -f ./*.log
