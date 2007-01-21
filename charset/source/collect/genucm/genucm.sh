@@ -1,12 +1,12 @@
 #!/bin/sh
-# Copyright (C) 2005, International Business Machines
+# Copyright (C) 2005-2007, International Business Machines
 #   Corporation and others.  All Rights Reserved.
 
 OS_INFO="`uname -a`"
 OS_VERSION="`uname -r`"
 OS_TYPE="`uname`"
-ICU_ARGS="-I../../../../icu/source/common -L../../../../icu/source/lib -licuuc -licudata"
-ICU_LIB_PATH="../../../../icu/source/lib"
+ICU_ARGS="-I../../../../../icu/source/common -L../../../../../icu/source/lib -licuuc -licudata"
+ICU_LIB_PATH="../../../../../icu/source/lib"
 
 echo "Collecting Unicode conversion mappings for $OS_TYPE"
 rm -f genucm

@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2005, International Business Machines
+*   Copyright (C) 2000-2007, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -53,9 +53,7 @@ void print_icu_state(byte_info_ptr info, FILE* fp);
 const char *print_icu_features(char *featureBuf, uint32_t features, const converter &cnv);
 UBool print_ranges(int8_t arr[], size_t len, int print_threshold, int level, FILE* fp);
 
-U_CDECL_BEGIN
-static int8_t U_CALLCONV compareUnicodeString(UHashTok tok1, UHashTok tok2);
-U_CDECL_END
+static int8_t compareUnicodeString(UHashTok tok1, UHashTok tok2);
 
 /**
  * Get all the required information for converting from a Unicode sequence to a byte sequence.
@@ -117,14 +115,17 @@ int main(int argc, const char* const argv[])
     UErrorCode status = U_ZERO_ERROR;
     UnicodeSet joiningMarks("[[:gc=Mn:][:gc=Me:][:gc=Mc:]]", status);
 #if CP_ID_IS_INT
-    UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashLong, uhash_compareLong, 65537, &status);
+    UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashLong,
+uhash_compareLong, NULL, 65537, &status);
     UVector encodings(200, status);
 #else
-    UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashChars, uhash_compareChars, 65537, &status);
+    UHashtable *pmap_encoding_info = uhash_openSize(uhash_hashChars,
+uhash_compareChars, NULL, 65537, &status);
     UVector encodings(NULL, uhash_compareChars, 200, status);
 #endif
 
-    argc--; argv++;
+    argc--;
+    argv++;
     if (U_FAILURE(status))
     {
         printf("Error %s:%d %s", __FILE__, __LINE__, u_errorName(status));
@@ -192,11 +193,12 @@ int main(int argc, const char* const argv[])
         UVector multiCharUnicodeSetVect(NULL, uhash_compareUnicodeString, status);
         // lookup tables 
         // n\u -> n\x fallback
-        UHashtable *uni_to_cp = uhash_openSize(uhash_hashUnicodeString, uhash_compareUnicodeString, 65537, &status);
+        UHashtable *uni_to_cp = uhash_openSize(uhash_hashUnicodeString, uhash_compareUnicodeString, NULL, 65537, &status);
         // n\u <- \x roundtrip after fallback
-        UHashtable *cp_to_uni_by_uni = uhash_openSize(uhash_hashUnicodeString, uhash_compareUnicodeString, 65537, &status);
+        UHashtable *cp_to_uni_by_uni = uhash_openSize(uhash_hashUnicodeString, uhash_compareUnicodeString, NULL, 65537, &status);
         // n\u <- \x reverse fallback
-        UHashtable *cp_to_uni_by_cp = uhash_openSize(uhash_hashChars, uhash_compareChars, 65537, &status);
+        UHashtable *cp_to_uni_by_cp = uhash_openSize(uhash_hashChars,
+uhash_compareChars, NULL, 65537, &status);
         uhash_setValueDeleter(uni_to_cp, uhash_freeBlock);
         uhash_setValueDeleter(cp_to_uni_by_uni, uhash_deleteUVector);
         uhash_setValueDeleter(cp_to_uni_by_cp, uhash_deleteUVector);
@@ -511,8 +513,7 @@ int main(int argc, const char* const argv[])
    return 0;
 }
 
-U_CDECL_BEGIN
-static int8_t U_CALLCONV compareUnicodeString(UHashTok tok1, UHashTok tok2) {
+static int8_t compareUnicodeString(UHashTok tok1, UHashTok tok2) {
     U_NAMESPACE_USE
     const UnicodeString *str1 = (const UnicodeString*) tok1.pointer;
     const UnicodeString *str2 = (const UnicodeString*) tok2.pointer;
@@ -521,7 +522,6 @@ static int8_t U_CALLCONV compareUnicodeString(UHashTok tok1, UHashTok tok2) {
     }
     return str1->compareCodePointOrder(*str2);
 }
-U_CDECL_END
 
 static void collectFromUnicodeMapping(converter &cnv,
                                       byte_info byte_range[MAX_BYTE_LEN],
@@ -795,7 +795,7 @@ void emit_ucm_header(FILE* fp, const converter &cnv, encoding_info* encoding_inf
     
     fputs("# ***************************************************************************\n", fp);
     fputs("# *\n", fp);
-    fputs("# *   Copyright (C) 2001-2005, International Business Machines\n", fp);
+    fputs("# *   Copyright (C) 2001-2007, International Business Machines\n", fp);
     fputs("# *   Corporation and others.  All Rights Reserved.\n", fp);
     fputs("# *\n", fp);
     fputs("# ***************************************************************************\n", fp);
