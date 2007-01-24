@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2006, International Business Machines
+*   Copyright (C) 2000-2007, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -27,9 +27,9 @@
 *   On Windows (on one line):
 *
 *   cl -nologo -MD
-*      -I..\..\..\icu\source\common
-*      -I..\..\..\icu\source\tools\toolutil
-*      rptp2ucm.c -link /LIBPATH:..\..\..\icu\lib icuuc.lib icutu.lib
+*      -I..\..\..\..\icu\source\common
+*      -I..\..\..\..\icu\source\tools\toolutil
+*      rptp2ucm.c -link /LIBPATH:..\..\..\..\icu\lib icuuc.lib icutu.lib
 */
 
 #include "unicode/utypes.h"
@@ -117,6 +117,7 @@ knownRMAPtoTMAP[] = {
     {0x048E, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
     {0x048F, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
     {0x0490, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x0561, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
     {0x0565, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
     {0x0565, "RXMAP110", {"TXMAP100", NULL, NULL, NULL}},
     {0x0567, "RPMAP110", {"TPMAP100", NULL, NULL, NULL}},
@@ -142,6 +143,8 @@ knownRMAPtoTMAP[] = {
     {0x13AB, "RXMAP120", {"TXMAP110", NULL, NULL, NULL}},// package is missing. Is this correct?
     {0x13BA, "RPMAP120", {"TPMAP110", NULL, NULL, NULL}},// package text is garbled. Is this correct?
     {0x13BA, "RPMAP12A", {"TPMAP11A", NULL, NULL, NULL}},// package text is garbled. Is this correct?
+    {0x155F, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
+    {0x1561, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
     {0x21A4, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
     {0x21A4, "RXMAP110", {"TXMAP110", NULL, NULL, NULL}},
     {0x2352, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
@@ -163,7 +166,8 @@ knownRMAPtoTMAP[] = {
     {0x8122, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}},
     {0x83BA, "RPMAP120", {"TPMAP110", NULL, NULL, NULL}},// package is missing. Is this correct?
     {0x83BA, "RPMAP12A", {"TPMAP11A", "TPMAP12A", NULL, NULL}},// package is missing. Is this correct?
-    {0xD1B5, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}}
+    {0xD1B5, "RPMAP101", {"TPMAP101", NULL, NULL, NULL}},
+    {0xD3AF, "RPMAP100", {"TPMAP100", NULL, NULL, NULL}}
 };
 
 typedef struct UCMSubchar {
@@ -195,6 +199,10 @@ typedef struct CCSIDStateTable {
 
 #define Big5DBCSStates \
     "<icu:state>                   81-fe:1\n" \
+    "<icu:state>                   40-7e, 80-fe\n"
+
+#define Big5MBCSStates \
+    "<icu:state>                   0-7f, 81-fe:1\n" \
     "<icu:state>                   40-7e, 80-fe\n"
 
 #define japanesePCDBCSStates \
@@ -261,8 +269,7 @@ knownStateTables[]={
     949,   "<icu:state>                   0-84, 8f-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
-    950,   "<icu:state>                   0-7f, 81-fe:1\n"
-           "<icu:state>                   40-7e, 80-fe\n",
+    950,   Big5MBCSStates,
 
     954,   "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n"
@@ -307,13 +314,11 @@ knownStateTables[]={
     1370,  "<icu:state>                   0-80, 81-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
-    1373,  "<icu:state>                   0-7f, 81-fe:1\n"
-           "<icu:state>                   40-7e, 80-fe\n",
+    1373,  Big5MBCSStates,
 
     1374,  Big5DBCSStates,
 
-    1375,  "<icu:state>                   0-7f, 81-fe:1\n"
-           "<icu:state>                   40-7e, 80-fe\n",
+    1375,  Big5MBCSStates,
 
     1381,  "<icu:state>                   0-84, 8c-fe:1\n"
            "<icu:state>                   a1-fe\n",
@@ -346,6 +351,10 @@ knownStateTables[]={
            "<icu:state>\n",
 
     5470,  Big5DBCSStates,
+
+    5471,  Big5MBCSStates,
+
+    5475,  Big5MBCSStates,
 
     5478,  "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
@@ -386,7 +395,10 @@ knownStateTables[]={
            "<icu:state>                   a1-fe\n"
            "<icu:state>                   a1-e4\n"
            "<icu:state>                   a1-fe:1, a1:4, a3-af:4, b6:4, d6:4, da-db:4, ed-f2:4\n"
-           "<icu:state>                   a1-fe.u\n"
+           "<icu:state>                   a1-fe.u\n",
+
+    54191, "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
+           "<icu:state>                   40-7e, 80-fc\n"
 
 
 };
@@ -1056,7 +1068,7 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     fprintf(f,
         "# ***************************************************************************\n"
         "# *\n"
-        "# *   Copyright (C) 1995-2006, International Business Machines\n"
+        "# *   Copyright (C) 1995-2007, International Business Machines\n"
         "# *   Corporation and others.  All Rights Reserved.\n"
         "# *\n"
         "# ***************************************************************************\n"
@@ -1442,7 +1454,7 @@ processTable(const char *arg) {
         /*concatenate year*/
         if (year <= 0) {
             fprintf(stderr, "warning: missing creation/modification date in \"%s\" (CCSID=0x%04X)\n", filename, ccsid);
-            year=2002;
+            year=2007;
         }
         sprintf(filename+length, "-%d", year);
 

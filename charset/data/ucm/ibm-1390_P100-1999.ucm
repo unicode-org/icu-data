@@ -1,11 +1,11 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2002, International Business Machines
+# *   Copyright (C) 1995-2007, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
+# File created by rptp2ucm (compiled on Jan 23 2007)
 # from source files 44B0056E.RPMAP100 and 056E44B0.TPMAP100
 #
 <code_set_name>               "ibm-1390_P100-1999"
@@ -17,6 +17,14 @@
 <subchar1>                    \x3F
 <icu:charsetFamily>           "EBCDIC"
 <icu:alias>                   "ibm-1390_VPUA"
+
+# includes mappings for surrogate pairs
+<icu:state>                   0-ff, e:1.s, f:0.s
+<icu:state>                   initial, 0-3f:4, e:1.s, f:0.s, 40:3, 41-fe:2, ff:4, b3-b7:5
+<icu:state>                   0-40:1.i, 41-fe:1., ff:1.i
+<icu:state>                   0-ff:1.i, 40:1.
+<icu:state>                   0-ff:1.i
+<icu:state>                   0-40:1.i, 41-fe:1.p, ff:1.i
 
 CHARMAP
 <U0000> \x00 |0

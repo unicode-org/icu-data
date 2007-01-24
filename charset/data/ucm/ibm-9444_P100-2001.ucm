@@ -1,11 +1,11 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2003, International Business Machines
+# *   Copyright (C) 1995-2007, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Jan 14 2004)
+# File created by rptp2ucm (compiled on Jan 23 2007)
 # from source files 04B024E4.RPMAP100 and 24E404B0.TPMAP100
 #
 <code_set_name>               "ibm-9444_P100-2001"
@@ -13,7 +13,7 @@
 <mb_cur_max>                  1
 <mb_cur_min>                  1
 <uconv_class>                 "SBCS"
-<subchar1>                    \x1A
+<subchar>                     \x1A
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-9444_STD"
 
