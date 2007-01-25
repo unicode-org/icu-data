@@ -880,6 +880,15 @@ charset/data/xml/windows-936-2000.xml svneol=native#text/xml
 charset/data/xml/windows-949-2000.xml svneol=native#text/xml
 charset/data/xml/windows-950-2000.xml svneol=native#text/xml
 charset/source/gb18030/gb18030.html svneol=native#text/html
+charset/source/java/com/ibm/icu/CharMapMetricTool/BuildMetrics.bat -text
+charset/source/java/com/ibm/icu/CharMapMetricTool/FallbackIndicators.java -text
+charset/source/java/com/ibm/icu/CharMapMetricTool/HashArray2D.java -text
+charset/source/java/com/ibm/icu/CharMapMetricTool/MappingTableAnalyzer.java -text
+charset/source/java/com/ibm/icu/CharMapMetricTool/MappingTableComparisonManager.java -text
+charset/source/java/com/ibm/icu/CharMapMetricTool/MappingTypes.java -text
+charset/source/java/com/ibm/icu/CharMapMetricTool/ShortOrderedTriple.java -text
+charset/source/java/com/ibm/icu/CharMapMetricTool/UserInterfaceBuilder.java -text
+charset/source/java/com/ibm/icu/CharMapMetricTool/ucmFileReader.java -text
 tzdata/Makefile -text
 tzdata/icu/2006a/be/zoneinfo.res -text
 tzdata/icu/2006a/ee/zoneinfo.res -text
