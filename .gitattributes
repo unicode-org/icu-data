@@ -963,6 +963,7 @@ tzdata/mirror/tzcode2006o.tar.gz -text
 tzdata/mirror/tzcode2006p.tar.gz -text
 tzdata/mirror/tzcode2007a.tar.gz -text
 tzdata/mirror/tzcode2007b.tar.gz -text
+tzdata/mirror/tzcode2007c.tar.gz -text
 tzdata/mirror/tzdata2003a.tar.gz -text
 tzdata/mirror/tzdata2003d.tar.gz -text
 tzdata/mirror/tzdata2004e.tar.gz -text
@@ -982,4 +983,5 @@ tzdata/mirror/tzdata2006o.tar.gz -text
 tzdata/mirror/tzdata2006p.tar.gz -text
 tzdata/mirror/tzdata2007a.tar.gz -text
 tzdata/mirror/tzdata2007b.tar.gz -text
+tzdata/mirror/tzdata2007c.tar.gz -text
 tzdata/readme.txt -text
