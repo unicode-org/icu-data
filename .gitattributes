@@ -942,14 +942,6 @@ tzdata/icu/2006p/be/zoneinfo.res -text
 tzdata/icu/2006p/ee/zoneinfo.res -text
 tzdata/icu/2006p/le/zoneinfo.res -text
 tzdata/icu/2006p/zoneinfo.txt -text
-tzdata/icu/2007a/be/zoneinfo.res -text
-tzdata/icu/2007a/ee/zoneinfo.res -text
-tzdata/icu/2007a/le/zoneinfo.res -text
-tzdata/icu/2007a/zoneinfo.txt -text
-tzdata/icu/2007b/be/zoneinfo.res -text
-tzdata/icu/2007b/ee/zoneinfo.res -text
-tzdata/icu/2007b/le/zoneinfo.res -text
-tzdata/icu/2007b/zoneinfo.txt -text
 tzdata/mirror/tzcode2006c.tar.gz -text
 tzdata/mirror/tzcode2006d.tar.gz -text
 tzdata/mirror/tzcode2006f.tar.gz -text
