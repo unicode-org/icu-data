@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %fragmentName
+Bundle-SymbolicName: @PLUGIN.ID@
+Bundle-Version: @PATCH.VERSION@
+Bundle-Vendor: %providerName
+Fragment-Host: com.ibm.icu;bundle-version="@HOST.VERSION@"
+Bundle-Localization: fragment-icu-data
+Bundle-Copyright: Licensed Materials - Property of IBM 
+ (C) Copyright IBM Corp. 2000, @BUILD.YEAR@. All Rights Reserved. 
+ IBM is a registered trademark of IBM Corp.
+Bundle-RequiredExecutionEnvironment: CDC-1.0/Foundation-1.0,
+ J2SE-1.3
+Bundle-ClassPath: icu-data.jar
+Eclipse-PatchFragment: true

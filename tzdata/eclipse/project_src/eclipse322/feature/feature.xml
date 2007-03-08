@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="@FEATURE.ID@"
+      label="@FEATURE.LABEL@"
+      version="@PATCH.VERSION@"
+      provider-name="IBM Corporation">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import feature="@TARGET.FEATURE@" version="@TARGET.FEATURE.VERSION@" patch="true"/>
+   </requires>
+
+   <plugin
+         id="@PLUGIN.ID@"
+         download-size="0"
+         install-size="0"
+         version="@PATCH.VERSION@"
+         fragment="true"/>
+
+</feature>

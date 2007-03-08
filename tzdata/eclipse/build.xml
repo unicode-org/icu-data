@@ -1,0 +1,278 @@
+<!--
+/*
+*******************************************************************************
+* Copyright (C) 2007, International Business Machines Corporation and         *
+* others. All Rights Reserved.                                                *
+*******************************************************************************
+* This is the ant build file for eclipse ICU4J plug-in data patch.
+*/
+-->
+
+<project name="Eclipse_ICU_Data_Update" default="build.all" basedir=".">
+    <property file="icu_data_patch.properties"/>
+    <property file="eclipse_env.properties"/>
+
+    <target name="check.props"
+            depends="check.prop.tz.version, check.prop.eclipse.dir, check.prop.eclipse.version"
+            description="Check required properties">
+    </target>
+
+    <target name="check.prop.tz.version"
+            description="Display error message when tz.version is not set">
+        <property name="tz.file" value="../icu/${tz.version}/be/zoneinfo.res"/>
+        <condition property="tz.file.available">
+            <available file="${tz.file}"/>
+        </condition>
+        <antcall target="err.tz.version"/>
+    </target>
+
+    <target name="err.tz.version"
+            unless="tz.file.available"
+            description="Display error message when zoneinfo.res for the specified version is not found">
+        <echo message="########################################################"/>
+        <echo message="ERROR: The required property tz.version is not set or"/>
+        <echo message="invalid.  The build cannot locate the zoneinfo.res file."/>
+        <echo message="########################################################"/>
+        <fail message="The build stopped due to the fatal error"/>
+    </target>
+
+    <target name="check.prop.eclipse.dir"
+            description="Check if the eclipse installation directory is set">
+        <condition property="eclipse.dir.available">
+            <available file="${eclipse.dir}" type="dir"/>
+        </condition>
+        <antcall target="warn.eclipse.dir"/>
+    </target>
+
+    <target name="warn.eclipse.dir"
+            unless="eclipse.dir.available"
+            description="Display warning message when eclipse.dir is not available">
+        <echo message="########################################################"/>
+        <echo message="WARNING: The property eclipse.dir is not set or the"/>
+        <echo message="specified directory does not exist.  The build continues,"/>
+        <echo message="but it may only collect eclipse project files to be used"/>
+        <echo message="for building the patch."/>
+        <echo message="########################################################"/>
+    </target>
+
+    <target name="check.prop.eclipse.version"
+            description="Check if the target eclipse verison is set">
+        <pathconvert property="project.src.dir" dirsep="/">
+            <path location="${basedir}/project_src/eclipse${eclipse.version}"/>
+        </pathconvert>
+        <condition property="eclipse.version.available">
+            <available file="${project.src.dir}" type="dir"/>
+        </condition>
+        <antcall target="err.eclipse.version"/>
+    </target>
+
+    <target name="err.eclipse.version"
+            unless="eclipse.version.available"
+            description="Display error message when eclipse.version is not set or invalid">
+        <echo message="########################################################"/>
+        <echo message="ERROR: The property eclipse.version is not set or"/>
+        <echo message="invalid.  The build cannot locate the corresponding"/>
+        <echo message="project file directory -"/>
+        <echo message="${project.src.dir}"/>
+        <echo message="########################################################"/>
+        <fail message="The build stopped due to the fatal error"/>
+    </target>
+
+    <target name="init.patch.version"
+            unless="icu.patch.version"
+            description="Set icu data patch version string">
+        <tstamp>
+            <format property="build.date" pattern="yyyyMMdd"/>
+        </tstamp>
+        <property name="icu.patch.version" value="${icu.version}.${build.date}_${tz.version}"/>
+    </target>
+
+    <target name="init.copyright.year"
+            unless="icu.copyright.year"
+            description="Set icu copyright statement year">
+        <tstamp>
+            <format property="icu.copyright.year" pattern="yyyy"/>
+        </tstamp>
+    </target>
+
+    <target name="init"
+            depends="check.props, init.patch.version, init.copyright.year, init.eclipse.env"
+            description="Initialize build properties">
+        <pathconvert property="build.dir" dirsep="/">
+            <path location="${basedir}/out/e${eclipse.version}_${icu.patch.version}"/>
+        </pathconvert>
+        <property name="project.dir" value="${build.dir}/projects"/>
+        <property name="build.arc" value="build.arc"/>
+        <property name="build.label" value="ICU_data_patch"/>
+        <property name="output.archive" value="${project.dir}/${build.label}/${icu.patch.feature.id}-${icu.patch.version}.zip"/>
+        <property name="update.site.dir" value="${build.dir}/updatesite"/>
+    </target>
+
+    <target name="init.eclipse.env"
+            depends="init.eclipse.home, init.eclipse.launcher, init.eclipse.pde"
+            description="Initalize eclipse environment properties">
+    </target>
+
+    <target name="init.eclipse.home"
+            if="eclipse.dir"
+            description="Set eclipse base location to the property 'eclipse.home'">
+        <pathconvert property="eclipse.home" dirsep="/">
+            <path location="${eclipse.dir}"/>
+        </pathconvert>
+    </target>
+
+    <target name="init.eclipse.launcher"
+            depends="locate.eclipse32.launcher, locate.eclipse33.launcher"
+            description="Set eclipse launcher jar file to the property 'eclipse.launcher'">
+    </target>
+
+    <target name="locate.eclipse32.launcher"
+            if="eclipse.home"
+            unless="eclipse.launcher"
+            description="Locate startup.jar for eclipse 3.2.x">
+        <available file="${eclipse.home}/startup.jar"
+            property="eclipse.launcher" value="${eclipse.home}/startup.jar"/>
+    </target>
+
+    <target name="locate.eclipse33.launcher"
+            if="eclipse.home"
+            unless="eclipse.launcher"
+            description="Locate org.eclipse.equinox.launcher jar file for eclipse 3.3 and beyond">
+        <first id="equinox.launcher">
+            <fileset dir="${eclipse.home}/plugins">
+                <include name="org.eclipse.equinox.launcher_*.jar"/>
+            </fileset>
+        </first>
+        <pathconvert property="eclipse.launcher" dirsep="/" refid="equinox.launcher"/>
+    </target>
+
+    <target name="init.eclipse.pde"
+            depends="locate.eclipse.pde"
+            if="eclipse.pde.dir"
+            description="Set up PDE runtime arguments">
+        <property file="${eclipse.pde.dir}/templates/headless-build/build.properties" prefix="pde.template"/>
+        <property name="eclipse.baseos" value="${pde.template.baseos}"/>
+        <property name="eclipse.basews" value="${pde.template.basews}"/>
+        <property name="eclipse.basearch" value="${pde.template.basearch}"/>
+    </target>
+
+    <target name="locate.eclipse.pde"
+            if="eclipse.home"
+            description="Locate org.eclipse.pde.build plug-in and set the property 'eclipse.pde.dir'">
+        <first id="eclipse.pde.plugin.dir">
+            <dirset dir="${eclipse.home}/plugins">
+                <include name="org.eclipse.pde.build_*"/>
+            </dirset>
+        </first>
+        <pathconvert property="eclipse.pde.dir" dirsep="/" refid="eclipse.pde.plugin.dir"/>
+    </target>
+
+    <target name="build.info"
+            depends="init"
+            description="Display build configuration">
+        <echo message="Target feature version:      ${target.feature.version}"/>
+        <echo message="ICU data patch feature ID:   ${icu.patch.feature.id}"/>
+        <echo message="ICU data patch version:      ${icu.patch.version}"/>
+        <echo message="ICU data patch plugin ID:    ${icu.patch.plugin.id}"/>
+        <echo message="ICU zonfinfo file:           ${tz.file}"/>
+        <echo message="Eclipse project directory:   ${project.dir}"/>
+        <echo message="Eclipse install location:    ${eclipse.home}"/>
+        <echo message="Output archive:              ${output.archive}"/>
+        <echo message="Update site directory:       ${update.site.dir}"/>
+    </target>
+
+    <target name="project.files"
+            depends="init"
+            description="Collect eclipse project files for the ICU data patch">
+        <delete dir="${project.dir}" failonerror="false"/>
+        <!-- Create features directory -->
+        <mkdir dir="${project.dir}/features/${icu.patch.feature.id}"/>
+        <copy todir="${project.dir}/features/${icu.patch.feature.id}">
+            <fileset dir="${project.src.dir}/feature"/>
+            <filterset>
+                <filter token="TARGET.FEATURE" value="${target.feature}"/>
+                <filter token="TARGET.FEATURE.VERSION" value="${target.feature.version}"/>
+                <filter token="OLSON.VERSION" value="${tz.version}"/>
+                <filter token="PLUGIN.ID" value="${icu.patch.plugin.id}"/>
+                <filter token="FEATURE.ID" value="${icu.patch.feature.id}"/>
+                <filter token="FEATURE.NAME" value="${icu.patch.feature.name}"/>
+                <filter token="FEATURE.LABEL" value="${icu.patch.feature.label}"/>
+                <filter token="PATCH.VERSION" value="${icu.patch.version}"/>
+            </filterset>
+        </copy>
+
+        <!-- Create plugins directory -->
+        <mkdir dir="${project.dir}/plugins/${icu.patch.plugin.id}"/>
+        <copy todir="${project.dir}/plugins/${icu.patch.plugin.id}">
+            <fileset dir="${project.src.dir}/plugin"/>
+            <filterset>
+                <filter token="PLUGIN.ID" value="${icu.patch.plugin.id}"/>
+                <filter token="PATCH.VERSION" value="${icu.patch.version}"/>
+                <filter token="HOST.VERSION" value="${icu.patch.fragment.host.version}"/>
+                <filter token="BUILD.YEAR" value="${build.year}"/>
+            </filterset>
+        </copy>
+
+        <!-- Copy zoneinfo.res -->
+        <property name="icu.data.dir" value="${project.dir}/plugins/${icu.patch.plugin.id}/src/com/ibm/icu/impl/data/icudt${icu.data.version}b"/>
+        <mkdir dir="${icu.data.dir}"/>
+        <copy file="${tz.file}" tofile="${icu.data.dir}/zoneinfo.res"/>
+    </target>
+
+    <target name="pde.build"
+            depends="init, project.files"
+            if="eclipse.home"
+            description="Run the PDE tool to build the ICU data patch files">
+        <!-- Copy headless-build script files from pde plug-in directory-->
+        <mkdir dir="${build.dir}/config"/>
+        <copy todir="${build.dir}/config">
+            <fileset dir="${project.src.dir}/buildconfig"/>
+            <filterset>
+                <filter token="ECLIPSE.BASE.LOCATION" value="${eclipse.home}"/>
+                <filter token="ECLIPSE.OS" value="${eclipse.baseos}"/>
+                <filter token="ECLIPSE.WS" value="${eclipse.basews}"/>
+                <filter token="ECLIPSE.ARCH" value="${eclipse.basearch}"/>
+                <filter token="FEATURE.ID" value="${icu.patch.feature.id}"/>
+                <filter token="PROJECT.DIR" value="${project.dir}"/>
+                <filter token="OUT.ARC.ROOT" value=""/>
+                <filter token="BUILD.ID" value="${icu.patch.version}"/>
+                <filter token="BUILD.LABEL" value="${build.label}"/>
+            </filterset>
+        </copy>
+
+        <!-- Invoke PDE tool to build the feature -->
+        <java jar="${eclipse.launcher}" fork="true" failonerror="true">
+            <arg value="-application"/>
+            <arg value="org.eclipse.ant.core.antRunner"/>
+            <arg value="-buildfile"/>
+            <arg value="${eclipse.pde.dir}/scripts/build.xml"/>
+            <arg value="-Dbuilder=${build.dir}/config"/>
+        </java>
+    </target>
+
+    <target name="update.site"
+            depends="init, pde.build"
+            description="Build eclipse ICU plug-in data patch and copy them to the test update site">
+        <mkdir dir="${update.site.dir}"/>
+        <unzip src="${output.archive}" dest="${update.site.dir}"/>
+        <copy todir="${update.site.dir}" file="${project.src.dir}/site/site.xml">
+            <filterset>
+                <filter token="FEATURE.ID" value="${icu.patch.feature.id}"/>
+                <filter token="PATCH.VERSION" value="${icu.patch.version}"/>
+                <filter token="SITE.CATEGORY.NAME" value="${update.site.category.name}"/>
+                <filter token="SITE.CATEGORY.LABEL" value="${update.site.category.label}"/>
+            </filterset>
+        </copy>
+    </target>
+
+
+    <target name="build.all"
+            depends="build.info, project.files, pde.build, update.site"
+            description="Build ICU plug-in data patch">
+    </target>
+
+    <target name="clean" depends="init">
+        <delete dir="${build.dir}"/>
+    </target>
+
+</project>

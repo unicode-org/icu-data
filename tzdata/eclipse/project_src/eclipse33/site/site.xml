@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/@FEATURE.ID@_@PATCH.VERSION@.jar" id="@FEATURE.ID@" version="@PATCH.VERSION@" patch="true">
+      <category name="@SITE.CATEGORY.NAME@"/>
+   </feature>
+   <category-def name="@SITE.CATEGORY.NAME@" label="@SITE.CATEGORY.LABEL@"/>
+</site>
