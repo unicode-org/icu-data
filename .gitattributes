@@ -889,6 +889,7 @@ charset/source/java/com/ibm/icu/CharMapMetricTool/MappingTypes.java -text
 charset/source/java/com/ibm/icu/CharMapMetricTool/ShortOrderedTriple.java -text
 charset/source/java/com/ibm/icu/CharMapMetricTool/UserInterfaceBuilder.java -text
 charset/source/java/com/ibm/icu/CharMapMetricTool/ucmFileReader.java -text
+charset/source/java/com/ibm/icu/jdk/JDKConverter2UCM.java -text
 tzdata/Makefile -text
 tzdata/eclipse/build.xml -text
 tzdata/eclipse/icu_data_patch.properties.template -text
