@@ -928,6 +928,13 @@ tzdata/eclipse/project_src/eclipse33/plugin/fragment-icu-data.properties -text
 tzdata/eclipse/project_src/eclipse33/site/site.xml -text
 tzdata/eclipse/readme.txt -text
 tzdata/eclipse/versions/e322_3.4.5.20070308_2007c/icu_data_patch.properties -text
+tzdata/eclipse/versions/e322_3.4.5.20070308_2007c/updatesite/features/org.eclipse.rcp.3.2.2.patch.icu.data_3.4.5.20070308_2007c.jar -text
+tzdata/eclipse/versions/e322_3.4.5.20070308_2007c/updatesite/plugins/com.ibm.icu34.data.update_3.4.5.20070308_2007c.jar -text
+tzdata/eclipse/versions/e322_3.4.5.20070308_2007c/updatesite/site.xml -text
+tzdata/eclipse/versions/e322_3.4.5.20070329_2007d/icu_data_patch.properties -text
+tzdata/eclipse/versions/e322_3.4.5.20070329_2007d/updatesite/features/org.eclipse.rcp.3.2.2.patch.icu.data_3.4.5.20070329_2007d.jar -text
+tzdata/eclipse/versions/e322_3.4.5.20070329_2007d/updatesite/plugins/com.ibm.icu34.data.update_3.4.5.20070329_2007d.jar -text
+tzdata/eclipse/versions/e322_3.4.5.20070329_2007d/updatesite/site.xml -text
 tzdata/icu/2003a/be/zoneinfo.res -text
 tzdata/icu/2003a/ee/zoneinfo.res -text
 tzdata/icu/2003a/le/zoneinfo.res -text

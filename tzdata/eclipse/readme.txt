@@ -36,3 +36,7 @@ e<eclipse.version>_<icu.version>.<build.date>_<tz.version>
 
 Copy icu_data_patch.properties to the directory, so you can recreate the
 same patch later.
+
+Also copy the directory 
+out/e<eclipse.version>_<icu.version>.<build.date>_<tz.version>/updatesite
+to the directory above.
