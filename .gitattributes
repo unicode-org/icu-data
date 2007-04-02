@@ -1035,6 +1035,7 @@ tzdata/mirror/tzcode2007a.tar.gz -text
 tzdata/mirror/tzcode2007b.tar.gz -text
 tzdata/mirror/tzcode2007c.tar.gz -text
 tzdata/mirror/tzcode2007d.tar.gz -text
+tzdata/mirror/tzcode2007e.tar.gz -text
 tzdata/mirror/tzdata2003a.tar.gz -text
 tzdata/mirror/tzdata2003d.tar.gz -text
 tzdata/mirror/tzdata2004e.tar.gz -text
@@ -1056,4 +1057,5 @@ tzdata/mirror/tzdata2007a.tar.gz -text
 tzdata/mirror/tzdata2007b.tar.gz -text
 tzdata/mirror/tzdata2007c.tar.gz -text
 tzdata/mirror/tzdata2007d.tar.gz -text
+tzdata/mirror/tzdata2007e.tar.gz -text
 tzdata/readme.txt -text
