@@ -21,14 +21,14 @@ update-mirror:
 update-icu:
 	@for tzver in `ls mirror/tzdata*.tar.gz` ; do tzver=`basename $$tzver .tar.gz | cut -c7-`; $(MAKE) icu/$$tzver/zoneinfo.txt; done
 
-icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz
+icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@test ! -f $@ || (echo Remove $(@D)  and $@ manually - will not overwrite. ; touch $@ ;  false)
 	@test ! -d $(@D) || (echo Remove $(@D)  manually - will not overwrite. ;   false)
 	@echo "#" building $(@D) .. results are in ./$(shell basename $(@D)).log
 	@$(MAKE) -C $(TZSRC) dataclean 2> $(shell basename $(@D)).log > $(shell basename $(@D)).log
 	@rm -f $(TZSRC)/tzdata*.tar.gz 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 	@cp $^ $(TZSRC)
-	@$(MAKE) -C $(TZSRC) all 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+	@( $(MAKE) -C $(TZSRC) all && $(MAKE) -C $(ICU_SRC)/data && $(MAKE) -C $(TZSRC) check-dump ) 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 	@mkdir $(@D)
 	cp $(TZSRC)/zoneinfo.txt $(@D)
 	@echo "#" genrb and creating le/be/ee versions
