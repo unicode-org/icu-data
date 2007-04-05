@@ -28,7 +28,18 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@$(MAKE) -C $(TZSRC) dataclean 2> $(shell basename $(@D)).log > $(shell basename $(@D)).log
 	@rm -f $(TZSRC)/tzdata*.tar.gz 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 	@cp $^ $(TZSRC)
-	@( $(MAKE) -C $(TZSRC) all && $(MAKE) -C $(ICU_SRC)/data && $(MAKE) -C $(TZSRC) check-dump ) 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+
+	@echo "## Building all in $(TZSRC)"
+	@$(MAKE) -C $(TZSRC) all  2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+
+	@echo "## Rebuilding icu data in $(ICU_SRC)/data"
+	@$(MAKE) -C $(ICU_SRC)/data  2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+
+	@echo "## Testing icu data against tz algorithm"
+	@$(MAKE) -C $(TZSRC) check-dump  2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+
+	@echo "## Build OK."
+
 	@mkdir $(@D)
 	cp $(TZSRC)/zoneinfo.txt $(@D)
 	@echo "#" genrb and creating le/be/ee versions
