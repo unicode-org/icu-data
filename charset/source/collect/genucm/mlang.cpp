@@ -717,7 +717,14 @@ converter::get_OS_variant()
     OSVERSIONINFO os_info;
     os_info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
     GetVersionEx(&os_info);
-    if (5 == os_info.dwMajorVersion)
+    if (6 == os_info.dwMajorVersion)
+    {
+        if (0 == os_info.dwMinorVersion)
+        {
+            return "vista";
+        }
+    }
+    else if (5 == os_info.dwMajorVersion)
     {
         if (0 == os_info.dwMinorVersion)
         {
@@ -729,7 +736,7 @@ converter::get_OS_variant()
         }
         else if (2 == os_info.dwMinorVersion)
         {
-            return "dot_net_server";
+            return "server_2003";
         }
     }
     else if (4 == os_info.dwMajorVersion)
