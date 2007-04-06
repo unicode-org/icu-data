@@ -217,7 +217,7 @@ uhash_compareChars, NULL, 65537, &status);
             UChar source_uni[4];
             char cp[80];
             size_t len_uni = 0;
-            size_t targ_size;
+            //size_t targ_size;
 
             if (unicode_char == 0xD800) { // skip surrogates
                 unicode_char = 0xE000;
@@ -418,7 +418,7 @@ uhash_compareChars, NULL, 65537, &status);
         for (unisetNum = 0; unisetNum < unicodeSetLength; unisetNum++)
         {
             static char hex_buff1[MAX_BYTE_LEN * 4]; // byte -> \xNN
-            bool f_fallback;
+            UBool f_fallback;
             char *cp_data_uni_to_cp;
             UnicodeString *uni = (UnicodeString *)unicodeSetVect.elementAt(unisetNum);
             
@@ -575,7 +575,7 @@ static void collectFromUnicodeMapping(converter &cnv,
             uhash_put(uni_to_cp, unicode_key, scp, &status);
             
             save_byte_range(&byte_range[0], scp, 0, targ_size);
-            for (int32_t idx = 0; idx < len_uni; idx++) {
+            for (int32_t idx = 0; idx < (int32_t)len_uni; idx++) {
                 if (IS_PUA(source_uni_str.char32At(idx))) {
                     *used_PUA = TRUE;
                 }

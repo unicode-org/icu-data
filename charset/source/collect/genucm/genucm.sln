@@ -1,21 +1,19 @@
-Microsoft Visual Studio Solution File, Format Version 8.00
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "genucm", "genucm.vcproj", "{64576B18-E12F-44EB-A617-B8D7DAE8938E}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
 EndProject
 Global
-	GlobalSection(SolutionConfiguration) = preSolution
-		Debug = Debug
-		Release = Release
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ProjectConfiguration) = postSolution
-		{64576B18-E12F-44EB-A617-B8D7DAE8938E}.Debug.ActiveCfg = Debug|Win32
-		{64576B18-E12F-44EB-A617-B8D7DAE8938E}.Debug.Build.0 = Debug|Win32
-		{64576B18-E12F-44EB-A617-B8D7DAE8938E}.Release.ActiveCfg = Release|Win32
-		{64576B18-E12F-44EB-A617-B8D7DAE8938E}.Release.Build.0 = Release|Win32
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64576B18-E12F-44EB-A617-B8D7DAE8938E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{64576B18-E12F-44EB-A617-B8D7DAE8938E}.Debug|Win32.Build.0 = Debug|Win32
+		{64576B18-E12F-44EB-A617-B8D7DAE8938E}.Release|Win32.ActiveCfg = Release|Win32
+		{64576B18-E12F-44EB-A617-B8D7DAE8938E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-	EndGlobalSection
-	GlobalSection(ExtensibilityAddIns) = postSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

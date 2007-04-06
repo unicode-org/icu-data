@@ -1,3 +1,10 @@
+/*
+**********************************************************************
+*   Copyright (C) 2000-2007, International Business Machines
+*   Corporation and others.  All Rights Reserved.
+**********************************************************************
+*/
+
 #include "unicode/utypes.h"
 #include "cstring.h"
 #include "cmemory.h"
@@ -9,8 +16,8 @@
 #ifdef _WIN32
 
 // IMultiLanguage interfaces
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-#include <olestd.h>
+//#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
+//#include <olestd.h>
 #include <mlang.h>
 #include <winver.h>
 

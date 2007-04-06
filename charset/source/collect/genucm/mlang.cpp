@@ -1,5 +1,10 @@
 /*
- * Oddities that you will find while converting Unicode between codepages on
+**********************************************************************
+*   Copyright (C) 2000-2007, International Business Machines
+*   Corporation and others.  All Rights Reserved.
+**********************************************************************
+*/
+/* Oddities that you will find while converting Unicode between codepages on
  * Windows.  You can search for Oddity for messages to reenable.
  * 
  * - ConvertStringToUnicodeEx ignores the fallback parameter so we can't properly
@@ -561,17 +566,17 @@ converter::is_ignorable() const
             m_enc_num == 50000 ||  // x-user-defined
             m_enc_num == 50227 ||  // Chinese Simplified (ISO-2022)
 //            m_enc_num == 51932 ||  // loose matching euc-jp. Don't probe.
-//            m_enc_num == 54949 ||  // gb18030
-            m_enc_num == 57006 ||  // x-iscii-as
-            m_enc_num == 57003 ||  // x-iscii-be
+            m_enc_num == 54936 ||  // gb18030
             m_enc_num == 57002 ||  // x-iscii-de
-            m_enc_num == 57010 ||  // x-iscii-gu
+            m_enc_num == 57003 ||  // x-iscii-be
+            m_enc_num == 57004 ||  // x-iscii-ta
+            m_enc_num == 57005 ||  // x-iscii-te
+            m_enc_num == 57006 ||  // x-iscii-as
+            m_enc_num == 57007 ||  // x-iscii-or
             m_enc_num == 57008 ||  // x-iscii-ka
             m_enc_num == 57009 ||  // x-iscii-ma
-            m_enc_num == 57007 ||  // x-iscii-or
-            m_enc_num == 57011 ||  // x-iscii-pa
-            m_enc_num == 57004 ||  // x-iscii-ta
-            m_enc_num == 57005)     // x-iscii-te
+            m_enc_num == 57010 ||  // x-iscii-gu
+            m_enc_num == 57011)  // x-iscii-pa
     {
         return TRUE;
     }
