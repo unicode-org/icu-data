@@ -79,19 +79,21 @@
     </target>
 
     <target name="init.patch.version"
-            unless="icu.patch.version"
+            unless="patch.version"
             description="Set icu data patch version string">
         <tstamp>
             <format property="build.date" pattern="yyyyMMdd"/>
         </tstamp>
-        <property name="icu.patch.version" value="${icu.version}.${build.date}_${tz.version}"/>
+        <property name="build.date.str" value="v${build.date}"/>
+        <property name="patch.version" value="${eclipse.version.string}.${build.date.str}_${eclipse.version}"/>
+        <property name="icu.patch.plugin.version" value="${icu.version}.${build.date.str}_${tz.version}"/>
     </target>
 
     <target name="init.copyright.year"
-            unless="icu.copyright.year"
+            unless="copyright.year"
             description="Set icu copyright statement year">
         <tstamp>
-            <format property="icu.copyright.year" pattern="yyyy"/>
+            <format property="copyright.year" pattern="yyyy"/>
         </tstamp>
     </target>
 
@@ -99,12 +101,12 @@
             depends="check.props, init.patch.version, init.copyright.year, init.eclipse.env"
             description="Initialize build properties">
         <pathconvert property="build.dir" dirsep="/">
-            <path location="${basedir}/out/e${eclipse.version}_${icu.patch.version}"/>
+            <path location="${basedir}/out/${patch.feature.id}_${patch.version}-${tz.version}"/>
         </pathconvert>
         <property name="project.dir" value="${build.dir}/projects"/>
         <property name="build.arc" value="build.arc"/>
         <property name="build.label" value="ICU_data_patch"/>
-        <property name="output.archive" value="${project.dir}/${build.label}/${icu.patch.feature.id}-${icu.patch.version}.zip"/>
+        <property name="output.archive" value="${project.dir}/${build.label}/${patch.feature.id}-${patch.version}.zip"/>
         <property name="update.site.dir" value="${build.dir}/updatesite"/>
     </target>
 
@@ -170,15 +172,17 @@
     <target name="build.info"
             depends="init"
             description="Display build configuration">
-        <echo message="Target feature version:      ${target.feature.version}"/>
-        <echo message="ICU data patch feature ID:   ${icu.patch.feature.id}"/>
-        <echo message="ICU data patch version:      ${icu.patch.version}"/>
-        <echo message="ICU data patch plugin ID:    ${icu.patch.plugin.id}"/>
-        <echo message="ICU zonfinfo file:           ${tz.file}"/>
-        <echo message="Eclipse project directory:   ${project.dir}"/>
-        <echo message="Eclipse install location:    ${eclipse.home}"/>
-        <echo message="Output archive:              ${output.archive}"/>
-        <echo message="Update site directory:       ${update.site.dir}"/>
+        <echo message="Target feature ID:             ${target.feature}"/>
+        <echo message="Target feature version:        ${target.feature.version}"/>
+        <echo message="Patch feature ID:              ${patch.feature.id}"/>
+        <echo message="Patch version:                 ${patch.version}"/>
+        <echo message="ICU data patch plugin ID:      ${icu.patch.plugin.id}"/>
+        <echo message="ICU data patch plugin version: ${icu.patch.plugin.version}"/>
+        <echo message="ICU zonfinfo file:             ${tz.file}"/>
+        <echo message="Eclipse project directory:     ${project.dir}"/>
+        <echo message="Eclipse install location:      ${eclipse.home}"/>
+        <echo message="Output archive:                ${output.archive}"/>
+        <echo message="Update site directory:         ${update.site.dir}"/>
     </target>
 
     <target name="project.files"
@@ -186,18 +190,21 @@
             description="Collect eclipse project files for the ICU data patch">
         <delete dir="${project.dir}" failonerror="false"/>
         <!-- Create features directory -->
-        <mkdir dir="${project.dir}/features/${icu.patch.feature.id}"/>
-        <copy todir="${project.dir}/features/${icu.patch.feature.id}">
+        <mkdir dir="${project.dir}/features/${patch.feature.id}"/>
+        <copy todir="${project.dir}/features/${patch.feature.id}">
             <fileset dir="${project.src.dir}/feature"/>
             <filterset>
                 <filter token="TARGET.FEATURE" value="${target.feature}"/>
                 <filter token="TARGET.FEATURE.VERSION" value="${target.feature.version}"/>
                 <filter token="OLSON.VERSION" value="${tz.version}"/>
+                <filter token="COPYRIGHT.YEAR" value="${copyright.year}"/>
+                <filter token="FEATURE.ID" value="${patch.feature.id}"/>
+                <filter token="FEATURE.NAME" value="${patch.feature.name}"/>
+                <filter token="FEATURE.LABEL" value="${patch.feature.label}"/>
+                <filter token="FEATURE.DESCRIPTION" value="${patch.feature.description}"/>
+                <filter token="PATCH.VERSION" value="${patch.version}"/>
                 <filter token="PLUGIN.ID" value="${icu.patch.plugin.id}"/>
-                <filter token="FEATURE.ID" value="${icu.patch.feature.id}"/>
-                <filter token="FEATURE.NAME" value="${icu.patch.feature.name}"/>
-                <filter token="FEATURE.LABEL" value="${icu.patch.feature.label}"/>
-                <filter token="PATCH.VERSION" value="${icu.patch.version}"/>
+                <filter token="PLUGIN.VERSION" value="${icu.patch.plugin.version}"/>
             </filterset>
         </copy>
 
@@ -206,10 +213,10 @@
         <copy todir="${project.dir}/plugins/${icu.patch.plugin.id}">
             <fileset dir="${project.src.dir}/plugin"/>
             <filterset>
+                <filter token="COPYRIGHT.YEAR" value="${copyright.year}"/>
                 <filter token="PLUGIN.ID" value="${icu.patch.plugin.id}"/>
-                <filter token="PATCH.VERSION" value="${icu.patch.version}"/>
+                <filter token="PLUGIN.VERSION" value="${icu.patch.plugin.version}"/>
                 <filter token="HOST.VERSION" value="${icu.patch.fragment.host.version}"/>
-                <filter token="BUILD.YEAR" value="${build.year}"/>
             </filterset>
         </copy>
 
@@ -232,10 +239,10 @@
                 <filter token="ECLIPSE.OS" value="${eclipse.baseos}"/>
                 <filter token="ECLIPSE.WS" value="${eclipse.basews}"/>
                 <filter token="ECLIPSE.ARCH" value="${eclipse.basearch}"/>
-                <filter token="FEATURE.ID" value="${icu.patch.feature.id}"/>
+                <filter token="FEATURE.ID" value="${patch.feature.id}"/>
                 <filter token="PROJECT.DIR" value="${project.dir}"/>
                 <filter token="OUT.ARC.ROOT" value=""/>
-                <filter token="BUILD.ID" value="${icu.patch.version}"/>
+                <filter token="BUILD.ID" value="${patch.version}"/>
                 <filter token="BUILD.LABEL" value="${build.label}"/>
             </filterset>
         </copy>
@@ -257,8 +264,8 @@
         <unzip src="${output.archive}" dest="${update.site.dir}"/>
         <copy todir="${update.site.dir}" file="${project.src.dir}/site/site.xml">
             <filterset>
-                <filter token="FEATURE.ID" value="${icu.patch.feature.id}"/>
-                <filter token="PATCH.VERSION" value="${icu.patch.version}"/>
+                <filter token="FEATURE.ID" value="${patch.feature.id}"/>
+                <filter token="PATCH.VERSION" value="${patch.version}"/>
                 <filter token="SITE.CATEGORY.NAME" value="${update.site.category.name}"/>
                 <filter token="SITE.CATEGORY.LABEL" value="${update.site.category.label}"/>
             </filterset>
