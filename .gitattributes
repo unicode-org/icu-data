@@ -890,6 +890,12 @@ charset/source/java/com/ibm/icu/CharMapMetricTool/ShortOrderedTriple.java -text
 charset/source/java/com/ibm/icu/CharMapMetricTool/UserInterfaceBuilder.java -text
 charset/source/java/com/ibm/icu/CharMapMetricTool/ucmFileReader.java -text
 charset/source/java/com/ibm/icu/jdk/JDKConverter2UCM.java -text
+charset/source/ucmtools/rptp-history.txt -text
+charset/source/ucmtools/rptp2ucm.cpp -text
+charset/source/ucmtools/rptp2ucm.sln -text
+charset/source/ucmtools/rptp2ucm.vcproj -text
+charset/source/ucmtools/rptp_map.cpp -text
+charset/source/ucmtools/rptp_map.h -text
 tzdata/Makefile -text
 tzdata/eclipse/build.xml -text
 tzdata/eclipse/icu_data_patch.properties.template -text
