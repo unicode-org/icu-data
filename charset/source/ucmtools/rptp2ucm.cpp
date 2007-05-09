@@ -197,6 +197,7 @@ knownSubchars[]={
 
 typedef struct CCSIDStateTable {
     uint16_t ccsid;
+    uint16_t unicode; /* 0 means any unicode version. */
     const char *table;
 } CCSIDStateTable;
 
@@ -233,62 +234,62 @@ typedef struct CCSIDStateTable {
 static const CCSIDStateTable
 knownStateTables[]={
 
-    301,  "<icu:state>                   0-80:2, 81-9f:1, a0-df:2, e0-fc:1, fd-ff:2\n"
+    301,0,"<icu:state>                   0-80:2, 81-9f:1, a0-df:2, e0-fc:1, fd-ff:2\n"
           "<icu:state>                   40-7e, 80-fc\n"
           "<icu:state>\n",
 
-    367,   "<icu:state>                   0-7f\n",
+    367,0,"<icu:state>                   0-7f\n",
 
-    927, japanesePCDBCSStates,
+    927,0,japanesePCDBCSStates,
 
-    926, japanesePCDBCSStates,
+    926,0,japanesePCDBCSStates,
 
-    928, japanesePCDBCSStates,
+    928,0,japanesePCDBCSStates,
 
-    932, "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
-         "<icu:state>                   40-7e, 80-fc\n",
+    932,0,"<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
+          "<icu:state>                   40-7e, 80-fc\n",
 
-    941,  japanesePCDBCSStates,
+    941,0,japanesePCDBCSStates,
 
-    942,   "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
+    942,0, "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
            "<icu:state>                   40-7e, 80-fc\n",
 
-    943,   "<icu:state>                   0-7f, 81-9f:1, a0-df, e0-fc:1\n"
+    943,0, "<icu:state>                   0-7f, 81-9f:1, a0-df, e0-fc:1\n"
            "<icu:state>                   40-7e, 80-fc\n",
 
-    944,   "<icu:state>                   0-80, 81-bf:1, c0-ff\n"
+    944,0, "<icu:state>                   0-80, 81-bf:1, c0-ff\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
-    946,   "<icu:state>                   0-80, 81-fb:1,fc:2,fd-ff\n"
+    946,0, "<icu:state>                   0-80, 81-fb:1,fc:2,fd-ff\n"
            "<icu:state>                   40-7e, 80-fe\n"
            "<icu:state>                   80-fe.u,fc",
 
-    947,   Big5DBCSStates,
+    947,0, Big5DBCSStates,
 
-    948,   "<icu:state>                   0-80, 81-fb:1,fc:2,fd-fe\n"
+    948,0, "<icu:state>                   0-80, 81-fb:1,fc:2,fd-fe\n"
            "<icu:state>                   40-7e, 80-fe\n"
            "<icu:state>                   80-fe.u,fc\n",
 
-    949,   "<icu:state>                   0-84, 8f-fe:1\n"
+    949,0, "<icu:state>                   0-84, 8f-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
-    950,   Big5MBCSStates,
+    950,0, Big5MBCSStates,
 
-    954,   "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
+    954,0, "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n"
            "<icu:state>                   a1-e4\n"
            "<icu:state>                   a1-fe:1, a1:4\n"
            "<icu:state>                   a1-fe.u\n",
 
-    955,   "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
+    955,0, "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
 
-    963,   "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
+    963,0, "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
 
-    964,   "<icu:state>                   0-8d, 8e:2, 90-9f, a1-fe:1, aa-c1:5, c3:5, fe:5\n"
+    964,0, "<icu:state>                   0-8d, 8e:2, 90-9f, a1-fe:1, aa-c1:5, c3:5, fe:5\n"
            "<icu:state>                   a1-fe\n"
            "<icu:state>                   a1-b0:3, a1:4, a2:8, a3-ab:4, ac:7, ad:6, ae-b0:4\n"
            "<icu:state>                   a1-fe:1\n"
@@ -298,77 +299,96 @@ knownStateTables[]={
            "<icu:state>                   a1-e2:1, e3-fe:5\n"
            "<icu:state>                   a1-f2:1, f3-fe:5\n",
 
-    970,   "<icu:state>                   0-9f, a1-fe:1\n"
+    970,0, "<icu:state>                   0-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n",
 
-    1363,  "<icu:state>                   0-7f, 81-fe:1\n"
+    1363,0,"<icu:state>                   0-7f, 81-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
-    1350,  "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
+    1350,0,"<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n"
            "<icu:state>                   a1-e4\n"
            "<icu:state>                   a1-fe:1, a1:4, a3-a5:4, a8:4, ac-af:4, ee-f2:4\n"
            "<icu:state>                   a1-fe.u\n",
 
-    1351,  "<icu:state>                   0-ff:2, 81-9f:1, e0-fc:1\n"
+    1351,0,"<icu:state>                   0-ff:2, 81-9f:1, e0-fc:1\n"
            "<icu:state>                   40-7e, 80-fc\n"
            "<icu:state>\n",
 
-    1370,  "<icu:state>                   0-80, 81-fe:1\n"
+    1370,0,"<icu:state>                   0-80, 81-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
-    1373,  Big5MBCSStates,
+    1373,0,Big5MBCSStates,
 
-    1374,  Big5DBCSStates,
+    1374,0,Big5DBCSStates,
 
-    1375,  Big5MBCSStates,
+    /* 1232 says UTF-32, but it's really post Unicode 4.0 */
+    1375,1232,  "<icu:state>                   0-7f, 81-fe:1, 87-a0:2, c8:2, fa-fe:2\n"
+                "<icu:state>                   40-7e, a1-fe\n"
+                "<icu:state>                   40-7e.p, a1-fe.p\n",
 
-    1381,  "<icu:state>                   0-84, 8c-fe:1\n"
+    1375,0,Big5MBCSStates,
+
+    /* 1232 says UTF-32, but it's really post Unicode 4.0 */
+    1377,1232,  "# includes mappings for surrogate pairs\n"
+                "<icu:state>                   0-ff, e:1.s, f:0.s\n"
+                "<icu:state>                   initial, 0-3f:4, e:1.s, f:0.s, 40:3, 41-fe:2, ff:4, 4b:5, e0:5, c2-d6:5, db-df:5\n"
+                "<icu:state>                   0-40:1.i, 41-fe:1., ff:1.i\n"
+                "<icu:state>                   0-ff:1.i, 40:1.\n"
+                "<icu:state>                   0-ff:1.i\n"
+                "<icu:state>                   0-40:1.i, 41-fe:1.p, ff:1.i\n",
+
+    1381,0,"<icu:state>                   0-84, 8c-fe:1\n"
            "<icu:state>                   a1-fe\n",
 
-    1383,  "<icu:state>                   0-9f, a1-fe:1\n"
+    1383,0,"<icu:state>                   0-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n",
 
-    1385,  "<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
+    1385,0,"<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
            "<icu:state>                   40-7e, 80-fe\n"
            "<icu:state>\n",
 
-    1386,  "<icu:state>                   0-80, 81-fe:1\n" /* Was 0-7f, 81-fe:1 */
+    1386,0,"<icu:state>                   0-80, 81-fe:1\n" /* Was 0-7f, 81-fe:1 */
            "<icu:state>                   40-7e, 80-fe\n",
 
-    1390, states1390,
+    1390,0,states1390,
 
-    1399, states1390,
+    1399,0,states1390,
 
-    5039,  "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
+    5039,0,"<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
            "<icu:state>                   40-7e, 80-fc\n",
 
-    5050,  "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
+    5050,0,"<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n"
            "<icu:state>                   a1-e4\n"
            "<icu:state>                   a1-fe:1, a1:4, a3-af:4, b6:4, d6:4, da-db:4, ed-f2:4\n"
            "<icu:state>                   a1-fe.u\n",
 
-    5067,  "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
+    5067,0,"<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
 
-    5470,  Big5DBCSStates,
+    5470,0,Big5DBCSStates,
 
-    5471,  Big5MBCSStates,
+    /* 1232 says UTF-32, but it's really post Unicode 4.0 */
+    5471,1232,  "<icu:state>                   0-7f, 81-fe:1, 88-a0:2, c8:2, fa-fe:2\n"
+                "<icu:state>                   40-7e, a1-fe\n"
+                "<icu:state>                   40-7e.p, a1-fe.p\n",
 
-    5475,  Big5MBCSStates,
+    5471,0,Big5MBCSStates,
 
-    5478,  "<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
+    5475,0,Big5MBCSStates,
+
+    5478,0,"<icu:state>                   0-20:2, 21-7e:1, 7f-ff:2\n"
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
 
-    5487,  "<icu:state>                   81-fe:1\n"
+    5487,0,"<icu:state>                   81-fe:1\n"
            "<icu:state>                   30-39:2\n"
            "<icu:state>                   81-fe:3\n"
            "<icu:state>                   30-39\n",
 
-    5488,  "<icu:state> 0-7f, 81:7, 82:8, 83:9, 84:a, 85-fe:4\n"    /* Modified form of ICU's gb18030 */
+    5488,0,"<icu:state> 0-7f, 81:7, 82:8, 83:9, 84:a, 85-fe:4\n"    /* Modified form of ICU's gb18030 */
            "<icu:state> 30-39:2, 40-7e, 80-fe\n"
            "<icu:state> 81-fe:3\n"
            "<icu:state> 30-39\n"
@@ -380,31 +400,31 @@ knownStateTables[]={
            "<icu:state> 30-35:5, 36:2, 37-39:5, 40-7e, 80-fe\n"
            "<icu:state> 30-31:2, 32-39:5, 40-7e, 80-fe\n",
 
-    9577,  "<icu:state>                   81-fe:1\n"
+    9577,0,"<icu:state>                   81-fe:1\n"
            "<icu:state>                   40-7e, 80-fe\n",
 
-    16684, states16684,
+    16684,0,states16684,
 
-    21427, "<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
-           "<icu:state>                   40-7e, 80-fe\n"
-           "<icu:state>\n",
+    21427,0,"<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
+            "<icu:state>                   40-7e, 80-fe\n"
+            "<icu:state>\n",
 
-    25546, "<icu:state>                   0-7f, e:1.s, f:0.s\n"
-           "<icu:state>                   initial, 0-20:3, e:1.s, f:0.s, 21-7e:2, 7f-ff:3\n"
-           "<icu:state>                   0-20:1.i, 21-7e:1., 7f-ff:1.i\n"
-           "<icu:state>                   0-ff:1.i\n",
+    25546,0,"<icu:state>                   0-7f, e:1.s, f:0.s\n"
+            "<icu:state>                   initial, 0-20:3, e:1.s, f:0.s, 21-7e:2, 7f-ff:3\n"
+            "<icu:state>                   0-20:1.i, 21-7e:1., 7f-ff:1.i\n"
+            "<icu:state>                   0-ff:1.i\n",
 
-    33722, "<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
-           "<icu:state>                   a1-fe\n"
-           "<icu:state>                   a1-e4\n"
-           "<icu:state>                   a1-fe:1, a1:4, a3-af:4, b6:4, d6:4, da-db:4, ed-f2:4\n"
-           "<icu:state>                   a1-fe.u\n",
+    33722,0,"<icu:state>                   0-8d, 8e:2, 8f:3, 90-9f, a1-fe:1\n"
+            "<icu:state>                   a1-fe\n"
+            "<icu:state>                   a1-e4\n"
+            "<icu:state>                   a1-fe:1, a1:4, a3-af:4, b6:4, d6:4, da-db:4, ed-f2:4\n"
+            "<icu:state>                   a1-fe.u\n",
 
-    54191, "<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
-           "<icu:state>                   40-7e, 80-fc\n",
+    54191,0,"<icu:state>                   0-80, 81-9f:1, a0-df, e0-fc:1, fd-ff\n"
+            "<icu:state>                   40-7e, 80-fc\n",
 
-    62383, "<icu:state>                   0-7f, 81-9f:1, a0-df, e0-fc:1\n" // Same as CCSID 943
-           "<icu:state>                   40-7e, 80-fc\n"
+    62383,0,"<icu:state>                   0-7f, 81-9f:1, a0-df, e0-fc:1\n" // Same as CCSID 943
+            "<icu:state>                   40-7e, 80-fc\n"
 
 };
 
@@ -416,7 +436,7 @@ static FilenameMappingHistory* filenameHistory;
 static UCMFile *fromUFile, *toUFile;
 
 static uint32_t subchar, subchar1;
-static uint16_t ccsid;
+static uint16_t ccsid, unicodeCCSID;
 
 /*Year when the ucm files were produced using this tool*/
 static uint16_t year;
@@ -449,6 +469,7 @@ init() {
 
     subchar=subchar1=0;
     ccsid=0;
+    unicodeCCSID=0;
     year=0;
 
     minTwoByte=0xffff;
@@ -596,6 +617,9 @@ parseMappings(FILE *f, UCMFile *ucm) {
         if(*s=='#' || *s=='*') {
             /* get subchar1 */
             s=uprv_strstr(line, "for U+00xx");
+            if(s==NULL) {
+                s=uprv_strstr(line, "for U+000000xx");
+            }
             if(s!=NULL) {
                 s=uprv_strstr(line, "x'");
                 if(s!=NULL) {
@@ -614,6 +638,12 @@ parseMappings(FILE *f, UCMFile *ucm) {
 
             /* get subchar */
             s=uprv_strstr(line, "for U+xxxx");
+            if(s==NULL) {
+                s=uprv_strstr(line, "for U+000xxxxx");
+            }
+            if(s==NULL) {
+                s=uprv_strstr(line, "for U+0000xxxx");
+            }
             if(s!=NULL) {
                 s=uprv_strstr(line, "x'");
                 if(s!=NULL) {
@@ -1051,7 +1081,7 @@ getStateTable() {
     int32_t i;
 
     for(i=0; i<LENGTHOF(knownStateTables); ++i) {
-        if(ccsid==knownStateTables[i].ccsid) {
+        if(knownStateTables[i].ccsid == ccsid && (knownStateTables[i].unicode == 0 || knownStateTables[i].unicode == unicodeCCSID)) {
             return knownStateTables[i].table;
         }
     }
@@ -1331,8 +1361,7 @@ freeTPMAPNames(char **tpmapFiles, int32_t numFiles) {
 
 static void
 setCCSID(uint32_t value) {
-    uint16_t unicode;
-    if (!getCCSIDValues(value, &unicode, &ccsid)) {
+    if (!getCCSIDValues(value, &unicodeCCSID, &ccsid)) {
         fprintf(stderr, "error: %X is not a Unicode conversion table\n", value);
         exit(1);
     }

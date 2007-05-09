@@ -151,10 +151,15 @@ FilenameMappingHistory *FilenameMappingHistory::create(const char *filename, UEr
                 // Mapping conflict for the RPMAP. We will have to be careful about this in the future.
                 vect = (UVector*)(elem->value.pointer);
                 if (vect->contains(item)) {
-                    fprintf(stderr, "Duplicate line in history file on line %d", lineNum);
+                    fprintf(stderr, "Duplicate R?MAP/T?MAP combination in history file on line %d\n", lineNum);
                     *status = U_PARSE_ERROR;
                     return NULL;
                 }
+            }
+            if (retVal->sortedByResult.indexOf(item) >= 0) {
+                fprintf(stderr, "Duplicate result in history file on line %d\n", lineNum);
+                *status = U_PARSE_ERROR;
+                return NULL;
             }
             retVal->addItem(vect, item, status);
         }
