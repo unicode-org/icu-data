@@ -6,21 +6,149 @@
 # ***************************************************************************
 #
 # File created by rptp2ucm (compiled on May  9 2007)
-# from source files 44B0155E.RPMAP100 and 155E44B0.TPMAP100
+# from source files 44B0055F.RPMAP100 and 055F44B0.TPMAP100
 #
-<code_set_name>               "ibm-5470_P100-2005"
+<code_set_name>               "ibm-1375_P100-2006"
 <char_name_mask>              "AXXXX"
 <mb_cur_max>                  2
-<mb_cur_min>                  2
-<uconv_class>                 "DBCS"
+<mb_cur_min>                  1
+<uconv_class>                 "MBCS"
 <subchar>                     \xA1\x48
 <icu:charsetFamily>           "ASCII"
-<icu:alias>                   "ibm-5470_VPUA"
+<icu:alias>                   "ibm-1375_VPUA"
 
-<icu:state>                   81-fe:1
+<icu:state>                   0-7f, 81-fe:1
 <icu:state>                   40-7e, 80-fe
 
 CHARMAP
+<U0000> \x00 |0
+<U0001> \x01 |0
+<U0002> \x02 |0
+<U0003> \x03 |0
+<U0004> \x04 |0
+<U0005> \x05 |0
+<U0006> \x06 |0
+<U0007> \x07 |0
+<U0008> \x08 |0
+<U0009> \x09 |0
+<U000A> \x0A |0
+<U000B> \x0B |0
+<U000C> \x0C |0
+<U000D> \x0D |0
+<U000E> \x0E |0
+<U000F> \x0F |0
+<U0010> \x10 |0
+<U0011> \x11 |0
+<U0012> \x12 |0
+<U0013> \x13 |0
+<U0014> \x14 |0
+<U0015> \x15 |0
+<U0016> \x16 |0
+<U0017> \x17 |0
+<U0018> \x18 |0
+<U0019> \x19 |0
+<U001A> \x1A |0
+<U001B> \x1B |0
+<U001C> \x1C |0
+<U001D> \x1D |0
+<U001E> \x1E |0
+<U001F> \x1F |0
+<U0020> \x20 |0
+<U0021> \x21 |0
+<U0022> \x22 |0
+<U0023> \x23 |0
+<U0024> \x24 |0
+<U0025> \x25 |0
+<U0026> \x26 |0
+<U0027> \x27 |0
+<U0028> \x28 |0
+<U0029> \x29 |0
+<U002A> \x2A |0
+<U002B> \x2B |0
+<U002C> \x2C |0
+<U002D> \x2D |0
+<U002E> \x2E |0
+<U002F> \x2F |0
+<U0030> \x30 |0
+<U0031> \x31 |0
+<U0032> \x32 |0
+<U0033> \x33 |0
+<U0034> \x34 |0
+<U0035> \x35 |0
+<U0036> \x36 |0
+<U0037> \x37 |0
+<U0038> \x38 |0
+<U0039> \x39 |0
+<U003A> \x3A |0
+<U003B> \x3B |0
+<U003C> \x3C |0
+<U003D> \x3D |0
+<U003E> \x3E |0
+<U003F> \x3F |0
+<U0040> \x40 |0
+<U0041> \x41 |0
+<U0042> \x42 |0
+<U0043> \x43 |0
+<U0044> \x44 |0
+<U0045> \x45 |0
+<U0046> \x46 |0
+<U0047> \x47 |0
+<U0048> \x48 |0
+<U0049> \x49 |0
+<U004A> \x4A |0
+<U004B> \x4B |0
+<U004C> \x4C |0
+<U004D> \x4D |0
+<U004E> \x4E |0
+<U004F> \x4F |0
+<U0050> \x50 |0
+<U0051> \x51 |0
+<U0052> \x52 |0
+<U0053> \x53 |0
+<U0054> \x54 |0
+<U0055> \x55 |0
+<U0056> \x56 |0
+<U0057> \x57 |0
+<U0058> \x58 |0
+<U0059> \x59 |0
+<U005A> \x5A |0
+<U005B> \x5B |0
+<U005C> \x5C |0
+<U005D> \x5D |0
+<U005E> \x5E |0
+<U005F> \x5F |0
+<U0060> \x60 |0
+<U0061> \x61 |0
+<U0062> \x62 |0
+<U0063> \x63 |0
+<U0064> \x64 |0
+<U0065> \x65 |0
+<U0066> \x66 |0
+<U0067> \x67 |0
+<U0068> \x68 |0
+<U0069> \x69 |0
+<U006A> \x6A |0
+<U006B> \x6B |0
+<U006C> \x6C |0
+<U006D> \x6D |0
+<U006E> \x6E |0
+<U006F> \x6F |0
+<U0070> \x70 |0
+<U0071> \x71 |0
+<U0072> \x72 |0
+<U0073> \x73 |0
+<U0074> \x74 |0
+<U0075> \x75 |0
+<U0076> \x76 |0
+<U0077> \x77 |0
+<U0078> \x78 |0
+<U0079> \x79 |0
+<U007A> \x7A |0
+<U007B> \x7B |0
+<U007C> \x7C |0
+<U007D> \x7D |0
+<U007E> \x7E |0
+<U007F> \x7F |0
 <U00A7> \xA1\xB1 |0
 <U00A8> \xC6\xD8 |0
 <U00AF> \xA1\xC2 |0
@@ -679,6 +807,7 @@ CHARMAP
 <U33D5> \xA2\x4F |0
 <U3435> \x92\x77 |0
 <U3440> \x96\xDF |0
+<U344A> \x8C\xF4 |0
 <U344C> \x89\xD5 |0
 <U3464> \x93\xCD |0
 <U3473> \x9B\xDF |0
@@ -731,6 +860,7 @@ CHARMAP
 <U3618> \x9C\x5C |0
 <U361A> \x8B\xB1 |0
 <U3623> \xFB\x5E |0
+<U3625> \x87\x70 |0
 <U362D> \x9D\xF3 |0
 <U3635> \xA0\xD0 |0
 <U3639> \xFC\x66 |0
@@ -740,6 +870,7 @@ CHARMAP
 <U3649> \xFA\x48 |0
 <U364E> \x8E\x45 |0
 <U365F> \x9C\x6F |0
+<U3661> \x8D\x5C |0
 <U367A> \x9E\xDE |0
 <U3681> \x89\xEF |0
 <U369A> \x96\xE9 |0
@@ -789,6 +920,7 @@ CHARMAP
 <U37A0> \x93\x4B |0
 <U37B9> \x9A\xBD |0
 <U37BE> \x91\xB7 |0
+<U37D6> \x8D\x4B |0
 <U37F2> \x95\xB4 |0
 <U37F8> \xFE\xC5 |0
 <U37FB> \x9E\xF0 |0
@@ -803,6 +935,7 @@ CHARMAP
 <U38C3> \x91\x66 |0
 <U38CC> \xFA\xCD |0
 <U38D1> \x93\xDD |0
+<U38D4> \x8D\x52 |0
 <U38FA> \x8B\xCC |0
 <U3908> \x8D\x6D |0
 <U3914> \x8D\x6E |0
@@ -811,6 +944,7 @@ CHARMAP
 <U393F> \x8D\x6F |0
 <U394D> \x8D\x70 |0
 <U3963> \xFC\x64 |0
+<U3978> \x8C\xF3 |0
 <U3980> \x90\x60 |0
 <U3989> \x8D\x74 |0
 <U398A> \x97\xC3 |0
@@ -863,6 +997,7 @@ CHARMAP
 <U3B7B> \x8D\xBC |0
 <U3B7C> \x90\x44 |0
 <U3B80> \xFD\x4C |0
+<U3B95> \x87\x4B |0
 <U3B96> \x93\xE4 |0
 <U3B99> \x93\xE0 |0
 <U3BA1> \xFD\x53 |0
@@ -889,6 +1024,7 @@ CHARMAP
 <U3CDC> \xFA\xA5 |0
 <U3CEB> \xFD\xA3 |0
 <U3CEF> \x8D\xDB |0
+<U3D12> \x8C\xEA |0
 <U3D13> \x8E\xAF |0
 <U3D1D> \x91\xB5 |0
 <U3D32> \xFD\x49 |0
@@ -905,6 +1041,7 @@ CHARMAP
 <U3D75> \x8D\xF0 |0
 <U3D7D> \x96\xA6 |0
 <U3D85> \xFB\xBF |0
+<U3D88> \x8C\xDF |0
 <U3D8A> \x8D\xF3 |0
 <U3D8F> \x94\x49 |0
 <U3D91> \x8D\xF5 |0
@@ -923,6 +1060,7 @@ CHARMAP
 <U3DE8> \xFD\xE9 |0
 <U3DEB> \x9D\xB5 |0
 <U3DF3> \x98\x79 |0
+<U3DF4> \x87\x6A |0
 <U3DF7> \x9D\x5D |0
 <U3DFC> \x8D\x63 |0
 <U3DFD> \x96\x69 |0
@@ -964,6 +1102,7 @@ CHARMAP
 <U3F00> \x96\x62 |0
 <U3F04> \xFE\xB6 |0
 <U3F06> \x94\x63 |0
+<U3F07> \x8D\x47 |0
 <U3F0E> \x98\xD0 |0
 <U3F53> \x98\xD1 |0
 <U3F58> \x94\x75 |0
@@ -972,6 +1111,7 @@ CHARMAP
 <U3F7C> \x98\xD6 |0
 <U3F93> \x8A\xF0 |0
 <U3FC0> \x98\xD9 |0
+<U3FC8> \x8D\x5A |0
 <U3FD7> \x98\xDB |0
 <U3FDC> \x98\xDD |0
 <U3FE5> \x98\xA8 |0
@@ -996,7 +1136,9 @@ CHARMAP
 <U40C8> \x94\xBC |0
 <U40D8> \xFC\xD1 |0
 <U40DF> \x9C\xC6 |0
+<U40F8> \x8D\x4A |0
 <U40FA> \x9E\x7E |0
+<U4102> \x8D\x44 |0
 <U4103> \x98\xFE |0
 <U4104> \xFD\xE8 |0
 <U4109> \x99\x40 |0
@@ -1005,6 +1147,7 @@ CHARMAP
 <U4167> \x99\x46 |0
 <U416C> \x90\xC0 |0
 <U416E> \x94\xD1 |0
+<U417C> \x8D\x4E |0
 <U417F> \x95\x73 |0
 <U4190> \x93\xC2 |0
 <U41B2> \x99\x48 |0
@@ -1012,6 +1155,7 @@ CHARMAP
 <U41CA> \x8E\x55 |0
 <U41CF> \x99\x4E |0
 <U41DB> \x8E\xFE |0
+<U41ED> \x8D\x5F |0
 <U41EF> \x8E\x59 |0
 <U41F9> \x94\xEC |0
 <U4211> \x94\xEF |0
@@ -1033,11 +1177,13 @@ CHARMAP
 <U432B> \x8E\xB9 |0
 <U436E> \x95\xC6 |0
 <U4397> \x99\x67 |0
+<U439A> \x8C\xE3 |0
 <U43BA> \x8A\xB9 |0
 <U43C1> \x8D\xFC |0
 <U43D9> \x8A\x76 |0
 <U43DF> \x9D\x51 |0
 <U43ED> \x99\x73 |0
+<U43F0> \x87\x40 |0
 <U43F2> \x9D\x4F |0
 <U4401> \x99\x7A |0
 <U4402> \x95\x64 |0
@@ -1046,15 +1192,19 @@ CHARMAP
 <U442D> \x99\xA7 |0
 <U447A> \x8E\xED |0
 <U448F> \x99\xAD |0
+<U4491> \xC8\x7E |0
 <U449F> \x94\x6E |0
 <U44A0> \x8F\x70 |0
 <U44A2> \xFA\xD0 |0
 <U44B0> \x99\xB3 |0
 <U44B7> \xA0\x53 |0
+<U44BD> \x8D\x5E |0
 <U44C0> \x96\x5C |0
+<U44C3> \x8C\xE0 |0
 <U44C5> \xFD\x7A |0
 <U44CE> \x97\xFE |0
 <U44DD> \x92\xBD |0
+<U44DE> \x8D\x5D |0
 <U44DF> \x97\xFD |0
 <U44E4> \x8F\x64 |0
 <U44E9> \xFC\xF7 |0
@@ -1067,10 +1217,12 @@ CHARMAP
 <U4509> \x9D\xA5 |0
 <U450B> \x8F\x54 |0
 <U4516> \x8F\x7C |0
+<U451B> \x8D\x55 |0
 <U451D> \x8E\xA2 |0
 <U4527> \x8F\x7A |0
 <U452E> \x97\xAE |0
 <U4533> \x96\xC8 |0
+<U4536> \x8C\xE4 |0
 <U453B> \x99\xC3 |0
 <U453D> \x90\xD6 |0
 <U453F> \x9C\xBE |0
@@ -1078,12 +1230,21 @@ CHARMAP
 <U4551> \x94\x70 |0
 <U4552> \xFB\x4B |0
 <U4555> \xFD\xCA |0
+<U4558> \x8C\xEF |0
 <U455C> \x8E\xC7 |0
+<U4561> \x8D\x54 |0
 <U4562> \xA0\xF9 |0
 <U456A> \x8F\xA9 |0
+<U456D> \x8D\x51 |0
 <U4577> \x99\xC7 |0
+<U4578> \x87\x44 |0
 <U4585> \x90\xD7 |0
+<U45A6> \x87\x43 |0
+<U45B3> \x87\x47 |0
+<U45DA> \x87\x58 |0
 <U45E9> \x9E\xDF |0
+<U45EA> \x8D\x59 |0
+<U4603> \x87\x42 |0
 <U4606> \x99\xCE |0
 <U460F> \x8F\xBA |0
 <U4615> \x8F\xEB |0
@@ -1091,16 +1252,21 @@ CHARMAP
 <U465B> \x8F\xC2 |0
 <U467A> \x92\xC9 |0
 <U4680> \x97\xDC |0
+<U46A1> \x87\x5D |0
+<U46BB> \x8D\x45 |0
 <U46CF> \x95\xB3 |0
 <U46D0> \x9C\x79 |0
 <U46F5> \x95\xB2 |0
+<U46F7> \x8D\x4C |0
 <U4713> \x8F\xDB |0
 <U4718> \x9B\xE3 |0
+<U4736> \x87\x4C |0
+<U4744> \x87\x4D |0
 <U474E> \x9E\x7A |0
+<U474F> \x87\x57 |0
 <U477C> \x9B\xEE |0
 <U4798> \x99\xDE |0
 <U47A6> \xFA\xFA |0
-<U47B6> \x9E\xE5 |0
 <U47D5> \x8A\x52 |0
 <U47ED> \x99\xE1 |0
 <U47F4> \x8A\x67 |0
@@ -1143,6 +1309,7 @@ CHARMAP
 <U4A24> \x9A\x5A |0
 <U4A35> \x9A\x5C |0
 <U4A96> \x97\xC2 |0
+<U4AA4> \x87\x5C |0
 <U4AB4> \x8A\xBB |0
 <U4AB8> \x9B\xAA |0
 <U4AD1> \x90\xF5 |0
@@ -1170,22 +1337,34 @@ CHARMAP
 <U4C04> \xA0\x6F |0
 <U4C07> \xA0\x6A |0
 <U4C0E> \x91\x5F |0
+<U4C32> \x87\x41 |0
 <U4C3B> \x9F\xA5 |0
 <U4C3E> \x89\xBA |0
+<U4C40> \x87\x4F |0
+<U4C47> \x87\x4E |0
+<U4C57> \x87\x55 |0
 <U4C5B> \x9E\xCD |0
 <U4C6D> \x9A\x79 |0
+<U4C77> \x8C\xF2 |0
+<U4C7B> \x8D\x57 |0
 <U4C7D> \x9D\xCE |0
 <U4C81> \x8C\xD2 |0
+<U4C85> \x87\x59 |0
 <U4CA4> \x9D\x73 |0
 <U4CAE> \x96\xB9 |0
 <U4CB0> \x96\xBC |0
 <U4CB7> \x9C\xD1 |0
 <U4CCD> \x89\xB7 |0
 <U4CE1> \x9E\xEE |0
+<U4CE2> \x87\x49 |0
 <U4CED> \xFB\x43 |0
+<U4D07> \x87\x5B |0
 <U4D09> \x9E\xC9 |0
 <U4D10> \xFB\xD3 |0
 <U4D34> \x91\xAE |0
+<U4D76> \x8D\x58 |0
+<U4D77> \x87\x46 |0
+<U4D89> \x8D\x56 |0
 <U4D91> \x9D\x78 |0
 <U4D9C> \x9D\x7B |0
 <U4E00> \xA4\x40 |0
@@ -1486,6 +1665,7 @@ CHARMAP
 <U4FB0> \x98\x66 |0
 <U4FB2> \xCD\xE0 |0
 <U4FB3> \xCD\xE8 |0
+<U4FB4> \x8C\xF8 |0
 <U4FB5> \xAB\x49 |0
 <U4FB6> \xAB\x51 |0
 <U4FB7> \xAB\x5D |0
@@ -2870,6 +3050,7 @@ CHARMAP
 <U56F7> \xCB\xF0 |0
 <U56F9> \xCB\xF1 |0
 <U56FA> \xA9\x54 |0
+<U56FB> \x87\x65 |0
 <U56FD> \x98\xC7 |0
 <U56FF> \xAB\xAA |0
 <U5700> \xFB\x5A |0
@@ -3265,6 +3446,7 @@ CHARMAP
 <U5919> \xA6\x67 |0
 <U591A> \xA6\x68 |0
 <U591C> \xA9\x5D |0
+<U591D> \x87\x68 |0
 <U591F> \xFB\x7B |0
 <U5920> \xB0\xF7 |0
 <U5922> \xB9\xDA |0
@@ -3378,6 +3560,7 @@ CHARMAP
 <U59BC> \xCC\x4C |0
 <U59BD> \xCC\x50 |0
 <U59BE> \xA9\x63 |0
+<U59BF> \x8C\xFA |0
 <U59C0> \xCC\x51 |0
 <U59C1> \xCC\x4A |0
 <U59C3> \xCC\x4D |0
@@ -3564,6 +3747,7 @@ CHARMAP
 <U5AA0> \xFC\x73 |0
 <U5AA1> \x97\xB7 |0
 <U5AA2> \xD8\xB9 |0
+<U5AA4> \x87\x6F |0
 <U5AA5> \xD8\xBE |0
 <U5AA6> \xD8\xBC |0
 <U5AA7> \xB4\x45 |0
@@ -3603,6 +3787,7 @@ CHARMAP
 <U5ACD> \xDD\x45 |0
 <U5ACE> \x97\x41 |0
 <U5ACF> \x92\xF4 |0
+<U5AD1> \x87\x72 |0
 <U5AD3> \xFB\xBC |0
 <U5AD5> \xE1\x6E |0
 <U5AD6> \xB9\xE2 |0
@@ -3784,6 +3969,7 @@ CHARMAP
 <U5BB4> \xAE\x62 |0
 <U5BB5> \xAE\x64 |0
 <U5BB6> \xAE\x61 |0
+<U5BB7> \x87\x73 |0
 <U5BB8> \xAE\x66 |0
 <U5BB9> \xAE\x65 |0
 <U5BBF> \xB1\x4A |0
@@ -3810,6 +3996,7 @@ CHARMAP
 <U5BD7> \xFE\xAE |0
 <U5BD8> \xDD\x49 |0
 <U5BD9> \xDD\x4A |0
+<U5BDB> \x87\x6D |0
 <U5BDE> \xB9\xE6 |0
 <U5BDF> \xB9\xEE |0
 <U5BE0> \xE1\x7E |0
@@ -3920,6 +4107,7 @@ CHARMAP
 <U5C71> \xA4\x73 |0
 <U5C73> \xC9\x77 |0
 <U5C74> \xC9\x76 |0
+<U5C78> \x8C\xE9 |0
 <U5C79> \xA6\x7A |0
 <U5C7A> \xC9\xD7 |0
 <U5C7B> \xC9\xD8 |0
@@ -3986,6 +4174,7 @@ CHARMAP
 <U5CD2> \xAB\xD0 |0
 <U5CD3> \xCE\xA7 |0
 <U5CD4> \xCE\xA8 |0
+<U5CD5> \x8C\xE6 |0
 <U5CD6> \xCE\xA6 |0
 <U5CD7> \xCE\x7C |0
 <U5CD8> \xCE\x7A |0
@@ -4011,6 +4200,7 @@ CHARMAP
 <U5CF8> \xCE\xAE |0
 <U5CF9> \xD1\x72 |0
 <U5CFB> \xAE\x6D |0
+<U5CFC> \x87\x74 |0
 <U5CFD> \xAE\x6C |0
 <U5CFF> \xD1\x6D |0
 <U5D00> \xD1\x71 |0
@@ -4099,6 +4289,7 @@ CHARMAP
 <U5D72> \xDD\x51 |0
 <U5D74> \x9E\xEA |0
 <U5D77> \xE1\xA9 |0
+<U5D78> \x8C\xEC |0
 <U5D79> \xE1\xB0 |0
 <U5D7A> \xE1\xA7 |0
 <U5D7B> \x8C\xD4 |0
@@ -4427,6 +4618,7 @@ CHARMAP
 <U5F37> \xB1\x6A |0
 <U5F38> \xD5\x4D |0
 <U5F3A> \xFC\x4C |0
+<U5F3B> \x8C\xFE |0
 <U5F3C> \xB4\x5D |0
 <U5F40> \xDD\x62 |0
 <U5F43> \xE1\xBF |0
@@ -5795,6 +5987,7 @@ CHARMAP
 <U664A> \xD1\xD3 |0
 <U664B> \xFC\xDD |0
 <U664C> \xAE\xCE |0
+<U664D> \x87\x64 |0
 <U664F> \xAE\xCB |0
 <U6651> \xD1\xD6 |0
 <U6652> \xAE\xCD |0
@@ -5909,6 +6102,7 @@ CHARMAP
 <U66E3> \xF4\x51 |0
 <U66E4> \xF4\x52 |0
 <U66E6> \xC4\x66 |0
+<U66E7> \x8C\xDB |0
 <U66E8> \xF4\x50 |0
 <U66E9> \xC4\xE4 |0
 <U66EB> \xF7\xDF |0
@@ -6011,6 +6205,7 @@ CHARMAP
 <U676B> \x8C\xCA |0
 <U676C> \xCC\xD4 |0
 <U676D> \xAA\x43 |0
+<U676E> \x87\x75 |0
 <U676F> \xAA\x4D |0
 <U6770> \xAA\x4E |0
 <U6771> \xAA\x46 |0
@@ -7375,6 +7570,7 @@ CHARMAP
 <U6E54> \xB4\xE6 |0
 <U6E55> \xDA\x51 |0
 <U6E56> \xB4\xF2 |0
+<U6E57> \x8C\xDD |0
 <U6E58> \xB4\xF0 |0
 <U6E59> \xFB\x7E |0
 <U6E5A> \xDA\x57 |0
@@ -7986,6 +8182,7 @@ CHARMAP
 <U7153> \xDE\x7E |0
 <U7154> \xDE\x6C |0
 <U7156> \xB7\xDC |0
+<U7157> \x8C\xEE |0
 <U7158> \xDE\x78 |0
 <U7159> \xB7\xCF |0
 <U715A> \xDE\xA3 |0
@@ -8154,6 +8351,7 @@ CHARMAP
 <U7222> \xF7\xE6 |0
 <U7223> \xF8\xB1 |0
 <U7224> \xFE\x44 |0
+<U7225> \x87\x5F |0
 <U7226> \xF8\xF6 |0
 <U7227> \xF9\xBC |0
 <U7228> \xC6\x79 |0
@@ -8613,6 +8811,7 @@ CHARMAP
 <U745E> \xB7\xE7 |0
 <U745F> \xB7\xE6 |0
 <U7460> \xFE\x71 |0
+<U7461> \x87\x78 |0
 <U7462> \xE2\xCE |0
 <U7463> \xBA\xBE |0
 <U7464> \xBA\xBD |0
@@ -8662,6 +8861,7 @@ CHARMAP
 <U749A> \xEA\x63 |0
 <U749B> \x94\xB8 |0
 <U749C> \xBF\x58 |0
+<U749D> \x87\x79 |0
 <U749E> \xBF\x5C |0
 <U749F> \xBF\x5B |0
 <U74A0> \xEA\x64 |0
@@ -9671,6 +9871,7 @@ CHARMAP
 <U79C6> \xFE\xFC |0
 <U79C8> \xAA\xC4 |0
 <U79C9> \xAA\xC3 |0
+<U79CA> \x8C\xDE |0
 <U79CB> \xAC\xEE |0
 <U79CC> \xFD\xBF |0
 <U79CD> \xCF\xFA |0
@@ -10377,6 +10578,7 @@ CHARMAP
 <U7D92> \xDF\x66 |0
 <U7D93> \xB8\x67 |0
 <U7D94> \xDF\x63 |0
+<U7D95> \x87\x67 |0
 <U7D96> \xE3\x72 |0
 <U7D97> \x95\x42 |0
 <U7D9C> \xBA\xEE |0
@@ -11036,6 +11238,7 @@ CHARMAP
 <U8167> \xDF\x7D |0
 <U8169> \xDF\x76 |0
 <U816B> \xB8\x7E |0
+<U816C> \x8C\xFB |0
 <U816D> \x8B\x5B |0
 <U816E> \xB8\x7C |0
 <U816F> \xDF\x7E |0
@@ -11888,6 +12091,7 @@ CHARMAP
 <U858F> \xED\xF5 |0
 <U8590> \xEE\x55 |0
 <U8591> \xC1\xA4 |0
+<U8593> \x87\x76 |0
 <U8594> \xC1\xA5 |0
 <U8595> \xED\xF7 |0
 <U8596> \xEE\x48 |0
@@ -12931,6 +13135,7 @@ CHARMAP
 <U8AC8> \xEB\xAA |0
 <U8AC9> \xBD\xD3 |0
 <U8ACB> \xBD\xD0 |0
+<U8ACC> \x8C\xF7 |0
 <U8ACD> \xBD\xD8 |0
 <U8ACF> \xE7\xD4 |0
 <U8AD1> \xE7\xD8 |0
@@ -12969,6 +13174,7 @@ CHARMAP
 <U8AF6> \xBF\xDB |0
 <U8AF7> \xBF\xD8 |0
 <U8AF8> \xBD\xD1 |0
+<U8AF9> \x8C\xE8 |0
 <U8AFA> \xBF\xCE |0
 <U8AFB> \xEB\xB0 |0
 <U8AFC> \xBF\xDC |0
@@ -15058,6 +15264,7 @@ CHARMAP
 <U9730> \xC4\xC5 |0
 <U9731> \x90\xD2 |0
 <U9732> \xC5\x53 |0
+<U9734> \x87\x6B |0
 <U9735> \xF6\x6E |0
 <U9736> \x90\xD4 |0
 <U9738> \xC5\x51 |0
@@ -15277,6 +15484,7 @@ CHARMAP
 <U9851> \xF1\xA9 |0
 <U9852> \xF1\xAA |0
 <U9853> \xC3\x46 |0
+<U9856> \x8C\xFC |0
 <U9857> \xF3\xAA |0
 <U9858> \xC4\x40 |0
 <U9859> \xF3\xA8 |0
@@ -18215,7 +18423,7 @@ CHARMAP
 <UED5E> \x9E\xDF |1
 <UED5F> \x9E\xE0 |0
 <UED62> \x9E\xE3 |0
-<UED64> \x9E\xE5 |1
+<UED64> \x9E\xE5 |0
 <UED66> \x9E\xE7 |1
 <UED6B> \x9E\xEC |0
 <UED6D> \x9E\xEE |1
@@ -18931,6 +19139,48 @@ CHARMAP
 <UF129> \x84\xFC |0
 <UF12A> \x84\xFD |0
 <UF12B> \x84\xFE |0
+<UF266> \x87\x40 |1
+<UF267> \x87\x41 |1
+<UF268> \x87\x42 |1
+<UF269> \x87\x43 |1
+<UF26A> \x87\x44 |1
+<UF26B> \x87\x45 |0
+<UF26C> \x87\x46 |1
+<UF26D> \x87\x47 |1
+<UF26E> \x87\x48 |0
+<UF26F> \x87\x49 |1
+<UF270> \x87\x4A |0
+<UF271> \x87\x4B |1
+<UF272> \x87\x4C |1
+<UF273> \x87\x4D |1
+<UF274> \x87\x4E |1
+<UF275> \x87\x4F |1
+<UF276> \x87\x50 |0
+<UF277> \x87\x51 |0
+<UF278> \x87\x52 |0
+<UF279> \x87\x53 |0
+<UF27A> \x87\x54 |0
+<UF27B> \x87\x55 |1
+<UF27C> \x87\x56 |0
+<UF27D> \x87\x57 |1
+<UF27E> \x87\x58 |1
+<UF27F> \x87\x59 |1
+<UF280> \x87\x5A |0
+<UF281> \x87\x5B |1
+<UF282> \x87\x5C |1
+<UF283> \x87\x5D |1
+<UF284> \x87\x5E |0
+<UF286> \x87\x60 |0
+<UF287> \x87\x61 |0
+<UF288> \x87\x62 |0
+<UF289> \x87\x63 |0
+<UF28F> \x87\x69 |0
+<UF290> \x87\x6A |1
+<UF292> \x87\x6C |0
+<UF294> \x87\x6E |0
+<UF296> \x87\x70 |1
+<UF297> \x87\x71 |0
+<UF29D> \x87\x77 |0
 <UF303> \x88\x40 |0
 <UF304> \x88\x41 |0
 <UF305> \x88\x42 |0
@@ -19210,6 +19460,7 @@ CHARMAP
 <UF594> \x8C\x5D |1
 <UF596> \x8C\x5F |0
 <UF597> \x8C\x60 |1
+<UF599> \x8C\x62 |0
 <UF59B> \x8C\x64 |0
 <UF59C> \x8C\x65 |0
 <UF5A0> \x8C\x69 |0
@@ -19243,6 +19494,57 @@ CHARMAP
 <UF5EC> \x8C\xD7 |0
 <UF5ED> \x8C\xD8 |0
 <UF5EF> \x8C\xDA |0
+<UF5F4> \x8C\xDF |1
+<UF5F5> \x8C\xE0 |1
+<UF5F6> \x8C\xE1 |0
+<UF5F7> \x8C\xE2 |0
+<UF5F8> \x8C\xE3 |1
+<UF5F9> \x8C\xE4 |1
+<UF5FC> \x8C\xE7 |0
+<UF5FF> \x8C\xEA |1
+<UF600> \x8C\xEB |0
+<UF602> \x8C\xED |0
+<UF604> \x8C\xEF |1
+<UF605> \x8C\xF0 |0
+<UF606> \x8C\xF1 |0
+<UF607> \x8C\xF2 |1
+<UF608> \x8C\xF3 |1
+<UF609> \x8C\xF4 |1
+<UF60A> \x8C\xF5 |0
+<UF60B> \x8C\xF6 |0
+<UF60E> \x8C\xF9 |0
+<UF612> \x8C\xFD |0
+<UF614> \x8D\x40 |0
+<UF616> \x8D\x42 |0
+<UF617> \x8D\x43 |0
+<UF618> \x8D\x44 |1
+<UF619> \x8D\x45 |1
+<UF61A> \x8D\x46 |0
+<UF61B> \x8D\x47 |1
+<UF61C> \x8D\x48 |0
+<UF61D> \x8D\x49 |0
+<UF61E> \x8D\x4A |1
+<UF61F> \x8D\x4B |1
+<UF620> \x8D\x4C |1
+<UF621> \x8D\x4D |0
+<UF622> \x8D\x4E |1
+<UF623> \x8D\x4F |0
+<UF624> \x8D\x50 |0
+<UF625> \x8D\x51 |1
+<UF626> \x8D\x52 |1
+<UF627> \x8D\x53 |0
+<UF628> \x8D\x54 |1
+<UF629> \x8D\x55 |1
+<UF62A> \x8D\x56 |1
+<UF62B> \x8D\x57 |1
+<UF62C> \x8D\x58 |1
+<UF62D> \x8D\x59 |1
+<UF62E> \x8D\x5A |1
+<UF62F> \x8D\x5B |0
+<UF630> \x8D\x5C |1
+<UF631> \x8D\x5D |1
+<UF632> \x8D\x5E |1
+<UF633> \x8D\x5F |1
 <UF637> \x8D\x63 |1
 <UF638> \x8D\x64 |1
 <UF63B> \x8D\x67 |1
@@ -19286,7 +19588,7 @@ CHARMAP
 <UF7E5> \xC8\x79 |0
 <UF7E6> \xC8\x7A |0
 <UF7E8> \xC8\x7C |0
-<UF7EA> \xC8\x7E |0
+<UF7EA> \xC8\x7E |1
 <UF7EB> \xC8\xA1 |0
 <UF7ED> \xC8\xA3 |0
 <UF7EE> \xC8\xA4 |0

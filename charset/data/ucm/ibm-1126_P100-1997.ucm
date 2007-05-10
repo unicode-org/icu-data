@@ -1,12 +1,12 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2002, International Business Machines
+# *   Copyright (C) 1995-2007, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Dec  3 2002)
-# from source files 44B00466.RPMAP100 and 046644B0.TPMAP100
+# File created by rptp2ucm (compiled on May  9 2007)
+# from source files 34B00466.RPMAP100 and 046634B0.TPMAP100
 #
 <code_set_name>               "ibm-1126_P100-1997"
 <char_name_mask>              "AXXXX"

@@ -1,12 +1,12 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2005, International Business Machines
+# *   Copyright (C) 1995-2007, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Nov 15 2005)
-# from source files F20424E4.RPMAP100 and 24E4F204.TPMAP100
+# File created by rptp2ucm (compiled on May  9 2007)
+# from source files 44B024E4.RPMAP100 and 24E444B0.TPMAP100
 #
 <code_set_name>               "ibm-9444_P100-2005"
 <char_name_mask>              "AXXXX"
@@ -14,7 +14,6 @@
 <mb_cur_min>                  1
 <uconv_class>                 "SBCS"
 <subchar>                     \x1A
-<subchar1>                    \x1A
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-9444_STD"
 
@@ -149,27 +148,4 @@ CHARMAP
 <U007D> \x7D |0
 <U007E> \x7E |0
 <U007F> \x7F |0
-<U2022> \x07 |1
-<U203C> \x13 |1
-<U2194> \x1D |1
-<U2195> \x12 |1
-<U21A8> \x17 |1
-<U25AC> \x16 |1
-<U25BA> \x10 |1
-<U25C4> \x11 |1
-<U25D8> \x08 |1
-<U25D9> \x0A |1
-<U263A> \x01 |1
-<U263B> \x02 |1
-<U263C> \x0F |1
-<U2660> \x06 |1
-<U2663> \x05 |1
-<U2665> \x03 |1
-<U2666> \x04 |1
-<U266B> \x0E |1
-<UFFE9> \x1B |1
-<UFFEA> \x18 |1
-<UFFEB> \x1A |2
-<UFFEC> \x19 |1
-<UFFEE> \x09 |1
 END CHARMAP

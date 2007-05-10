@@ -1,11 +1,11 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2005, International Business Machines
+# *   Copyright (C) 1995-2007, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
 #
-# File created by rptp2ucm (compiled on Apr  5 2005)
+# File created by rptp2ucm (compiled on May  9 2007)
 # from source files 54B0232D.RXMAP100 and 232D54B0.TXMAP100
 #
 <code_set_name>               "ibm-9005_X100-2005"
