@@ -257,19 +257,28 @@ static char *generateFileName(const char *rpmapFilename, const char *tpmapFilena
     return strdup(filename);
 }
 
-const char *FilenameMappingHistory::getFilename(const char *rpmapFilename, const char *tpmapFilename, uint16_t year, UErrorCode *status) {
+const char *FilenameMappingHistory::getFilename(const char *rmapFilename, const char *tmapFilename, uint16_t year, UErrorCode *status) {
+    const char *retVal = NULL;
     UVector *vect = NULL;
     UBool useOldNameFormat = TRUE;
     int idx;
-    const UHashElement *elem = hashByRmap.find(rpmapFilename);
+    const UHashElement *elem;
+    char *rmapFilenameDup = toUpperStr(strdup(rmapFilename));
+    char *tmapFilenameDup = toUpperStr(strdup(tmapFilename));
+
+    rmapFilename = rmapFilenameDup;
+    tmapFilename = tmapFilenameDup;
+
+    elem = hashByRmap.find(rmapFilename);
     if (elem != NULL) {
-        FilenameMapping tempVal("", rpmapFilename, tpmapFilename);
+        FilenameMapping tempVal("", rmapFilename, tmapFilename);
         // We already know about this mapping table. Get the old value.
         vect = (UVector*)(elem->value.pointer);
         idx = vect->indexOf(&tempVal);
         if (idx >= 0) {
             FilenameMapping *prevItem = (FilenameMapping*)vect->elementAt(idx);
-            return prevItem->uts22Name;
+            retVal = prevItem->uts22Name;
+            goto cleanupAndReturn;
         }
         // else More than one TMAP is available.
 
@@ -281,20 +290,27 @@ const char *FilenameMappingHistory::getFilename(const char *rpmapFilename, const
         vect = new UVector(freeFilenameMapping, compareFilenameMapping, *status);
     }
     // We didn't find this name. Make up a new one.
-    char *fileNameDup = generateFileName(rpmapFilename, tpmapFilename, year, useOldNameFormat);
-    FilenameMapping *item = new FilenameMapping(fileNameDup, rpmapFilename, tpmapFilename);
+    char *fileNameDup = generateFileName(rmapFilename, tmapFilename, year, useOldNameFormat);
+    FilenameMapping *item = new FilenameMapping(fileNameDup, rmapFilename, tmapFilename);
 
     // Double check that we haven't generated this name in the past.
     idx = sortedByResult.indexOf(item);
     if (idx >= 0) {
         FilenameMapping *foundItem = (FilenameMapping *)sortedByResult.elementAt(idx);
-        if (strcmp(foundItem->rmapName, rpmapFilename) != 0 || strcmp(foundItem->tmapName, tpmapFilename) != 0) {
+        if (strcmp(foundItem->rmapName, rmapFilename) != 0 || strcmp(foundItem->tmapName, tmapFilename) != 0) {
             free(fileNameDup); // Another Unicode CCSID conflicts with this table, or some other conflict.
             useOldNameFormat = FALSE;
-            fileNameDup = generateFileName(rpmapFilename, tpmapFilename, year, useOldNameFormat);
+            fileNameDup = generateFileName(rmapFilename, tmapFilename, year, useOldNameFormat);
             item->uts22Name = fileNameDup;
         }
     }
+    else {
+        free(fileNameDup); // filename was already copied.
+    }
     addItem(vect, item, status);
-    return item->uts22Name;
+
+cleanupAndReturn:
+    free(rmapFilenameDup);
+    free(tmapFilenameDup);
+    return retVal;
 }

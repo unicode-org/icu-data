@@ -174,25 +174,25 @@ knownRMAPtoTMAP[] = {
 };
 
 typedef struct UCMSubchar {
-    const char *name;
+    const uint16_t ccsid;
     uint32_t subchar, subchar1;
 } UCMSubchar;
 
+/* This is here because the U?MAP??? file goes by a significantly different name from the R?MAP??? file. */
 static const UCMSubchar
 knownSubchars[]={
-    "274_P100_P100", 0x3f, 0,
-    "850_P100", 0x7f, 0,
-    "913_P100_P100", 0x1a, 0,
-    "1047_P100", 0x3f, 0,
-    "1114_P100", 0x1A, 0,
-    "1137_PMOD_P100", 0x3F, 0,
-    "1166_P100_P100", 0x3F, 0,
-    "1167_P100_P100", 0x1A, 0,
-    "1168_P100_P100", 0x1A, 0,
-    "8612_X110_P110", 0x3f, 0,
-    "9444_P100", 0x1A, 0,
-    "9447_P100", 0x1A, 0,
-    "9449_P100", 0x1A, 0
+    274, 0x3f, 0,
+    913, 0x1a, 0,
+    1047, 0x3f, 0,
+    1114, 0x1A, 0,
+    1137, 0x3F, 0,
+    1166, 0x3F, 0,
+    1167, 0x1A, 0,
+    1168, 0x1A, 0,
+    8612, 0x3f, 0,
+    9444, 0x1A, 0,
+    9447, 0x1A, 0,
+    9449, 0x1A, 0
 };
 
 typedef struct CCSIDStateTable {
@@ -1018,11 +1018,11 @@ analyzeTable() {
 }
 
 static int
-getSubchar(const char *name) {
+getSubchar(uint16_t ccsidToMatch) {
     int i;
 
     for(i=0; i<sizeof(knownSubchars)/sizeof(knownSubchars[0]); ++i) {
-        if(uprv_strcmp(name, knownSubchars[i].name)==0) {
+        if(knownSubchars[i].ccsid == ccsidToMatch) {
             subchar=knownSubchars[i].subchar;
             subchar1=knownSubchars[i].subchar1;
             return 1;
@@ -1169,6 +1169,12 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
     if(subchar1!=0) {
         if (minCharLength>1) {
             fprintf(stderr, "warning: <subchar1> \\x%02X is ignored for charsets without an SBCS portion.\n", subchar1);
+        }
+        else if (maxCharLength==1) {
+            if (subchar!=subchar1) {
+                fprintf(stderr, "warning: <subchar1> \\x%02X is ignored for SBCS charsets.\n", subchar1);
+            }
+            /* else we got a duplicate subchar and subchar1. */
         }
         else {
             fprintf(f, "<subchar1>                    \\x%02X\n", subchar1);
@@ -1469,8 +1475,11 @@ processTable(const char *arg) {
                 fclose(f);
             }
         }
+        if(subchar==0 && !getSubchar(ccsid)) {
+            fprintf(stderr, "warning: missing subchar in \"%s\" (CCSID=0x%04X)\n", filename, ccsid);
+        }
 
-        /* generate the .ucm filename - necessary before getSubchar() */
+        /* generate the .ucm filename */
         tmapFilename = strrchr(tpmapFileStrings[idx], '/');
         if (tmapFilename == NULL) {
             tmapFilename = strrchr(tpmapFileStrings[idx], '\\');

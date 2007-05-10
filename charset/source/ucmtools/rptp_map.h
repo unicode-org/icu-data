@@ -11,6 +11,9 @@
 
 struct FilenameMapping;
 
+/*
+This class allows the rptp2ucm tool to remember what combination of files generated which UCM file.
+*/
 class FilenameMappingHistory {
 public:
     static FilenameMappingHistory *create(const char *filename, UErrorCode *status);
