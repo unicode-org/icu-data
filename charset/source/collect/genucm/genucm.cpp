@@ -438,7 +438,7 @@ uhash_compareChars, NULL, 65537, &status);
                     }
                     else
                     {
-                        f_fallback = (((const UnicodeString*)uni_vector->elementAt(0))->compare(*uni));
+                        f_fallback = (((const UnicodeString*)uni_vector->elementAt(0))->compare(*uni)) != 0;
                         if (!f_fallback || strcmp(cp_inf.default_char, cp_data_uni_to_cp) != 0) {
                             gen_hex_escape(cp_data_uni_to_cp, hex_buff1, sizeof(hex_buff1));
                             fprintf(fp, "%s %s |%d\n",
