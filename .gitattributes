@@ -155,6 +155,7 @@ charset/data/ucm/ibm-964_P110-1999.ucm -text
 charset/data/ucm/ibm-964_X110-1999.ucm -text
 charset/data/ucm/ibm-970_P110-1999.ucm -text
 charset/data/ucm/ibm-970_P110_P110-2006_U2.ucm -text
+charset/data/ucm/windows-28603-vista.ucm -text
 charset/data/xml/aix-IBM_1046-4.3.6.xml svneol=native#text/xml
 charset/data/xml/aix-IBM_1124-4.3.6.xml svneol=native#text/xml
 charset/data/xml/aix-IBM_1129-4.3.6.xml svneol=native#text/xml
