@@ -278,7 +278,9 @@ const char *FilenameMappingHistory::getFilename(const char *rmapFilename, const 
         if (idx >= 0) {
             FilenameMapping *prevItem = (FilenameMapping*)vect->elementAt(idx);
             retVal = prevItem->uts22Name;
-            goto cleanupAndReturn;
+            free(rmapFilenameDup);
+            free(tmapFilenameDup);
+            return retVal;
         }
         // else More than one TMAP is available.
 
@@ -309,7 +311,6 @@ const char *FilenameMappingHistory::getFilename(const char *rmapFilename, const 
     }
     addItem(vect, item, status);
 
-cleanupAndReturn:
     free(rmapFilenameDup);
     free(tmapFilenameDup);
     return retVal;
