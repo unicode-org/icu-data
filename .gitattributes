@@ -943,6 +943,10 @@ tzdata/eclipse/project_src/eclipse33/plugin/build.properties -text
 tzdata/eclipse/project_src/eclipse33/plugin/fragment-icu-data.properties -text
 tzdata/eclipse/project_src/eclipse33/site/site.xml -text
 tzdata/eclipse/readme.txt -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/icu_data_patch.properties -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/features/org.eclipse.rcp.patch1_3.3.0.v20070705_330.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20070701_2007f.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/site.xml -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch2_3.2.2.v20070417_322-2007e/icu_data_patch.properties -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch2_3.2.2.v20070417_322-2007e/updatesite/features/org.eclipse.rcp.patch2_3.2.2.v20070417_322.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch2_3.2.2.v20070417_322-2007e/updatesite/plugins/com.ibm.icu34.data.update_3.4.5.v20070417_2007e.jar -text
