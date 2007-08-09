@@ -909,6 +909,27 @@ charset/source/ucmtools/rptp2ucm.sln -text
 charset/source/ucmtools/rptp2ucm.vcproj -text
 charset/source/ucmtools/rptp_map.cpp -text
 charset/source/ucmtools/rptp_map.h -text
+test/perf/collation/TestNames_Asian.txt -text
+test/perf/collation/TestNames_Chinese.txt -text
+test/perf/collation/TestNames_Japanese.txt -text
+test/perf/collation/TestNames_Japanese_h.txt -text
+test/perf/collation/TestNames_Japanese_k.txt -text
+test/perf/collation/TestNames_Korean.txt -text
+test/perf/collation/TestNames_Latin.txt -text
+test/perf/collation/TestNames_Russian.txt -text
+test/perf/collation/TestNames_SerbianSH.txt -text
+test/perf/collation/TestNames_SerbianSR.txt -text
+test/perf/collation/TestNames_Simplified_Chinese.txt -text
+test/perf/collation/TestNames_Thai.txt -text
+test/perf/conversion/arabic.txt -text svneol=unset#application/octet-stream
+test/perf/conversion/english.txt -text
+test/perf/conversion/french.txt -text
+test/perf/conversion/greek.txt -text svneol=unset#application/octet-stream
+test/perf/conversion/hebrew.txt -text svneol=unset#application/octet-stream
+test/perf/conversion/hindi.txt -text svneol=unset#application/octet-stream
+test/perf/conversion/japanese.txt -text svneol=unset#application/octet-stream
+test/perf/conversion/korean.txt -text svneol=unset#application/octet-stream
+test/perf/conversion/s-chinese.txt -text svneol=unset#application/octet-stream
 tzdata/Makefile -text
 tzdata/eclipse/build.xml -text
 tzdata/eclipse/icu_data_patch.properties.template -text
