@@ -1068,6 +1068,10 @@ tzdata/icu/2007f/be/zoneinfo.res -text
 tzdata/icu/2007f/ee/zoneinfo.res -text
 tzdata/icu/2007f/le/zoneinfo.res -text
 tzdata/icu/2007f/zoneinfo.txt -text
+tzdata/icu/2007g/be/zoneinfo.res -text
+tzdata/icu/2007g/ee/zoneinfo.res -text
+tzdata/icu/2007g/le/zoneinfo.res -text
+tzdata/icu/2007g/zoneinfo.txt -text
 tzdata/mirror/readme.txt -text
 tzdata/mirror/tzcode2006c.tar.gz -text
 tzdata/mirror/tzcode2006d.tar.gz -text
@@ -1086,6 +1090,7 @@ tzdata/mirror/tzcode2007c.tar.gz -text
 tzdata/mirror/tzcode2007d.tar.gz -text
 tzdata/mirror/tzcode2007e.tar.gz -text
 tzdata/mirror/tzcode2007f.tar.gz -text
+tzdata/mirror/tzcode2007g.tar.gz -text
 tzdata/mirror/tzdata2003a.tar.gz -text
 tzdata/mirror/tzdata2003d.tar.gz -text
 tzdata/mirror/tzdata2004e.tar.gz -text
@@ -1109,4 +1114,5 @@ tzdata/mirror/tzdata2007c.tar.gz -text
 tzdata/mirror/tzdata2007d.tar.gz -text
 tzdata/mirror/tzdata2007e.tar.gz -text
 tzdata/mirror/tzdata2007f.tar.gz -text
+tzdata/mirror/tzdata2007g.tar.gz -text
 tzdata/readme.txt -text

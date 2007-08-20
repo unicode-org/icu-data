@@ -1,4 +1,4 @@
-# Copyright (C) 2006 IBM and Others. All Rights Reserved.
+# Copyright (C) 2006-2007 IBM and Others. All Rights Reserved.
 
 all:
 	@echo 
@@ -8,14 +8,15 @@ all:
 	@echo
 
 ICU_CONFIG=icu-config
+FETCH=wget -nc -nd
 -include Makefile.local
 
 TZSRC=$(ICU_SRC)/tools/tzcode
 
 update-mirror:
-	cd mirror && wget -nc -nd 'ftp://elsie.nci.nih.gov/pub/tzdata*'
+	cd mirror && ${FETCH} 'ftp://elsie.nci.nih.gov/pub/tzdata*'
 	svn add mirror/tzdata*.tar.gz
-	cd mirror && wget -nc -nd 'ftp://elsie.nci.nih.gov/pub/tzcode*'
+	cd mirror && ${FETCH} 'ftp://elsie.nci.nih.gov/pub/tzcode*'
 	svn add mirror/tzcode*.tar.gz
 
 update-icu:
