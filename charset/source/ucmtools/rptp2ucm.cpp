@@ -344,9 +344,8 @@ knownStateTables[]={
     1383,0,"<icu:state>                   0-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n",
 
-    1385,0,"<icu:state>                   0-80:2, 81-fe:1, ff:2\n"
-           "<icu:state>                   40-7e, 80-fe\n"
-           "<icu:state>\n",
+    1385,0,"<icu:state>                   81-fe:1\n"
+           "<icu:state>                   40-7e, 80-fe\n",
 
     1386,0,"<icu:state>                   0-80, 81-fe:1\n" /* Was 0-7f, 81-fe:1 */
            "<icu:state>                   40-7e, 80-fe\n",

@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *
-# *   Copyright (C) 1995-2005, International Business Machines
+# *   Copyright (C) 1995-2007, International Business Machines
 # *   Corporation and others.  All Rights Reserved.
 # *
 # ***************************************************************************
@@ -17,9 +17,8 @@
 <icu:charsetFamily>           "ASCII"
 <icu:alias>                   "ibm-1385_VPUA"
 
-<icu:state>                   0-80:2, 81-fe:1, ff:2
+<icu:state>                   81-fe:1
 <icu:state>                   40-7e, 80-fe
-<icu:state>
 
 CHARMAP
 <U00A4> \xA1\xE8 |0
