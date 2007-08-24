@@ -41,7 +41,7 @@
 # For issues with the mappings please contact errata@unicode.org
 # as noted in the source file on unicode.org.
 
-<code_set_name>     "gsm-03.38"
+<code_set_name>     "gsm-03.38-2000"
 <char_name_mask>    "AXXXX"
 <mb_cur_max>        1
 <mb_cur_min>        1
