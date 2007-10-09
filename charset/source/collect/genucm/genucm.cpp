@@ -813,7 +813,7 @@ void emit_ucm_header(FILE* fp, const converter &cnv, encoding_info* encoding_inf
     fputs("#   |0 for exact 1-1 roundtrip mapping\n", fp);
     fputs("#   |1 for the best fallback codepage byte sequence.\n", fp);
     fputs("#   |2 for the substitution character\n", fp);
-    fputs("#   |3 for the best reverse fallback Unicode scaler value\n", fp);
+    fputs("#   |3 for the best reverse fallback Unicode scalar value\n", fp);
     fputs("#\n", fp);
     fprintf(fp, "# Encoding description: %s\n", encoding_info->charset_description);
     fprintf(fp, "# Encoding name: %s\n", encoding_info->web_charset_name);
