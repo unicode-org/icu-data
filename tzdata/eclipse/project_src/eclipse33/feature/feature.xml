@@ -3,7 +3,7 @@
       id="@FEATURE.ID@"
       label="%featureName"
       version="@PATCH.VERSION@"
-      provider-name="%provider"
+      provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
    <description>
