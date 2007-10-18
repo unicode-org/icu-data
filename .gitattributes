@@ -970,6 +970,9 @@ tzdata/eclipse/project_src/eclipse33/plugin/build.properties -text
 tzdata/eclipse/project_src/eclipse33/plugin/fragment-icu-data.properties -text
 tzdata/eclipse/project_src/eclipse33/site/site.xml -text
 tzdata/eclipse/readme.txt -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322-2007h/icu_data_patch.properties -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322-2007h/updatesite/features/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322-2007h/updatesite/plugins/com.ibm.icu34.data.update_3.4.5.v20071018_2007h.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/icu_data_patch.properties -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/features/org.eclipse.rcp.patch1_3.3.0.v20070705_330.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20070701_2007f.jar -text
