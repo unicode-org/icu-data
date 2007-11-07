@@ -22,7 +22,7 @@ update-mirror:
 update-icu:
 	@for tzver in `ls mirror/tzdata*.tar.gz` ; do tzver=`basename $$tzver .tar.gz | cut -c7-`; $(MAKE) icu/$$tzver/zoneinfo.txt; done
 
-icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
+icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz
 	@test ! -f $@ || (echo Remove $(@D)  and $@ manually - will not overwrite. ; touch $@ ;  false)
 	@test ! -d $(@D) || (echo Remove $(@D)  manually - will not overwrite. ;   false)
 	@echo "#" building $(@D) .. results are in ./$(shell basename $(@D)).log
