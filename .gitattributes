@@ -980,9 +980,8 @@ tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/icu_dat
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/features/org.eclipse.rcp.patch1_3.3.0.v20070705_330.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20070701_2007f.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/site.xml -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.1.1_v20071204_3311-2007j/icu_data_patch.properties -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.1.1_v20071204_3311-2007j/updatesite/features/org.eclipse.rcp.patch1_3.3.1.1_v20071204_3311.jar -text
-tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.1.1_v20071204_3311-2007j/updatesite/org.eclipse.rcp.patch1_3.3.1.1_v20071204_3311-2007j.zip -text
-tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.1.1_v20071204_3311-2007j/updatesite/org.eclipse.rcp.patch2_3.3.1.v20071204_331-2007j.zip -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.1.1_v20071204_3311-2007j/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20071204_2007j.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.1.v20071002_331-2007h/icu_data_patch.properties -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.1.v20071002_331-2007h/updatesite/features/org.eclipse.rcp.patch1_3.3.1.v20071002_331.jar -text
