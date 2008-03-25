@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2007 IBM and Others. All Rights Reserved.
+# Copyright (C) 2006-2008 IBM and Others. All Rights Reserved.
 
 all:
 	@echo 
@@ -44,11 +44,11 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@mkdir $(@D)
 	cp $(TZSRC)/zoneinfo.txt $(@D)
 	@echo "#" genrb and creating le/be/ee versions
-	@$(shell icu-config --invoke=genrb) -s $(@D) -d $(@D) zoneinfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+	@$(shell $(ICU_CONFIG) --invoke=genrb) -s $(@D) -d $(@D) zoneinfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 	@mkdir $(@D)/le $(@D)/be $(@D)/ee
-	@$(shell icu-config --invoke=icupkg) -s $(@D) -tl zoneinfo.res $(@D)/le/zoneinfo.res
-	@$(shell icu-config --invoke=icupkg) -s $(@D) -tb zoneinfo.res $(@D)/be/zoneinfo.res
-	@$(shell icu-config --invoke=icupkg) -s $(@D) -te zoneinfo.res $(@D)/ee/zoneinfo.res
+	@$(shell $(ICU_CONFIG) --invoke=icupkg) -s $(@D) -tl zoneinfo.res $(@D)/le/zoneinfo.res
+	@$(shell $(ICU_CONFIG) --invoke=icupkg) -s $(@D) -tb zoneinfo.res $(@D)/be/zoneinfo.res
+	@$(shell $(ICU_CONFIG) --invoke=icupkg) -s $(@D) -te zoneinfo.res $(@D)/ee/zoneinfo.res
 	@rm $(@D)/zoneinfo.res
 	find $(@D)/* -type f
 	svn add $(@D)
