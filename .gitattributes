@@ -909,6 +909,7 @@ charset/source/ucmtools/rptp2ucm.sln -text
 charset/source/ucmtools/rptp2ucm.vcproj -text
 charset/source/ucmtools/rptp_map.cpp -text
 charset/source/ucmtools/rptp_map.h -text
+test/perf/collation/2drvb10.txt -text
 test/perf/collation/TestNames_Asian.txt -text
 test/perf/collation/TestNames_Chinese.txt -text
 test/perf/collation/TestNames_Japanese.txt -text
@@ -921,6 +922,10 @@ test/perf/collation/TestNames_SerbianSH.txt -text
 test/perf/collation/TestNames_SerbianSR.txt -text
 test/perf/collation/TestNames_Simplified_Chinese.txt -text
 test/perf/collation/TestNames_Thai.txt -text
+test/perf/collation/th18057.txt -text
+test/perf/collation/thesis.txt -text
+test/perf/collation/ulyss10.txt -text
+test/perf/collation/vfear11a.txt -text
 test/perf/conversion/arabic.txt -text svneol=unset#application/octet-stream
 test/perf/conversion/english.txt -text
 test/perf/conversion/french.txt -text
@@ -930,6 +935,15 @@ test/perf/conversion/hindi.txt -text svneol=unset#application/octet-stream
 test/perf/conversion/japanese.txt -text svneol=unset#application/octet-stream
 test/perf/conversion/korean.txt -text svneol=unset#application/octet-stream
 test/perf/conversion/s-chinese.txt -text svneol=unset#application/octet-stream
+test/perf/udhr/udhr_cmn_hans.txt -text
+test/perf/udhr/udhr_cmn_hant.txt -text
+test/perf/udhr/udhr_deu_1996.txt -text
+test/perf/udhr/udhr_eng.txt -text
+test/perf/udhr/udhr_fra.txt -text
+test/perf/udhr/udhr_jpn.html -text
+test/perf/udhr/udhr_jpn.txt -text
+test/perf/udhr/udhr_rus.txt -text
+test/perf/udhr/udhr_tha.txt -text
 tzdata/Makefile -text
 tzdata/eclipse/build.xml -text
 tzdata/eclipse/icu_data_patch.properties.template -text
