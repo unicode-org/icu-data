@@ -922,6 +922,7 @@ test/perf/collation/TestNames_SerbianSH.txt -text
 test/perf/collation/TestNames_SerbianSR.txt -text
 test/perf/collation/TestNames_Simplified_Chinese.txt -text
 test/perf/collation/TestNames_Thai.txt -text
+test/perf/collation/nvsbl10.txt -text
 test/perf/collation/th18057.txt -text
 test/perf/collation/thesis.txt -text
 test/perf/collation/ulyss10.txt -text
@@ -935,6 +936,7 @@ test/perf/conversion/hindi.txt -text svneol=unset#application/octet-stream
 test/perf/conversion/japanese.txt -text svneol=unset#application/octet-stream
 test/perf/conversion/korean.txt -text svneol=unset#application/octet-stream
 test/perf/conversion/s-chinese.txt -text svneol=unset#application/octet-stream
+test/perf/conversion/xuzhimo.txt -text svneol=unset#application/octet-stream
 test/perf/udhr/udhr_cmn_hans.txt -text
 test/perf/udhr/udhr_cmn_hant.txt -text
 test/perf/udhr/udhr_deu_1996.txt -text
