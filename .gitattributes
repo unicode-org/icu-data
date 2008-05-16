@@ -939,12 +939,15 @@ test/perf/conversion/s-chinese.txt -text svneol=unset#application/octet-stream
 test/perf/conversion/xuzhimo.txt -text svneol=unset#application/octet-stream
 test/perf/udhr/udhr_cmn_hans.txt -text
 test/perf/udhr/udhr_cmn_hant.txt -text
+test/perf/udhr/udhr_dan.txt -text
 test/perf/udhr/udhr_deu_1996.txt -text
 test/perf/udhr/udhr_eng.txt -text
 test/perf/udhr/udhr_fra.txt -text
 test/perf/udhr/udhr_jpn.html -text
 test/perf/udhr/udhr_jpn.txt -text
+test/perf/udhr/udhr_kor.txt -text
 test/perf/udhr/udhr_rus.txt -text
+test/perf/udhr/udhr_spa.txt -text
 test/perf/udhr/udhr_tha.txt -text
 tzdata/Makefile -text
 tzdata/eclipse/build.xml -text
