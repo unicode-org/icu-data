@@ -19,13 +19,13 @@
 # The substitution character is not documented in the Unicode file.
 # \x3F is chosen here because \x1A is a graphic character.
 #
-# Another deviation from the Unicode file:
+# Other deviations from the Unicode file:
+# a)
 # The GSM standard specifies that one or two ESC bytes (\x1B), if not followed
 # by a recognized final byte, be mapped to spaces (that is, reverse fallbacks
 # to U+0020).
 # The Unicode file round-trips a single \x1B to U+00A0 (NBSP) and has no mapping
 # for \x1B\x1B.
-# This file follows the GSM standard.
 # (Reverse fallbacks to U+00A0 would result in Unicode text that cannot be
 # converted back to GSM 03.38. A roundtrip for U+00A0 adds a character that is
 # not mappable in the standard.)
@@ -33,13 +33,21 @@
 # See the ietf-charsets list email "Re: GSM 03.38 substitution character?"
 # at http://mail.apps.ietf.org/ietf/charsets/msg01696.html
 #
+# b)
+# The GSM standard maps U+00C7 capital C-cedilla to \x09 but the Unicode file
+# contains and documents a "fix" to map U+00E7 small c-cedilla instead, based on
+# an interpretation of the intent of the standard. Prevailing implementations
+# in mobile phones follow the standard.
+#
+# This file follows the GSM standard.
+#
 # See the GSM standard at
 # http://www.3gpp.org/ftp/Specs/archive/03_series/03.38/0338-720.zip
 #
 # For problems with the table format please submit a bug
 # at http://www.icu-project.org/ .
-# For issues with the mappings please contact errata@unicode.org
-# as noted in the source file on unicode.org.
+# For issues with the mappings please contact Unicode
+# at http://www.unicode.org/reporting.html
 
 <code_set_name>     "gsm-03.38-2000"
 <char_name_mask>    "AXXXX"
@@ -160,7 +168,7 @@ CHARMAP
 <U00C4> \x5B |0
 <U00C5> \x0E |0
 <U00C6> \x1C |0
-<U00C7> \x09 |1
+<U00C7> \x09 |0
 <U00C9> \x1F |0
 <U00D1> \x5D |0
 <U00D6> \x5C |0
@@ -171,7 +179,6 @@ CHARMAP
 <U00E4> \x7B |0
 <U00E5> \x0F |0
 <U00E6> \x1D |0
-<U00E7> \x09 |0
 <U00E8> \x04 |0
 <U00E9> \x05 |0
 <U00EC> \x07 |0
