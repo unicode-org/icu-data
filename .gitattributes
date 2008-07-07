@@ -1186,6 +1186,7 @@ tzdata/mirror/tzcode2007k.tar.gz -text
 tzdata/mirror/tzcode2008a.tar.gz -text
 tzdata/mirror/tzcode2008b.tar.gz -text
 tzdata/mirror/tzcode2008c.tar.gz -text
+tzdata/mirror/tzcode2008d.tar.gz -text
 tzdata/mirror/tzdata2003a.tar.gz -text
 tzdata/mirror/tzdata2003d.tar.gz -text
 tzdata/mirror/tzdata2004e.tar.gz -text
