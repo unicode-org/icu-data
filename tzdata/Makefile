@@ -42,14 +42,19 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@echo "## Build OK."
 
 	@mkdir $(@D)
-	cp $(TZSRC)/zoneinfo.txt $(@D)
+	cp $(TZSRC)/zoneinfo.txt $(ICU_SRC)/data/misc/metazoneInfo.txt $(@D)
 	@echo "#" genrb and creating le/be/ee versions
-	@$(shell $(ICU_CONFIG) --invoke=genrb) -s $(@D) -d $(@D) zoneinfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+	@$(shell icu-config --invoke=genrb) -s $(@D) -d $(@D) zoneinfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+	@$(shell icu-config --invoke=genrb) -s $(@D) -d $(@D) metazoneInfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 	@mkdir $(@D)/le $(@D)/be $(@D)/ee
-	@$(shell $(ICU_CONFIG) --invoke=icupkg) -s $(@D) -tl zoneinfo.res $(@D)/le/zoneinfo.res
-	@$(shell $(ICU_CONFIG) --invoke=icupkg) -s $(@D) -tb zoneinfo.res $(@D)/be/zoneinfo.res
-	@$(shell $(ICU_CONFIG) --invoke=icupkg) -s $(@D) -te zoneinfo.res $(@D)/ee/zoneinfo.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D) -tl zoneinfo.res $(@D)/le/zoneinfo.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D) -tb zoneinfo.res $(@D)/be/zoneinfo.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D) -te zoneinfo.res $(@D)/ee/zoneinfo.res
 	@rm $(@D)/zoneinfo.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D) -tl metazoneInfo.res $(@D)/le/metazoneInfo.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D) -tb metazoneInfo.res $(@D)/be/metazoneInfo.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D) -te metazoneInfo.res $(@D)/ee/metazoneInfo.res
+	@rm $(@D)/metazoneInfo.res
 	find $(@D)/* -type f
 	svn add $(@D)
 
