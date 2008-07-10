@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="@FEATURE.ID@"
+      label="%featureName"
+      version="@PATCH.VERSION@"
+      provider-name="%providerName"
+      image="eclipse_update_120.jpg">
+
+   <description>
+      %description
+   </description>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://update.eclipse.org/updates/3.4"/>
+   </url>
+
+   <requires>
+      <import feature="@TARGET.FEATURE@" version="@TARGET.FEATURE.VERSION@" patch="true"/>
+   </requires>
+
+   <plugin
+         id="@PLUGIN.ID@"
+         download-size="0"
+         install-size="0"
+         version="@PLUGIN.VERSION@"
+         fragment="true"/>
+
+</feature>

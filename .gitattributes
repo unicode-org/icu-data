@@ -988,6 +988,20 @@ tzdata/eclipse/project_src/eclipse33/plugin/about_files/license.html -text
 tzdata/eclipse/project_src/eclipse33/plugin/build.properties -text
 tzdata/eclipse/project_src/eclipse33/plugin/fragment-icu-data.properties -text
 tzdata/eclipse/project_src/eclipse33/site/site.xml -text
+tzdata/eclipse/project_src/eclipse34/buildconfig/build.properties -text
+tzdata/eclipse/project_src/eclipse34/feature/.project -text
+tzdata/eclipse/project_src/eclipse34/feature/build.properties -text
+tzdata/eclipse/project_src/eclipse34/feature/eclipse_update_120.jpg -text svneol=unset#image/jpeg
+tzdata/eclipse/project_src/eclipse34/feature/epl-v10.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse34/feature/feature.properties -text
+tzdata/eclipse/project_src/eclipse34/feature/license.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse34/plugin/.classpath -text
+tzdata/eclipse/project_src/eclipse34/plugin/.project -text
+tzdata/eclipse/project_src/eclipse34/plugin/META-INF/MANIFEST.MF -text
+tzdata/eclipse/project_src/eclipse34/plugin/about.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse34/plugin/about_files/license.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse34/plugin/build.properties -text
+tzdata/eclipse/project_src/eclipse34/plugin/fragment-icu-data.properties -text
 tzdata/eclipse/readme.txt -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322-2007h/icu_data_patch.properties -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322-2007h/updatesite/features/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322.jar -text
