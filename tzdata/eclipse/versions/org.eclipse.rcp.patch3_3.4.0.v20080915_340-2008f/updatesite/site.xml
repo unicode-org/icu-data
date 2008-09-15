@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.eclipse.rcp.patch3_3.4.0.v20080915_340.jar" id="org.eclipse.rcp.patch3" version="3.4.0.v20080915_340" patch="true">
+      <category name="Eclipse 3.4.0 patches"/>
+   </feature>
+   <category-def name="Eclipse 3.4.0 patches" label="Eclipse 3.4.0 patches"/>
+</site>
