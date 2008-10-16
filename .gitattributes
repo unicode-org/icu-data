@@ -909,6 +909,10 @@ charset/source/ucmtools/rptp2ucm.sln -text
 charset/source/ucmtools/rptp2ucm.vcproj -text
 charset/source/ucmtools/rptp_map.cpp -text
 charset/source/ucmtools/rptp_map.h -text
+meta/dtd/icumeta.dtd -text
+meta/dtd/icumeta.rnc -text
+meta/dtd/icumeta.xsd -text
+meta/xml/icumeta.css -text
 test/perf/collation/2drvb10.txt -text
 test/perf/collation/TestNames_Asian.txt -text
 test/perf/collation/TestNames_Chinese.txt -text

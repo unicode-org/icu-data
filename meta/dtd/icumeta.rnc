@@ -1,0 +1,79 @@
+
+# ICU metadata XML DTD, RNC format.
+# Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved.
+
+
+#default namespace = "http://icu-project.org/xml"
+
+
+element icuInfo
+{
+    element icuProducts
+    {
+        element icuProduct
+        {
+            attribute type { text },
+            element names
+            {
+                element name
+                {
+                    attribute type { "full" | "short" },
+                    text
+                }*
+            }?,
+            element releases
+            {
+                element release
+                {
+                    attribute version { text },
+                    attribute draft { "proposed" }?,
+                    attribute type { "reference" | "development" }?,
+                    element dates
+                    {
+                        element date
+                        {
+                            attribute type { "ga" },
+                            attribute date { text }
+                        }*
+                    }?,
+                    element platforms
+                    {
+                        ## Who owns (maintains the platform)? If this is "mixed", then the platform "name" is the name of an individual contributor
+                        attribute owner { text },
+                        attribute date { text }?,
+                        element platform
+                        {
+                            ## (Optional) the date that this record was updated
+                            attribute date { text }?,
+                            ## The operating system type, such as "Linux-RedHat", "AIX", "Windows XP" etc.
+                            attribute os { text },
+                            ## The operating system version, such as "4.0 sp3"
+                            attribute os-version { text },
+                            ## The processor architecture, 
+                            attribute arch { "hppa" | "jvm" | "x86" | "power" | "sparc" | "mips" | "arm" | "ia64" | "other" },
+#                           attribute arch-version { text },
+                            attribute bits { "32" | "64" },
+                            attribute tool { text },
+                            attribute tool-version { text },
+                            
+                            ## Each builder represents an instance of a system (or pool of systems) able to build/test this platform.
+                            element builder 
+                            {
+                                ## The name of this builder identifies it to the 'owner'. If the owner is "contributed", then the name is actually the email address of the contributor
+                                attribute name { text }?,
+                                ## (Optional) the date that this record was updated
+                                attribute date { text }?,
+                                ## (Optional) the last reported status of this tester - defaults to "works".
+                                attribute status { "unknown" | "works" | "broken" }?,
+#                               ## (Optional) the last reported status of this tester
+#                               attribute frequency { "regularly" | "often" | "rarely" | "never" | "unknown" }?,
+                                ## (Optional) If this builder provides a binary file, give the file name.
+                                attribute binary { text }?
+                            }*
+                        }*
+                    }*
+                }*
+            }
+        }*
+    }?
+}

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="icuInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="icuProducts"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="icuProducts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="icuProduct"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="icuProduct">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="names"/>
+        <xs:element ref="releases"/>
+      </xs:sequence>
+      <xs:attribute name="type" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="names">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="name"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name">
+    <xs:complexType mixed="true">
+      <xs:attribute name="type" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="full"/>
+            <xs:enumeration value="short"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="releases">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="release"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="release">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="dates"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="platforms"/>
+      </xs:sequence>
+      <xs:attribute name="version" use="required"/>
+      <xs:attribute name="draft">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="proposed"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="reference"/>
+            <xs:enumeration value="development"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dates">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="date"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="date">
+    <xs:complexType>
+      <xs:attribute name="type" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="ga"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="date" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="platforms">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="platform"/>
+      </xs:sequence>
+      <xs:attribute name="owner" use="required">
+        <xs:annotation>
+          <xs:documentation>Who owns (maintains the platform)? If this is "mixed", then the platform "name" is the name of an individual contributor</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="date"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="platform">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="builder"/>
+      </xs:sequence>
+      <xs:attribute name="date">
+        <xs:annotation>
+          <xs:documentation>(Optional) the date that this record was updated</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="os" use="required">
+        <xs:annotation>
+          <xs:documentation>The operating system type, such as "Linux-RedHat", "AIX", "Windows XP" etc.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="os-version" use="required">
+        <xs:annotation>
+          <xs:documentation>The operating system version, such as "4.0 sp3"</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="arch" use="required">
+        <xs:annotation>
+          <xs:documentation>The processor architecture, </xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="hppa"/>
+            <xs:enumeration value="jvm"/>
+            <xs:enumeration value="x86"/>
+            <xs:enumeration value="power"/>
+            <xs:enumeration value="sparc"/>
+            <xs:enumeration value="mips"/>
+            <xs:enumeration value="arm"/>
+            <xs:enumeration value="ia64"/>
+            <xs:enumeration value="other"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="bits" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="32"/>
+            <xs:enumeration value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="tool" use="required"/>
+      <xs:attribute name="tool-version" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="builder">
+    <xs:annotation>
+      <xs:documentation>Each builder represents an instance of a system (or pool of systems) able to build/test this platform.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:attribute name="name">
+        <xs:annotation>
+          <xs:documentation>The name of this builder identifies it to the 'owner'. If the owner is "contributed", then the name is actually the email address of the contributor</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="date">
+        <xs:annotation>
+          <xs:documentation>(Optional) the date that this record was updated</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="status">
+        <xs:annotation>
+          <xs:documentation>(Optional) the last reported status of this tester - defaults to "works".</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:token">
+            <xs:enumeration value="unknown"/>
+            <xs:enumeration value="works"/>
+            <xs:enumeration value="broken"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="binary">
+        <xs:annotation>
+          <xs:documentation>(Optional) If this builder provides a binary file, give the file name.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

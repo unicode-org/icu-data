@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/css" href="icumeta.css"?>
+<!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
+<!-- Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved. -->
+<icuInfo> 
+    <icuProducts>
+        <icuProduct type="icu4c">
+            <releases>
+                <release version="4.0">
+                    <platforms owner="ibm" date="2008-08-20">
+                        <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
+                        <platform 
+                                os="Windows Vista"
+                                os-version="SP1"
+                                arch="x86"
+                                bits="32"
+                                tool="MS Visual Studio"
+                                tool-version="2005" >
+                            <builder name="lab3" status="works" binary="Win32-msvc8" />
+                        </platform>
+                        <platform 
+                                os="Windows Server"
+                                os-version="2003"
+                                arch="x86"
+                                bits="64"
+                                tool="MS Visual Studio"
+                                tool-version="2005 via Cygwin" >
+                            <builder name="sysnt" status="works" binary="Win64-msvc8" />
+                        </platform>
+                        <platform 
+                                os="AIX"
+                                os-version="6.1"
+                                arch="power"
+                                bits="64"
+                                tool="VisualAge"
+                                tool-version="9" >
+                            <builder name="sys98" status="works"  binary="AIX6_1-VA9"  />
+                        </platform>
+                        <platform 
+                                os="Solaris"
+                                os-version="10"
+                                arch="sparc"
+                                bits="64"
+                                tool="Sun Studio"
+                                tool-version="12" >
+                            <builder name="ultra3" status="works" binary="Solaris10-CC" />
+                        </platform>
+                        <platform 
+                                os="Red Hat Enterprise Linux"
+                                os-version="5"
+                                arch="x86"
+                                bits="32"
+                                tool="gcc"
+                                tool-version="4.1.2" >
+                            <builder name="redhat3" status="works" binary="RHEL5-gcc4_1_2" />
+                        </platform>
+                        <platform 
+                                os="HP/UX"
+                                os-version="11iv3"
+                                arch="ia64"
+                                bits="64"
+                                tool="aCC"
+                                tool-version="A.06.14" >
+                            <builder name="hp1" status="works" binary="HPUX11iv3-aCC" />
+                        </platform>
+                        <platform 
+                                os="AIX"
+                                os-version="5.3"
+                                arch="power"
+                                bits="64"
+                                tool="VisualAge"
+                                tool-version="8" >
+                            <builder name="moon" status="works"/>
+                        </platform>
+                        <platform 
+                                os="AIX"
+                                os-version="5.2"
+                                arch="power"
+                                bits="64"
+                                tool="VisualAge"
+                                tool-version="6" >
+                            <builder name="bluefeet" status="works"/>
+                        </platform>
+                        <platform 
+                                os="HP/UX"
+                                os-version="11i"
+                                arch="hppa"
+                                bits="64"
+                                tool="aCC"
+                                tool-version="A.03.50" >
+                            <builder name="hp2" status="works"/>
+                        </platform>
+                        <platform 
+                                os="MacOSX"
+                                os-version="10.5 Leopard"
+                                arch="x86"
+                                bits="32"
+                                tool="gcc"
+                                tool-version="4.0.1" >
+                            <builder name="hp2" status="works"/>
+                        </platform>
+                        <platform 
+                                os="Solaris"
+                                os-version="10"
+                                arch="sparc"
+                                bits="64"
+                                tool="gcc"
+                                tool-version="4.0.3" >
+                            <builder name="ultra1" status="works"/>
+                        </platform>
+                        <platform 
+                                os="Solaris"
+                                os-version="9"
+                                arch="sparc"
+                                bits="64"
+                                tool="Sun Studio"
+                                tool-version="8" >
+                            <builder name="saturn2" status="works"/>
+                        </platform>
+                        <platform 
+                                os="Red Hat Enterprise Linux"
+                                os-version="4.2"
+                                arch="x86"
+                                bits="32"
+                                tool="gcc"
+                                tool-version="3.4.6" >
+                            <builder name="redhat2" status="works"/>
+                        </platform>
+                        <platform 
+                                os="SuSe Linux"
+                                os-version="7.2"
+                                arch="x86"
+                                bits="32"
+                                tool="icc"
+                                tool-version="9.0" >
+                            <builder name="db2iculx86" status="works"/>
+                        </platform>
+                        <platform 
+                                os="Windows Server"
+                                os-version="2008"
+                                arch="x86"
+                                bits="64"
+                                tool="MS Visual Studio"
+                                tool-version="2005 via Cygwin" >
+                            <builder name="sysnt" status="works"/>  <!-- sysnt is dual boot with 2003 -->
+                        </platform>
+                        <platform 
+                                os="Windows 2000"
+                                os-version="Professional"
+                                arch="x86"
+                                bits="32"
+                                tool="MS Visual Studio"
+                                tool-version="2003 via Cygwin" >
+                            <builder name="sys2000" status="works"/>
+                        </platform>
+                        <platform 
+                                os="Windows XP"
+                                os-version="Professional"
+                                arch="x86"
+                                bits="32"
+                                tool="MS Visual Studio"
+                                tool-version="2005" >
+                            <builder name="zippy" status="works"/> <!-- zh_SG -->
+                            <builder name="sysxp" status="works"/>
+                        </platform>
+                    </platforms>
+                </release>
+            </releases>
+        </icuProduct>
+        <icuProduct type="icu4j">
+            <releases>
+                <release version="4.0">
+                    <platforms owner="ibm" date="2008-08-20">
+                        <!-- in IBM-ICU parlance, regularly means 'reference platform' -->
+                        <platform 
+                                os="Windows Vista"
+                                os-version="SP1"
+                                arch="x86"
+                                bits="32"
+                                tool="IBM Java"
+                                tool-version="1.5.0" >
+                            <builder status="works"/>
+                        </platform>
+                        <platform 
+                                os="Solaris"
+                                os-version="10"
+                                arch="sparc"
+                                bits="64"
+                                tool="Sun Java"
+                                tool-version="1.5.0" >
+                            <builder status="works"/>
+                        </platform>
+                        <platform 
+                                os="AIX"
+                                os-version="6.1"
+                                arch="power"
+                                bits="64"
+                                tool="IBM Java"
+                                tool-version="1.5.0" >
+                            <builder status="works"/>
+                        </platform>
+                    </platforms>
+                </release>
+            </releases>
+        </icuProduct>
+    </icuProducts>
+</icuInfo>

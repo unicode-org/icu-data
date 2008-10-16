@@ -1,0 +1,132 @@
+/* 
+Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved.
+
+*/
+
+/* @override 
+	http://icu-project.org/download/icumeta.css
+	http://icu-project.org/xml/icumeta.css
+*/
+
+/* stylesheet for  icu metadata */
+
+body {
+	margin: 1em !important;
+}
+
+icuInfo:before {
+	display:  block;
+	content: "This is the ICU metadata file, see http://icu-project.org for ICU info.";
+}
+
+icuInfo {
+	padding:  1em;
+}
+
+icuProducts {
+	display:  table;
+	list-style-type: disc;
+}
+
+icuProduct name{
+	display:  block;
+	background: #00b2bc;
+	color: #f4fff8;
+	font-weight:  bold;
+	font-size:  x-large;
+	padding:  0.1em;
+}
+
+icuProduct name:before {
+	content:  attr(type) ": ";
+	font-size:  small;
+}
+
+releases {
+	display:  inline;
+}
+
+release {
+	display:  block;
+	content:  attr(version);
+	border-bottom:  2px solid black;
+}
+
+release:before {
+	content:  attr(version);
+	border-bottom:  1px solid gray;
+	padding-right:  2em;
+	font-size:  x-large;
+	font-family: sans-serif;
+}
+
+release:after {
+	content:  attr(draft);
+	color:  red;
+	float: right;
+	font-size:  large;
+}
+
+dates {
+	display: inline;
+}
+
+date {
+	display:  inline;
+}
+
+
+date:after {
+	padding-left:  3em;
+	display:  inline;
+	content:  attr(date) " " attr(type);
+	border-bottom:  1px solid gray;
+	font-weight: bold;
+	border-right:  1px dotted gray;
+	padding-right:  0.5em;
+	font-variant: small-caps;
+	float: none;
+	position: absolute;
+	left: 10em;
+}
+
+platforms {
+	display:  block;
+	border-bottom:  1px solid gray;
+}
+
+platforms:before {
+	font-size: larger;
+	font-weight: bold;
+	margin-left: 1em;
+	content: " " attr(owner) " ";
+	font-variant: small-caps;
+}
+
+platform {
+	display: block;
+	margin-left: 2em;
+}
+
+platform:before {
+	content:  attr(os) " " attr(os-version) ", " attr(arch) " " attr(bits) "-bit" ": " attr(tool) " " attr(tool-version);
+}
+
+builder:after {
+	color: blue;
+	font-size:  small;
+	margin-left:  1em;
+	content:  " " attr(binary);
+	margin-right:  0;
+}
+
+.works {
+	background-color: #a1cca5;
+}
+.broken {
+	background-color: red;
+	color:  white;
+	font-weight: bold;
+}
+
+

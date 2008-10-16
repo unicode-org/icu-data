@@ -1,0 +1,61 @@
+<?xml encoding="UTF-8"?>
+<!-- Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved. -->
+
+<!-- ICU metadata XML DTD, RNC format. -->
+
+<!-- default namespace = "http://icu-project.org/xml" -->
+
+<!-- ICU metadata XML DTD, RNC format. -->
+
+<!-- default namespace = "http://icu-project.org/xml" -->
+
+<!ELEMENT icuInfo (icuProducts)?>
+
+<!ELEMENT icuProducts (icuProduct)*>
+
+<!ELEMENT icuProduct (names?,releases)>
+<!ATTLIST icuProduct
+  type CDATA #REQUIRED>
+
+<!ELEMENT names (name)*>
+
+<!ELEMENT releases (release)*>
+
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name
+  type (full|short) #REQUIRED>
+
+<!ELEMENT release (dates?,platforms*)>
+<!ATTLIST release
+  version CDATA #REQUIRED
+  draft (proposed) #IMPLIED
+  type (reference|development) #IMPLIED>
+
+<!ELEMENT dates (date)*>
+
+<!ELEMENT platforms (platform)*>
+<!ATTLIST platforms
+  owner CDATA #REQUIRED
+  date CDATA #IMPLIED>
+
+<!ELEMENT date EMPTY>
+<!ATTLIST date
+  type (ga) #REQUIRED
+  date CDATA #REQUIRED>
+
+<!ELEMENT platform (builder)*>
+<!ATTLIST platform
+  date CDATA #IMPLIED
+  os CDATA #REQUIRED
+  os-version CDATA #REQUIRED
+  arch (hppa|jvm|x86|power|sparc|mips|arm|ia64|other) #REQUIRED
+  bits (32|64) #REQUIRED
+  tool CDATA #REQUIRED
+  tool-version CDATA #REQUIRED>
+
+<!ELEMENT builder EMPTY>
+<!ATTLIST builder
+  name CDATA #IMPLIED
+  date CDATA #IMPLIED
+  status (unknown|works|broken) #IMPLIED
+  binary CDATA #IMPLIED>
