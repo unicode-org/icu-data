@@ -915,6 +915,7 @@ meta/dtd/icumeta.dtd -text
 meta/dtd/icumeta.rnc -text
 meta/dtd/icumeta.xsd -text
 meta/xml/icumeta.css -text
+meta/xml/icumeta.xml svneol=native#text/xml
 test/perf/collation/2drvb10.txt -text
 test/perf/collation/TestNames_Asian.txt -text
 test/perf/collation/TestNames_Chinese.txt -text
