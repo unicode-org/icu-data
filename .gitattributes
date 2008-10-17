@@ -911,9 +911,11 @@ charset/source/ucmtools/rptp_map.cpp -text
 charset/source/ucmtools/rptp_map.h -text
 meta/.classpath -text
 meta/.project -text
-meta/dtd/icumeta.dtd -text
-meta/dtd/icumeta.rnc -text
-meta/dtd/icumeta.xsd -text
+meta/dtd/icumeta.dtd -text svneol=unset#application/xml-dtd
+meta/dtd/icumeta.rnc -text svneol=unset#text/rnc
+meta/dtd/icumeta.xsd -text svneol=unset#application/xml
+meta/input/testing_ibm.xml svneol=native#text/xml
+meta/input/versions.xml svneol=native#text/xml
 meta/xml/icumeta.css -text
 meta/xml/icumeta.xml svneol=native#text/xml
 test/perf/collation/2drvb10.txt -text
