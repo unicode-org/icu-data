@@ -67,10 +67,13 @@ public class Merger {
             } else if(s.endsWith("/")) {
                 if(verbose) System.err.println("# / adding contents of " +s);
                 File subdir = new File(s);
+                if(new File(subdir,"versions.xml").exists()) {
+                    addSource(s+"versions.xml");
+                }
                 for (String ss : subdir.list(
                             new FilenameFilter() {
                                 public boolean accept(File dir, String name) {
-                                    return(name.endsWith(".xml"));
+                                    return(name.endsWith(".xml")&&!name.equals("versions.xml"));
                                 } })) {
                    addSource(s+ss);
                 }
@@ -97,8 +100,9 @@ public class Merger {
 //        try {
              java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
                      out);
-             if(copyright) writer.write("<!-- Copyright (c) "+Calendar.getInstance().get(Calendar.YEAR)+" IBM Corporation and Others, All Rights Reserved. -->\n");
-             LDMLUtilities.printDOMTree(full, new PrintWriter(writer),"\n<!-- This file was generated from: "+sources+" -->\n<!DOCTYPE icuInfo SYSTEM \"http://icu-project.org/dtd/icumeta.dtd\">\n",null); //
+             String copy = "";
+             if(copyright) copy = ("<!-- Copyright (c) "+Calendar.getInstance().get(Calendar.YEAR)+" IBM Corporation and Others, All Rights Reserved. -->\n");
+             LDMLUtilities.printDOMTree(full, new PrintWriter(writer),copy+"\n<!-- This file was generated from: "+sources+" -->\n<!DOCTYPE icuInfo SYSTEM \"http://icu-project.org/dtd/icumeta.dtd\">\n",null); //
              writer.flush();
 //        } catch (IOException e) {
 //            Syste
@@ -137,6 +141,7 @@ public class Merger {
     private static Node mergeXMLDocuments(Document source, Node override, StringBuffer xpath, 
                                           String thisName, String sourceDir, boolean ignoreDraft,
                                           boolean ignoreVersion){
+        if(false) System.err.println("MM: xp: " + xpath);
         if(source==null){
             return override;
         }
@@ -168,6 +173,7 @@ public class Merger {
                 continue;
             }   
             String childName = child.getNodeName();
+            if(false) System.err.println("MM: xp: " + xpath + " || " + childName);
 
             int savedLength=xpath.length();
             xpath.append("/");
@@ -198,27 +204,27 @@ public class Merger {
                 
                 Node childToImport = source.importNode(child,true);
                 parentNodeInSource.appendChild(childToImport);
-            }else if( childName.equals(LDMLConstants.IDENTITY)){
-                if(!ignoreVersion){
-                    // replace the source doc
-                    // none of the elements under collations are inherited
-                    // only the node as a whole!!
-                    parentNodeInSource = nodeInSource.getParentNode();
-                    Node childToImport = source.importNode(child,true);
-                    parentNodeInSource.replaceChild(childToImport, nodeInSource);
-                }
-            }else if( childName.equals(LDMLConstants.COLLATION)){
-                // replace the source doc
-                // none of the elements under collations are inherited
-                // only the node as a whole!!
-                parentNodeInSource = nodeInSource.getParentNode();
-                Node childToImport = source.importNode(child,true);
-                parentNodeInSource.replaceChild(childToImport, nodeInSource);
-                //override the validSubLocales attribute
-                String val = LDMLUtilities.getAttributeValue(child.getParentNode(), LDMLConstants.VALID_SUBLOCALE);
-                NamedNodeMap map = parentNodeInSource.getAttributes();
-                Node vs = map.getNamedItem(LDMLConstants.VALID_SUBLOCALE);
-                vs.setNodeValue(val);
+//            }else if( childName.equals(LDMLConstants.IDENTITY)){
+//                if(!ignoreVersion){
+//                    // replace the source doc
+//                    // none of the elements under collations are inherited
+//                    // only the node as a whole!!
+//                    parentNodeInSource = nodeInSource.getParentNode();
+//                    Node childToImport = source.importNode(child,true);
+//                    parentNodeInSource.replaceChild(childToImport, nodeInSource);
+//                }
+//            }else if( childName.equals(LDMLConstants.COLLATION)){
+//                // replace the source doc
+//                // none of the elements under collations are inherited
+//                // only the node as a whole!!
+//                parentNodeInSource = nodeInSource.getParentNode();
+//                Node childToImport = source.importNode(child,true);
+//                parentNodeInSource.replaceChild(childToImport, nodeInSource);
+//                //override the validSubLocales attribute
+//                String val = LDMLUtilities.getAttributeValue(child.getParentNode(), LDMLConstants.VALID_SUBLOCALE);
+//                NamedNodeMap map = parentNodeInSource.getAttributes();
+//                Node vs = map.getNamedItem(LDMLConstants.VALID_SUBLOCALE);
+//                vs.setNodeValue(val);
             }else{
                 boolean childElementNodes = areChildrenElementNodes(child);
                 boolean sourceElementNodes = areChildrenElementNodes(nodeInSource);
@@ -231,6 +237,7 @@ public class Merger {
                     // replace to the source doc 
                     parentNodeInSource = nodeInSource.getParentNode();
                     Node childToImport = source.importNode(child,true);
+                    if(false) System.err.println(" MM replace: " + childToImport.getNodeName() + " with " + nodeInSource.getNodeName());
                     parentNodeInSource.replaceChild(childToImport, nodeInSource);
                 }
             }

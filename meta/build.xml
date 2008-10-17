@@ -23,7 +23,8 @@
     <property name="dtd.dir" location="./dtd" />
     <property name="build.dir" value="classes" />
     <property name="doc.dir" value="doc" />
-    <property name="merger.class" value="com.ibm.icu.dev.meta.Merger" />
+        <property name="merger.class" value="com.ibm.icu.dev.meta.Merger" />
+        <property name="validate.class" value="org.unicode.cldr.util.XMLValidator" />
     <property name="xml.dir" value="xml" />
     <property name="xml-base.file" value="icumeta.xml" />
     <property name="xml.file" value="${xml.dir}/${xml-base.file}" />
@@ -116,7 +117,23 @@
     </java>
    </target>
    
-   <target name="xml" depends="init,core,check-xml,rebuild-xml">
+	
+	<target name="validate-xml" depends="init">
+	    <java classname="${validate.class}" classpathref="build.classpath">
+	        <arg value="${xml.file}"/>
+	        <sysproperty key="CLDR_DTD_CACHE" value="${dtdcache.dir}"/>
+	        <sysproperty key="CLDR_DTD_OVERRIDE" value="${dtd.dir}"/>
+	        <!--   sysproperty key="CLDR_DTD_CACHE_DEBUG" value="y"/>
+	        <sysproperty key="CLDR_DTD_CACHE_ADEBUG" value="y"/>
+	        <sysproperty key="ICU_DTD_CACHE_DEBUG" value="y"/>
+	        <sysproperty key="ICU_DTD_CACHE_ADEBUG" value="y" -->
+	        <sysproperty key="ICU_DTD_CACHE" value="${dtdcache.dir}"/>
+	        <sysproperty key="ICU_DTD_OVERRIDE" value="${dtd.dir}"/>
+	    </java>
+		<echo message="(No errors here means ${xml.file} is OK.)"/>
+	</target>
+	
+   <target name="xml" depends="init,core,check-xml,rebuild-xml,validate-xml">
    </target>
           
    <target name="hello" depends="init">

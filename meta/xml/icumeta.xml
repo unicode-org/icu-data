@@ -1,17 +1,30 @@
-<!-- Copyright (c) 2008 IBM Corporation and Others, All Rights Reserved. -->
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright (c) 2008 IBM Corporation and Others, All Rights Reserved. -->
 
-<!-- This file was generated from:  input/testing_ibm.xml input/versions.xml -->
+<!-- This file was generated from:  input/versions.xml input/testing_ibm.xml -->
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
 <?xml-stylesheet type="text/css" href="icumeta.css"?>
 
-<!-- Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved. -->
+<!-- Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved.
+ -->
 <icuInfo> 
     <icuProducts>
         <icuProduct type="icu4c">
+            <names>
+                <name type="full">International Components for C/C++</name>
+                <name type="short">ICU4C</name>
+            </names>
             <releases>
+                <release draft="proposed" version="4.2">
+                    <dates>
+                        <date date="2009-05-01" type="ga"/>
+                    </dates>
+                </release>
                 <release version="4.0">
-                    <platforms date="2008-08-20" owner="ibm">
+                    <dates>
+                        <date date="2008-07-02" type="ga"/>
+                    </dates>
+                <platforms date="2008-08-20" owner="ibm">
                         <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
                         <platform arch="x86" bits="32" os="Windows Vista" os-version="SP1" tool="MS Visual Studio" tool-version="2005">
                             <builder binary="Win32-msvc8" name="lab3" status="works"/>
@@ -66,14 +79,6 @@
                             <builder name="sysxp" status="works"/>
                         </platform>
                     </platforms>
-                <dates>
-                        <date date="2008-07-02" type="ga"/>
-                    </dates>
-                </release>
-            <release draft="proposed" version="4.2">
-                    <dates>
-                        <date date="2009-05-01" type="ga"/>
-                    </dates>
                 </release>
                 <release version="3.8.1">
                     <dates>
@@ -211,15 +216,23 @@
                     </dates>
                 </release>
             </releases>
-        <names>
-                <name type="full">International Components for C/C++</name>
-                <name type="short">ICU4C</name>
-            </names>
         </icuProduct>
         <icuProduct type="icu4j">
+            <names>
+                <name type="full">International Components for Java</name>
+                <name type="short">ICU4J</name>
+            </names>
             <releases>
+                <release draft="proposed" version="4.2">
+                    <dates>
+                        <date date="2009-05-01" type="ga"/>
+                    </dates>
+                </release>
                 <release version="4.0">
-                    <platforms date="2008-08-20" owner="ibm">
+                    <dates>
+                        <date date="2008-07-02" type="ga"/>
+                    </dates>
+                <platforms date="2008-08-20" owner="ibm">
                         <!-- in IBM-ICU parlance, regularly means 'reference platform' -->
                         <platform arch="x86" bits="32" os="Windows Vista" os-version="SP1" tool="IBM Java" tool-version="1.5.0">
                             <builder status="works"/>
@@ -231,14 +244,6 @@
                             <builder status="works"/>
                         </platform>
                     </platforms>
-                <dates>
-                        <date date="2008-07-02" type="ga"/>
-                    </dates>
-                </release>
-            <release draft="proposed" version="4.2">
-                    <dates>
-                        <date date="2009-05-01" type="ga"/>
-                    </dates>
                 </release>
                 <release version="3.8.1">
                     <dates>
@@ -325,18 +330,15 @@
                         <date date="2001-12-05" type="ga"/>
                     </dates>
                 </release>
+                <!-- at some point, icu4j and icu4c version numbers were brought into sync -->
                 <release version="1.3.1">
                     <dates>
                         <date date="2001-06-13" type="ga"/>
                     </dates>
                 </release>
             </releases>
-        <names>
-                <name type="full">International Components for Java</name>
-                <name type="short">ICU4J</name>
-            </names>
         </icuProduct>
-    <icuProduct type="icu4jni">
+        <icuProduct type="icu4jni">
             <names>
                 <name type="full">International Components for JNI</name>
                 <name type="short">ICU4JNI</name>
