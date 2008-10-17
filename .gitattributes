@@ -909,6 +909,8 @@ charset/source/ucmtools/rptp2ucm.sln -text
 charset/source/ucmtools/rptp2ucm.vcproj -text
 charset/source/ucmtools/rptp_map.cpp -text
 charset/source/ucmtools/rptp_map.h -text
+meta/.classpath -text
+meta/.project -text
 meta/dtd/icumeta.dtd -text
 meta/dtd/icumeta.rnc -text
 meta/dtd/icumeta.xsd -text

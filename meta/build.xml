@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/*
+*******************************************************************************
+* Copyright (C) 2008, International Business Machines Corporation and    *
+* others. All Rights Reserved.                                                *
+*******************************************************************************
+* This is the ant build file for ICU Meta.
+*/
+-->
+
+<project name="meta" default="hello" basedir=".">
+
+    <target name="init" depends="initBase"/>
+
+    <target name="initBase"
+          description="Initialized meta build environment">
+    <tstamp />
+    <property name="project" value="icumeta" />
+    <property name="src.dir" value="src" />
+    <property name="dtdcache.dir" location="./dtdcache" />
+    <property name="dtd.dir" location="./dtd" />
+    <property name="build.dir" value="classes" />
+    <property name="doc.dir" value="doc" />
+    <property name="merger.class" value="com.ibm.icu.dev.meta.Merger" />
+    <property name="xml.dir" value="xml" />
+    <property name="xml-base.file" value="icumeta.xml" />
+    <property name="xml.file" value="${xml.dir}/${xml-base.file}" />
+    <property name="input.dir" value="input" />
+    <property name="lib.dir" value="lib" />
+    <property name="jar.file" value="${icumeta}.jar" />
+    <property file="build.properties" />
+    <property name="icumeta.javac.source" value="1.5" />
+    <property name="icumeta.javac.target" value="1.5" />
+
+    <!--  snag all jars in lib/*.jar -->
+    <fileset id="libjars" dir="${lib.dir}">
+        <include name="**/*.jar"/>
+    </fileset>
+
+    <fileset id="srcxml" dir="${input.dir}">
+        <include name="**/*.xml"/>
+    </fileset>
+
+    <path id="build.classpath">
+      <fileset refid="libjars" />
+      <pathelement path="${build.dir}" />
+    </path>
+
+    <!-- Load environment variables -->
+    <property environment="env" />
+
+    <!-- Capture the computer name in a cross-platform manner -->
+    <property name="env.COMPUTERNAME" value="${env.HOSTNAME}" />
+
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${dtdcache.dir}" />
+
+    <echo message="java home: ${java.home}" />
+    <echo message="java version: ${java.version}" />
+    <echo message="ant java version: ${ant.java.version}" />
+    <echo message="${ant.version}" />
+    <echo message="${env.COMPUTERNAME} with ${os.name} ${os.version} on ${os.arch}" />
+    <tstamp>
+      <format property="date.time" pattern="yyyy-MM-dd 'at' hh:mm:ss z" locale="en,US" />
+    </tstamp>
+
+    <echo message="Initialized at ${date.time}" />
+  </target>
+
+
+  <target name="clean" depends="initBase" description="remove all build targets">
+    <delete dir="${build.dir}" />
+    <delete dir="${doc.dir}" />
+    <delete dir="${dtdcache.dir}" />
+   </target>
+   
+   <target name="core" depends="init">
+        <javac sourcepath="" 
+               srcdir="${src.dir}"
+               destdir="${build.dir}"
+               classpathref="build.classpath"
+               source="${icumeta.javac.source}"
+               target="${icumeta.javac.source}"
+               debug="on"
+               deprecation="on"
+               encoding="ascii">
+            <include name="com/ibm/icu/dev/meta/**/*.java" />
+        </javac>
+   </target>
+   
+   <target name="check-xml" depends="init">
+    <dependset>
+    <srcfileset refid="srcxml"/>
+    <targetfilelist dir="${xml.dir}" files="${xml-base.file}"/>
+    </dependset>
+    <available file="${xml.file}" property="xml-ok"/>
+   </target>
+   
+   <target name="rebuild-xml" depends="init,core" unless="xml-ok">
+    <echo message="DTD Cache: ${dtdcache.dir}" />
+    <echo message="DTD Override: ${dtd.dir}" />
+    <java classname="${merger.class}" classpathref="build.classpath">
+        <arg value="-v"/>
+        <arg value="-o:${xml.file}"/>
+        <arg value="${input.dir}/"/> <!--  load all .xml files from there -->
+        <sysproperty key="CLDR_DTD_CACHE" value="${dtdcache.dir}"/>
+        <sysproperty key="CLDR_DTD_OVERRIDE" value="${dtd.dir}"/>
+        <!--   sysproperty key="CLDR_DTD_CACHE_DEBUG" value="y"/>
+        <sysproperty key="CLDR_DTD_CACHE_ADEBUG" value="y"/>
+        <sysproperty key="ICU_DTD_CACHE_DEBUG" value="y"/>
+        <sysproperty key="ICU_DTD_CACHE_ADEBUG" value="y" -->
+        <sysproperty key="ICU_DTD_CACHE" value="${dtdcache.dir}"/>
+        <sysproperty key="ICU_DTD_OVERRIDE" value="${dtd.dir}"/>
+    </java>
+   </target>
+   
+   <target name="xml" depends="init,core,check-xml,rebuild-xml">
+   </target>
+          
+   <target name="hello" depends="init">
+    <echo message="This is ${project}." />
+    <echo message="Interesting targets:" />
+    <echo message="  core    -  build base class(es)"/>
+    <echo message="  clean   -  cleanup stuff"/>
+    <echo message="  xml     -  regenerate ${xml.file} if needed"/>
+    <echo message="  rebuild-xml -  regenerate ${xml.file} irregardless"/>
+    <echo message="  (the 'dtd' subdirectory has its own makefile, which see.)"/>
+    <!--  echo message="  dtd     -  rebuild dtd (may require download)" / -->
+    
+    <echo message=""/>
+    <echo message="Don't forget to put into ${lib.dir} the usual fun jars: cldr.jar icu4j.jar utilities.jar xalan.jar xerces.jar" /> 
+   </target>
+</project>

@@ -2,80 +2,108 @@
 
 package com.ibm.icu.dev.meta;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
-import java.io.*;
-import org.unicode.cldr.util.*;
-import org.unicode.cldr.icu.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.Calendar;
 
-
-// DOM imports
-import org.apache.xpath.XPathAPI;
-import org.apache.xalan.serialize.DOMSerializer;
-import org.apache.xalan.serialize.Serializer;
-import org.apache.xalan.serialize.SerializerFactory;
-import org.apache.xalan.templates.OutputProperties;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
-import org.unicode.cldr.icu.LDMLConstants;
-
-// Needed JAXP classes
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
-// SAX2 imports
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import org.apache.xpath.XPathAPI;
+import org.unicode.cldr.icu.LDMLConstants;
+import org.unicode.cldr.util.LDMLUtilities;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.ibm.icu.dev.test.util.ElapsedTimer;
 
 
 public class Merger {
-    public static void main(String args[]) {
-        Document full = null;
-        String sources = "";
+    private static Document full = null;
+    private static String sources = "";
+    private static boolean verbose = false;
+    private static boolean copyright= true;
+    private static String outfile = null;
+    
+    private static void addSource(String s) {
+        sources = sources + " " + s;
+        ElapsedTimer r = new ElapsedTimer();
+        if(verbose) { System.err.println("# Read: "+s+" ... "); System.err.flush(); }
+        Document next = LDMLUtilities.parse(s, false);
+        if(full == null) {
+            if(verbose) System.err.println(" (1st) - " + r);
+            full = next;
+        } else {
+            if(verbose) System.err.println(" - "+ r);
+            r = new ElapsedTimer();
+            StringBuffer xpath = new StringBuffer();
+            if(verbose) { System.err.println("# Merge .. ");  System.err.flush(); }
+            mergeXMLDocuments(full, next, xpath, "Something", "DotDotDot", false, false);
+            if(verbose) System.err.println(" merged - "+ r);
+        }
+    }
+    
+    public static void main(String args[]) throws IOException {
         for(String s : args) {
-            sources = sources + " " + s;
-            System.err.println("# Read: "+s);
-            Document next = LDMLUtilities.parse(s, false);
-            if(full == null) {
-                System.err.println("# Initial: "+s);
-                full = next;
+            if(s.equals("-v")) {
+                verbose = true;
+                continue;
+            } else if(s.equals("-c")) {
+                copyright = false;
+                continue;
+            } else if(s.startsWith("-o")) {
+                if(!s.startsWith("-o:")) {
+                    System.err.println("# Err: usage:   -o:outfile.xml ");
+                    return;
+                }
+                outfile = s.substring(3);
+                if(verbose) System.err.println("# Outfile: "+outfile);
+                continue;
+            } else if(s.endsWith("/")) {
+                if(verbose) System.err.println("# / adding contents of " +s);
+                File subdir = new File(s);
+                for (String ss : subdir.list(
+                            new FilenameFilter() {
+                                public boolean accept(File dir, String name) {
+                                    return(name.endsWith(".xml"));
+                                } })) {
+                   addSource(s+ss);
+                }
+                if(verbose) System.err.println("# \\ end contents of " +s);
             } else {
-                System.err.println("# Merge: "+s);
-                StringBuffer xpath = new StringBuffer();
-                mergeXMLDocuments(full, next, xpath, "Something", "DotDotDot", false, false);
+                addSource(s);
             }
         }
-        System.err.println("# Write");
-        try {
+        if(sources.length()==0) {
+            System.err.println("Merger - merge multiple XML documents.\nOptions: [-c] [-o:outfile.xml] [-v]  source1.xml source2.xml ...");
+            return;
+        }
+        
+        OutputStream out = null;
+        java.io.FileOutputStream fos = null;
+        if(outfile!=null) {
+            fos = new FileOutputStream(outfile);
+            out = fos;
+            if(verbose) System.err.println("# Write <"+outfile+">");
+        } else {
+            out = System.out;
+            if(verbose) System.err.println("# Write <stdout>");
+        }
+//        try {
              java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
-                     System.out);
+                     out);
+             if(copyright) writer.write("<!-- Copyright (c) "+Calendar.getInstance().get(Calendar.YEAR)+" IBM Corporation and Others, All Rights Reserved. -->\n");
              LDMLUtilities.printDOMTree(full, new PrintWriter(writer),"\n<!-- This file was generated from: "+sources+" -->\n<!DOCTYPE icuInfo SYSTEM \"http://icu-project.org/dtd/icumeta.dtd\">\n",null); //
              writer.flush();
-        } catch (IOException e) {
-             //throw the exceptionaway .. this is for debugging
-        }
+//        } catch (IOException e) {
+//            Syste
+//        }
+          if(fos!=null) fos.close();
     }
     
     
@@ -106,7 +134,7 @@ public class Merger {
      * @param override
      * @return the merged document
      */
-    public static Node mergeXMLDocuments(Document source, Node override, StringBuffer xpath, 
+    private static Node mergeXMLDocuments(Document source, Node override, StringBuffer xpath, 
                                           String thisName, String sourceDir, boolean ignoreDraft,
                                           boolean ignoreVersion){
         if(source==null){
@@ -215,16 +243,7 @@ public class Merger {
         return source;
     }    
 
-    /**
-     * Appends the attribute values that make differentiate 2 siblings
-     * in LDML
-     * @param node
-     * @param xpath
-     */
-    public static final void appendXPathAttribute(Node node, StringBuffer xpath){
-        appendXPathAttribute(node,xpath,false,false);
-    }
-    public static void appendXPathAttribute(Node node, StringBuffer xpath, boolean ignoreAlt, boolean ignoreDraft){
+    private static void appendXPathAttribute(Node node, StringBuffer xpath, boolean ignoreAlt, boolean ignoreDraft){
         boolean terminate = false;
         String val = getAttributeValue(node, LDMLConstants.TYPE);
         String and =  "][";//" and ";
@@ -362,7 +381,7 @@ public class Merger {
      * @param node
      * @return
      */
-    public static boolean areChildrenElementNodes(Node node){
+    private static boolean areChildrenElementNodes(Node node){
         NodeList list = node.getChildNodes();
         for(int i=0;i<list.getLength();i++){
             if(list.item(i).getNodeType()==Node.ELEMENT_NODE){
@@ -371,86 +390,7 @@ public class Merger {
         }
         return false;  
     }
-    public static Node[] getNodeListAsArray( Node doc, String xpath){
-        try{
-            NodeList list = XPathAPI.selectNodeList(doc, xpath);
-            int length = list.getLength();
-            if(length>0){
-                Node[] array = new Node[length];
-                for(int i=0; i<length; i++){
-                    array[i] = list.item(i);
-                }
-                return array;
-            }
-            return null;
-        }catch(TransformerException ex){
-            throw new RuntimeException(ex.getMessage());
-        } 
-    }
-
-    private static Object[] getChildNodeListAsArray( Node parent, boolean exceptAlias){
-
-        NodeList list = parent.getChildNodes();
-        int length = list.getLength();
-        
-        ArrayList al = new ArrayList();
-        for(int i=0; i<length; i++){
-            Node item  = list.item(i);
-            if(item.getNodeType()!=Node.ELEMENT_NODE){
-                continue;
-            }
-            if(exceptAlias && item.getNodeName().equals(LDMLConstants.ALIAS)){
-               continue; 
-            }
-            al.add(item);
-        }
-        return al.toArray();
-        
-    }
-    public static Node[] toNodeArray( NodeList list){
-        int length = list.getLength();
-        if(length>0){
-            Node[] array = new Node[length];
-            for(int i=0; i<length; i++){
-                array[i] = list.item(i);
-            }
-            return array;
-        }
-        return null;
-    }
-    public static Node[] getElementsByTagName(Document doc, String tagName){
-        try{
-            NodeList list = doc.getElementsByTagName(tagName);
-            int length = list.getLength();
-            if(length>0){
-                Node[] array = new Node[length];
-                for(int i=0; i<length; i++){
-                    array[i] = list.item(i);
-                }
-                return array;
-            }
-            return null;
-        }catch(Exception ex){
-            throw new RuntimeException(ex.getMessage());
-        } 
-    }
-    
-    /**
-     * Fetches the list of nodes that match the given xpath
-     * @param doc
-     * @param xpath
-     * @return
-     */
-    public static NodeList getNodeList( Document doc, String xpath){
-        try{
-            return XPathAPI.selectNodeList(doc, xpath);
-
-        }catch(TransformerException ex){
-            throw new RuntimeException(ex.getMessage());
-        }   
-    }
-    
-    public static final boolean isAlternate(Node node){
+    private static final boolean isAlternate(Node node){
         NamedNodeMap attributes = node.getAttributes();
         Node attr = attributes.getNamedItem(LDMLConstants.ALT);
         if(attr!=null){
@@ -459,19 +399,6 @@ public class Merger {
         return false;
     }
 
-    private static final Node getNonAltNode(NodeList list /*, StringBuffer xpath*/){
-        // A nonalt node is one which .. does not have alternate
-        // attribute set
-        Node node =null;
-        for(int i =0; i<list.getLength(); i++){
-            node = list.item(i);
-            if(/*!isDraft(node, xpath)&& */!isAlternate(node)){
-                return node;
-            }
-        }
-        return null;
-    }
-    
     private static final Node getNonAltNodeIfPossible(NodeList list)
     {
         // A nonalt node is one which .. does not have alternate
@@ -490,26 +417,6 @@ public class Merger {
         return null;
     }
         
-    public static Node getNonAltNodeLike(Node parent, Node child){
-        StringBuffer childXpath = new StringBuffer(child.getNodeName());
-        appendXPathAttribute(child,childXpath,true/*ignore alt*/,true/*ignore draft*/);
-        String childXPathString = childXpath.toString();
-        for(Node other=parent.getFirstChild(); other!=null; other=other.getNextSibling() ){
-            if((other.getNodeType()!=Node.ELEMENT_NODE)  || (other==child)) {
-                continue;
-            }
-            StringBuffer otherXpath = new StringBuffer(other.getNodeName());
-            appendXPathAttribute(other,otherXpath);
-          //  System.out.println("Compare: " + childXpath + " to " + otherXpath);
-            if(childXPathString.equals(otherXpath.toString())) {
-              //  System.out.println("Match!");
-                return other;
-            }
-        }
-        return null;
-    }
-
-
     /**
      * Fetches the node from the document that matches the given xpath.
      * The context namespace node is required if the xpath contains 
@@ -519,7 +426,7 @@ public class Merger {
      * @param namespaceNode
      * @return
      */
-    public static Node getNode(Document doc, String xpath, Node namespaceNode){
+    private static Node getNode(Document doc, String xpath, Node namespaceNode){
         try{
             NodeList nl = XPathAPI.selectNodeList(doc, xpath, namespaceNode);
             int len = nl.getLength();
@@ -536,30 +443,13 @@ public class Merger {
             throw new RuntimeException(ex.getMessage());
         }
     }
-    public static Node getNode(Node context, String resToFetch, Node namespaceNode){
-        try{
-            NodeList nl = XPathAPI.selectNodeList(context, "./"+resToFetch, namespaceNode);
-            int len = nl.getLength();
-            //TODO watch for attribute "alt"
-            if(len>1){
-              throw new IllegalArgumentException("The XPATH returned more than 1 node!. Check XPATH: "+resToFetch);   
-            }
-            if(len==0){
-                return null;
-            }
-            return nl.item(0);
-
-        }catch(TransformerException ex){
-            throw new RuntimeException(ex.getMessage());
-        }
-    }
     /**
      * Fetches the node from the document which matches the xpath
      * @param node
      * @param xpath
      * @return
      */
-    public static Node getNode(Node node, String xpath){
+    private static Node getNode(Node node, String xpath){
         try{
             NodeList nl = XPathAPI.selectNodeList(node, xpath);
             int len = nl.getLength();
@@ -588,203 +478,6 @@ public class Merger {
             throw new RuntimeException(ex.getMessage());
         }
     }
-    public static Node getNode(Node node, String xpath, boolean preferDraft, boolean preferAlt){
-        try{
-            NodeList nl = XPathAPI.selectNodeList(node, xpath);
-            return getNode(nl, xpath, preferDraft, preferAlt);
-
-        }catch(TransformerException ex){
-            throw new RuntimeException(ex.getMessage());
-        }
-    }
-    private static Node getVettedNode(NodeList list, StringBuffer xpath, boolean ignoreDraft){
-        // A vetted node is one which is not draft and does not have alternate
-        // attribute set
-        Node node =null;
-        for(int i =0; i<list.getLength(); i++){
-            node = list.item(i);
-            if(isDraft(node, xpath) && !ignoreDraft){
-                continue;
-            }
-            if(isAlternate(node)){
-                continue;
-            }
-            return node;
-        }
-        return null;
-    }
-    public static Node getVettedNode(Document fullyResolvedDoc, Node parent, String childName, StringBuffer xpath, boolean ignoreDraft){
-        NodeList list = getNodeList(parent, childName, fullyResolvedDoc, xpath.toString());
-        int oldLength=xpath.length();
-        Node ret = null;
-
-        if(list != null && list.getLength()>0){
-            xpath.append("/");
-            xpath.append(childName);
-            ret = getVettedNode(list,xpath, ignoreDraft);
-        }
-        xpath.setLength(oldLength);
-        return ret;
-    }
-    public static Node getNode(NodeList nl, String xpath, boolean preferDraft, boolean preferAlt){
-        int len = nl.getLength();
-        //TODO watch for attribute "alt"
-        if(len>1){
-            Node best = null;
-            for(int i=0; i<len;i++){
-                Node current = nl.item(i);
-                if(!preferDraft && ! preferAlt){
-                    if(!isNodeDraft(current) && ! isAlternate(current)){
-                        best = current;
-                        break;
-                    }
-                    continue;
-                }else if(preferDraft && !preferAlt){
-                    if(isNodeDraft(current) && ! isAlternate(current)){
-                        best = current;
-                        break;
-                    }
-                    continue;
-                }else if(!preferDraft && preferAlt){
-                    if(!isNodeDraft(current) && isAlternate(current)){
-                        best = current;
-                        break;
-                    }
-                    continue;
-                }else{
-                    if(isNodeDraft(current) || isAlternate(current)){
-                        best = current;
-                        break;
-                    }
-                    continue;
-                }
-            }
-            if(best==null && preferDraft==true){
-                best = getVettedNode(nl, new StringBuffer(xpath), false);
-            }
-            if(best != null){
-                return best;
-            }
-            /* else complain */
-            String all = ""; 
-            int i;
-            for(i=0;i<len;i++) {
-                all = all + ", " + nl.item(i);
-            }
-            throw new IllegalArgumentException("The XPATH returned more than 1 node!. Check XPATH: "+xpath + " = " + all);   
-        }
-        if(len==0){
-            return null;
-        }
-        return nl.item(0);
-
-    }
-    /**
-     * 
-     * @param context
-     * @param resToFetch
-     * @param fullyResolved
-     * @param xpath
-     * @return
-     */
-    public static Node getNode(Node context, String resToFetch, Document fullyResolved, String xpath){
-        String ctx = "./"+ resToFetch;
-        Node node = getNode(context, ctx);
-        if(node == null && fullyResolved!=null){
-            // try from fully resolved
-            String path = xpath+"/"+resToFetch;
-            node = getNode(fullyResolved, path);
-        }
-        return node;
-    }
-    /**
-     * 
-     * @param context
-     * @param resToFetch
-     * @return
-     */
-    public static NodeList getChildNodes(Node context, String resToFetch){
-        String ctx = "./"+ resToFetch;
-        NodeList list = getNodeList(context, ctx);
-        return list;
-    }
-    /**
-     * Fetches the node from the document that matches the given xpath.
-     * The context namespace node is required if the xpath contains 
-     * namespace elments
-     * @param doc
-     * @param xpath
-     * @param namespaceNode
-     * @return
-     */
-    public static NodeList getNodeList(Document doc, String xpath, Node namespaceNode){
-        try{
-            NodeList nl = XPathAPI.selectNodeList(doc, xpath, namespaceNode);
-            if(nl.getLength()==0){
-                return null;
-            }
-            return nl;
-
-        }catch(TransformerException ex){
-            throw new RuntimeException(ex.getMessage());
-        }
-    }
-    /**
-     * Fetches the node from the document which matches the xpath
-     * @param node
-     * @param xpath
-     * @return
-     */
-    public static NodeList getNodeList(Node node, String xpath){
-        try{
-            NodeList nl = XPathAPI.selectNodeList(node, xpath);
-            int len = nl.getLength();
-            if(len==0){
-                return null;
-            }
-            return nl;
-        }catch(TransformerException ex){
-            throw new RuntimeException(ex.getMessage());
-        }
-    }
-
-    /**
-     * Fetches node list from the children of the context node.
-     * @param context
-     * @param resToFetch
-     * @param fullyResolved
-     * @param xpath
-     * @return
-     */
-    public static NodeList getNodeList(Node context, String resToFetch, Document fullyResolved, String xpath){
-        String ctx = "./"+ resToFetch;
-        NodeList list = getNodeList(context, ctx);
-        if((list == null || list.getLength()>0) && fullyResolved!=null){
-            // try from fully resolved
-            String path = xpath+"/"+resToFetch;
-            list = getNodeList(fullyResolved, path);
-        }
-        return list;
-    }
-
-    /**
-     * Decide if the node is text, and so must be handled specially 
-     * @param n
-     * @return
-     */
-    private static boolean isTextNode(Node n) {
-      if (n == null)
-        return false;
-      short nodeType = n.getNodeType();
-      return nodeType == Node.CDATA_SECTION_NODE || nodeType == Node.TEXT_NODE;
-    }   
-    public static Node getAttributeNode(Node sNode, String attribName){
-        NamedNodeMap attrs = sNode.getAttributes();
-        if(attrs!=null){
-           return attrs.getNamedItem(attribName);
-        }
-        return null;
-    }
     /**
      * Utility method to fetch the attribute value from the given 
      * element node
@@ -792,7 +485,7 @@ public class Merger {
      * @param attribName
      * @return
      */
-    public static String getAttributeValue(Node sNode, String attribName){
+    private static String getAttributeValue(Node sNode, String attribName){
         String value=null;
         NamedNodeMap attrs = sNode.getAttributes();
         if(attrs!=null){
@@ -803,40 +496,6 @@ public class Merger {
         }
         return value;
     }
-    /**
-     * Utility method to set the attribute value on the given 
-     * element node
-     * @param sNode
-     * @param attribName
-     * @param val
-     */
-    public static void setAttributeValue(Node sNode, String attribName, String val){
-
-        Node attr = sNode.getAttributes().getNamedItem(attribName);
-        if(attr!=null){
-            attr.setNodeValue(val);
-        } else {
-            attr = sNode.getOwnerDocument().createAttribute(attribName);
-            attr.setNodeValue(val);
-            sNode.getAttributes().setNamedItem(attr);
-        }
-    }
-    /**
-     * Utility method to fetch the value of the element node
-     * @param node
-     * @return
-     */
-    public static String getNodeValue(Node node){
-        for(Node child=node.getFirstChild(); child!=null; child=child.getNextSibling() ){
-            if(child.getNodeType()==Node.TEXT_NODE){
-                return child.getNodeValue();
-            }
-        }
-        return null;
-    }
-
-    public static boolean isNodeDraft(Object o) { return false; }
-    public static boolean isDraft(Object o, Object p) { return false; }
 
 
 }
