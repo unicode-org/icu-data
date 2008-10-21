@@ -71,7 +71,17 @@ element icuInfo
                                 attribute binary { text }?
                             }*
                         }*
-                    }*
+                    }*,
+                    element capabilities
+                    {
+                        element feature
+                        {
+                            attribute type {text },
+                            attribute total {text}?,
+                            attribute version {text},
+                            text
+                        }*
+                    }?                    
                 }*
             }
         }*

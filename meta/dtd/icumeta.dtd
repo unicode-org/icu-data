@@ -1,11 +1,16 @@
 <?xml encoding="UTF-8"?>
-<!-- Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved. -->
 
-<!-- ICU metadata XML DTD, RNC format. -->
+<!--
+ICU metadata XML DTD, RNC format.
+Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved.
+-->
 
 <!-- default namespace = "http://icu-project.org/xml" -->
 
-<!-- ICU metadata XML DTD, RNC format. -->
+<!--
+ICU metadata XML DTD, RNC format.
+Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved.
+-->
 
 <!-- default namespace = "http://icu-project.org/xml" -->
 
@@ -25,7 +30,7 @@
 <!ATTLIST name
   type (full|short) #REQUIRED>
 
-<!ELEMENT release (dates?,platforms*)>
+<!ELEMENT release (dates?,platforms*,capabilities?)>
 <!ATTLIST release
   version CDATA #REQUIRED
   draft (proposed) #IMPLIED
@@ -37,6 +42,8 @@
 <!ATTLIST platforms
   owner CDATA #REQUIRED
   date CDATA #IMPLIED>
+
+<!ELEMENT capabilities (feature)*>
 
 <!ELEMENT date EMPTY>
 <!ATTLIST date
@@ -52,6 +59,12 @@
   bits (32|64) #REQUIRED
   tool CDATA #REQUIRED
   tool-version CDATA #REQUIRED>
+
+<!ELEMENT feature (#PCDATA)>
+<!ATTLIST feature
+  type CDATA #REQUIRED
+  total CDATA #IMPLIED
+  version CDATA #REQUIRED>
 
 <!ELEMENT builder EMPTY>
 <!ATTLIST builder
