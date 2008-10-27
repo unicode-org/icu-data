@@ -30,7 +30,7 @@
     <property name="xml.file" value="${xml.dir}/${xml-base.file}" />
     <property name="input.dir" value="input" />
     <property name="lib.dir" value="lib" />
-    <property name="jar.file" value="${icumeta}.jar" />
+    <property name="jar.file" value="icumeta.jar" />
     <property file="build.properties" />
     <property name="icumeta.javac.source" value="1.5" />
     <property name="icumeta.javac.target" value="1.5" />
@@ -75,6 +75,7 @@
     <delete dir="${build.dir}" />
     <delete dir="${doc.dir}" />
     <delete dir="${dtdcache.dir}" />
+    <delete file="${jar.file}" />
    </target>
    
    <target name="core" depends="init">
@@ -89,6 +90,9 @@
                encoding="ascii">
             <include name="com/ibm/icu/dev/meta/**/*.java" />
         </javac>
+    <copy todir="${build.dir}/com/ibm/icu/dev/meta/">
+      <fileset dir="${dtd.dir}" includes="icumeta.*" />
+    </copy>
    </target>
    
    <target name="check-xml" depends="init">
@@ -149,4 +153,28 @@
     <echo message=""/>
     <echo message="Don't forget to put into ${lib.dir} the usual fun jars: cldr.jar icu4j.jar utilities.jar xalan.jar xerces.jar" /> 
    </target>
+	
+	  <target name="jar"
+	          depends="core"
+	          description="build 'icumeta.jar' jar file">
+	    <jar jarfile="${jar.file}" compress="true">
+	      <!-- fileset dir="${basedir}" includes="license.html,unicode-license.txt"  -->
+	      <!-- fileset dir="${src.dir}" includes="com/ibm/icu/ICUConfig.properties" -->
+	      <fileset dir="${build.dir}" includes="com/ibm/icu/dev/meta/**/*" excludes="META-INF/services/**/*,com/ibm/icu/charset/**/*,${icu4j.data.path}/*.cnv,${icu4j.data.path}/cnvalias.icu" />
+	      <manifest>
+	        <attribute name="Built-By" value="${corp}" />
+	        <section name="common">
+	          <attribute name="Specification-Title" value="${manifest.specification.title}" />
+	          <attribute name="Specification-Version" value="${icu4j.spec.version.string}" />
+	          <attribute name="Specification-Vendor" value="ICU" />
+	          <attribute name="Implementation-Title" value=" ICU Metadata Processing" />
+	          <attribute name="Implementation-Version" value="?" />
+	          <attribute name="Implementation-Vendor" value="${corp}" />
+	          <attribute name="Implementation-Vendor-Id" value="com.ibm.icu" />
+	          <attribute name="Copyright-Info" value="${copyright}" />
+	          <attribute name="Sealed" value="false" />
+	        </section>
+	      </manifest>
+	    </jar>
+	  </target>
 </project>

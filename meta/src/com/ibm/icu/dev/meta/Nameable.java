@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2008 IBM Corporation and others. All Rights Reserved.
  */
-package com.ibm.icu.dev.demo.icu4jweb;
+package com.ibm.icu.dev.meta;
 
 
 public abstract class Nameable implements Comparable<Nameable> {

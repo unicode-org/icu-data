@@ -15,7 +15,7 @@
  * Majority from org.unicode.cldr.util.CachingEntityResolver
  */
 
-package com.ibm.icu.dev.demo.icu4jweb;
+package com.ibm.icu.dev.meta;
 
 /**
  * @author Steven R Loomis

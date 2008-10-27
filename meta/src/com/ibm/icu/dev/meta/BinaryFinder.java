@@ -1,16 +1,17 @@
 // Copyright (c) 2008 IBM Corporation and others. All Rights Reserved.
 
-package com.ibm.icu.dev.demo.icu4jweb;
+package com.ibm.icu.dev.meta;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.ibm.icu.dev.demo.icu4jweb.IcuInfo.Builder;
-import com.ibm.icu.dev.demo.icu4jweb.IcuInfo.IcuProduct;
-import com.ibm.icu.dev.demo.icu4jweb.IcuInfo.Platform;
-import com.ibm.icu.dev.demo.icu4jweb.IcuInfo.Release;
+import com.ibm.icu.dev.meta.IcuInfo.Builder;
+import com.ibm.icu.dev.meta.IcuInfo.IcuProduct;
+import com.ibm.icu.dev.meta.IcuInfo.Platform;
+import com.ibm.icu.dev.meta.IcuInfo.Release;
+
 
 /**
  * Locate binaries, give URL

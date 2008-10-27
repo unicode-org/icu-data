@@ -1,4 +1,4 @@
-package com.ibm.icu.dev.demo.icu4jweb;
+package com.ibm.icu.dev.meta;
 
 import org.w3c.dom.*;
 

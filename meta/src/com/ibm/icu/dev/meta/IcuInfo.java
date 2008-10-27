@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2008 IBM and others, all rights reserved
  */
-package com.ibm.icu.dev.demo.icu4jweb;
+package com.ibm.icu.dev.meta;
 
 import java.util.Comparator;
 import java.util.HashSet;
