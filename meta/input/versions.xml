@@ -122,6 +122,11 @@
                         <date type="ga" date="2001-03-16"/> <!-- approx http://icu-project.org/meetings/notes20010110.txt -->
                     </dates>
                 </release>
+                <release version="1.7">
+                    <dates>
+                        <date type="ga" date="2000-10-25"/> <!-- approx http://icu-project.org/meetings/notes20001025.txt -->
+                    </dates>
+                </release>
                 <release version="1.6">
                     <dates>
                         <date type="ga" date="2000-07-31"/> <!-- approx http://icu-project.org/meetings/notes20000613.txt -->
