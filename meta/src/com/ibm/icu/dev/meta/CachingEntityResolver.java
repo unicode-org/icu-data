@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 
 
 // SAX2 imports
@@ -45,7 +46,7 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
     private static String gCacheDir = null;
     private static String gOverrideDir = System.getProperty(ICU_DTD_OVERRIDE);
     private static boolean gCheckedEnv = false;
-    private static boolean gDebug = true;
+    private static boolean gDebug = false;
     
     public CachingEntityResolver() {
     }
@@ -70,6 +71,8 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
             }
         }
     }
+    
+    int j=0;
     
     public static void setCacheDir(String s) {
         gCacheDir = s;
@@ -102,7 +105,7 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
             }
         
             if(gDebug) {
-                System.out.println("CRE:  " + ICU_DTD_CACHE + " = " + gCacheDir);
+                System.err.println("CRE:  " + ICU_DTD_CACHE + " = " + gCacheDir);
             }
             
             if((gCacheDir==null)||(gCacheDir.length()<=0)) {
@@ -124,7 +127,7 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
         String theCache = getCacheDir();
 
         if(aDebug) {
-            System.out.println("CRE:  " + publicId + " | " + systemId + ", cache=" + theCache+", override="+gOverrideDir);
+            System.err.println("CRE:  " + publicId + " | " + systemId + ", cache=" + theCache+", override="+gOverrideDir);
         }
         
         if(theCache!=null) {
@@ -147,7 +150,7 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
             }
 
             if(aDebug) {
-                System.out.println(systemNew.toString());
+                System.err.println(systemNew.toString());
             }
 
             File aDir = new File(theCache);
@@ -162,7 +165,7 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
             File t = new File(theCache,newName);
             if(t.exists()) {
                 if(aDebug) {
-                    System.out.println("Using existing: " + t.getPath());
+                    System.err.println("Using existing: " + t.getPath());
                 }
             } else {
                 
@@ -175,13 +178,18 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
                             if(aDebug) {
                                 System.err.println("overridden "+aFile.toString());
                             }
-                            return new InputSource(aFile.getPath());
+                            try {
+                                return new InputSource(aFile.toURL().toExternalForm());
+                            } catch (MalformedURLException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
 
                 if(aDebug) {
-                    System.out.println(t.getPath() + " doesn't exist. fetching.");
+                    System.err.println(t.getPath() + " doesn't exist. fetching.");
                 }
                 
                 try {
@@ -200,7 +208,7 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
                     return null;
                 }
                 if(aDebug) {
-                    System.out.println(t.getPath() + " fetched.");
+                    System.err.println(t.getPath() + " fetched.");
                 }
             }
             

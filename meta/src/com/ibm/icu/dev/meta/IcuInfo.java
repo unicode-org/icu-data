@@ -3,6 +3,8 @@
  */
 package com.ibm.icu.dev.meta;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -12,10 +14,15 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.ibm.icu.util.VersionInfo;
 
@@ -24,6 +31,12 @@ import com.ibm.icu.util.VersionInfo;
  *
  */
 public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
+
+
+    public static String FILE_RELATIVE_PATH = "xml/icuinfo.xml";
+    public static String ICU_INFO_URL = "http://icu-project.org/"+FILE_RELATIVE_PATH;
+
+    
     
     public class IcuProduct extends Nameable implements Iterable<Release> {
         private String type;
@@ -97,8 +110,14 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
         public String getDate(String kind) {
             return dates.get(kind);
         }
+        public VersionInfo getVersionInfo() {
+            return versionInfo;
+        }
         public Set<String> platformList() {
             return sortedKeys(platforms);
+        }
+        public Set<Feature> featureList() {
+            return features;
         }
         public Platform platform(String kind) {
             return platforms.get(kind);
@@ -125,36 +144,40 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
         private VersionInfo versionInfo;
         private Hashtable <String,String> dates = new Hashtable<String,String>();
         private Map <String,Platform> platforms= new Hashtable<String,Platform>();
+        private Set<Feature> features;
         protected Release(Document fromDoc, Node n) {
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             versionString= XMLUtil.getAttributeValue(n, VERSION);
             draft = XMLUtil.getAttributeValue(n, DRAFT);
             versionInfo = VersionInfo.getInstance(versionString);
-            NodeList datesList = XMLUtil.findChild(n, DATES).getChildNodes();
-            for(int q=0;q<datesList.getLength();q++) {
-                Node nn = datesList.item(q);
-                if(nn.getNodeType()!=Node.ELEMENT_NODE) continue ;
-                String dtype = XMLUtil.getAttributeValue(nn, TYPE);
-                String ddate = XMLUtil.getAttributeValue(nn, DATE);
-                dates.put(dtype, ddate);
-//                try {
-//                    dates.put(dtype, sdf.parse(ddate));
-//                } catch (ParseException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                    dates.put(dtype, null);
-//                }
-                // TODO: time zone issue?
-//                if(!"ga".equals(dtype)) {
-//                    out.println("unknown type " + dtype+" on " + nn.getNodeName()+ "<br/>");
-//                    continue;
-//                }
-//                // calculate 6 year out
-//                c.clear();
-//                ga = sdf.parse(ddate);
-//                c.setTime(ga);
-//                c.add(Calendar.YEAR, 6);
-//                eos = c.getTime();
+            Node dn = XMLUtil.findChild(n, DATES);
+            if(dn != null) {
+                NodeList datesList = dn.getChildNodes();
+                for(int q=0;q<datesList.getLength();q++) {
+                    Node nn = datesList.item(q);
+                    if(nn.getNodeType()!=Node.ELEMENT_NODE) continue ;
+                    String dtype = XMLUtil.getAttributeValue(nn, TYPE);
+                    String ddate = XMLUtil.getAttributeValue(nn, DATE);
+                    dates.put(dtype, ddate);
+    //                try {
+    //                    dates.put(dtype, sdf.parse(ddate));
+    //                } catch (ParseException e) {
+    //                    // TODO Auto-generated catch block
+    //                    e.printStackTrace();
+    //                    dates.put(dtype, null);
+    //                }
+                    // TODO: time zone issue?
+    //                if(!"ga".equals(dtype)) {
+    //                    out.println("unknown type " + dtype+" on " + nn.getNodeName()+ "<br/>");
+    //                    continue;
+    //                }
+    //                // calculate 6 year out
+    //                c.clear();
+    //                ga = sdf.parse(ddate);
+    //                c.setTime(ga);
+    //                c.add(Calendar.YEAR, 6);
+    //                eos = c.getTime();
+                }
             }
             
 //            if(ga!=null && eos!=null) {
@@ -175,9 +198,88 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
                     platforms.put(plat.name(), plat);
                 }
             }
+            
+            Node cn = XMLUtil.findChild(n, CAPABILITIES);
+            if(cn != null) {
+                Set<Feature> feats = new TreeSet<Feature>();
+                NodeList featList = cn.getChildNodes();
+                for(int j=0;j<featList.getLength();j++) {
+                    Node jj = featList.item(j);
+                    if(jj.getNodeType()!=Node.ELEMENT_NODE) continue;
+                    Feature feat = new Feature(fromDoc, jj);
+                    feats.add(feat);
+                }
+                features = feats;
+            }
         }
         public Iterator<Platform> iterator() {
             return platforms.values().iterator();
+        }
+    }
+
+    public class Feature extends Nameable {
+        String type;
+        String version;
+        int count = 0;
+        String contents;
+        String comment = null;
+        public Feature(Document fromDoc, Node n) {
+            version = XMLUtil.getAttributeValue(n, "version");
+            type = XMLUtil.getAttributeValue(n, "type");
+            //count
+            contents = XMLUtil.getNodeValue(n);
+            if(contents!=null) {
+                contents=contents.trim();
+            }
+        }
+        public Feature(Feature other) {
+            type = other.type;
+            contents = other.contents;
+            version = other.version;
+            comment = other.comment;
+        }
+        
+        public void setComment(String c) {
+            comment = c;
+        }
+
+        @Override
+        public String name() {
+            // TODO Auto-generated method stub
+            return type;
+        }
+        public Feature clone() {
+            return new Feature(this);
+        }
+        
+        public void addContentsFrom(Feature other) {
+            this.contents = merge(this.contents, other.contents);
+            if(other.version!=null) {
+                this.version = other.version;
+            }
+        }
+        
+        public String toString() {
+            return "{Feature type="+type+", version="+version+", contents=<"+contents+">}";
+        }
+        public void appendTo(Document doc, Element capabilities) {
+            Element me = doc.createElement(FEATURE);
+            if(type!=null) {
+                me.setAttribute(TYPE, type);
+            }
+            if(version!=null) {
+                me.setAttribute(VERSION,version);
+            }
+            if(contents!=null) {
+                Node n = doc.createTextNode(contents);
+                me.appendChild(n);
+            }
+            //System.err.println(this.toString());
+            if(comment!=null) {
+                Node cmt = doc.createComment(comment);
+                capabilities.appendChild(cmt);
+            }
+            capabilities.appendChild(me);
         }
     }
 
@@ -287,12 +389,41 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
         };
     }
 
+    /**
+     * Merge the contents of feature description
+     * @param s1 'existing' text
+     * @param s2 'new' text, may start with '+' for addition, or none for replacement
+     * @return new text
+     */
+    public static String merge(String s1, String s2) {
+        String out;
+        if(s2!=null) {
+            if(s2.startsWith("+")) {
+                s2 = s2.substring(1).trim(); // remove plus
+                if(s1==null) {
+                    out = s2;
+                } else {
+                    out = s1+" "+s2;
+                }
+            } else {
+                out = s2;
+            }
+        } else {
+            if(s1!=null && s1.startsWith("+")) {
+                s1 = s1.substring(1).trim();
+            }
+            out = s1;
+        }
+        return out;
+    }
+
     private Hashtable<String,IcuProduct> products = new Hashtable<String,IcuProduct>();
 
     public static final String ICU_DOWNLOAD_ROOT = "icu_download_root";
     public static final String ICU_DOWNLOAD_HTTP = "icu_download_http";
     public static final String ICU_DOWNLOAD_HTTPS = "icu_download_https";
     
+    public static final String ICU_INFO = "icuInfo";
     public static final String ICU_PRODUCT = "icuProduct";
     public static final String TYPE = "type";
     public static final String BINARY = "binary";
@@ -319,6 +450,10 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
     public static final String FREQUENCY= "frequency";
     public static final String STATUS= "status";
     public static final String BUILDER= "builder";
+    public static final String CAPABILITIES = "capabilities";
+    public static final String FEATURE = "feature";
+    public static final String ICU_PRODUCTS = "icuProducts";
+    public static final String RELEASE = "release";
     
 //  public enum Frequency {
 //  NEVER,
@@ -411,6 +546,47 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
     public IcuInfo(Document fromDocument) {
         parseFrom(fromDocument);
     }
+    
+    private static IcuInfo info=null;
+    /**
+     * Get an IcuInfo
+     * @return the icuinfo
+     * @throws IOException 
+     * @throws SAXException 
+     * @throws ParserConfigurationException 
+     * @throws ParserConfigurationException
+     */
+    public static IcuInfo getInstance() throws ParserConfigurationException, SAXException, IOException {
+        if(info == null) {
+            info = createInstance();
+        }
+        return info;
+    }
+    
+    public static IcuInfo createInstance() throws ParserConfigurationException, SAXException, IOException {
+        return new IcuInfo(getDocument());
+    }
+    private static Document aDoc = null;
+    public static void setDocument(Document doc) {
+        aDoc = doc;
+    }
+    public static void setDocument(String fromUrl) throws SAXException, IOException, ParserConfigurationException {
+        aDoc = XMLUtil.getBuilder().parse(fromUrl);
+    }
+    public static void setDocument(File fromFile) throws SAXException, IOException, ParserConfigurationException {
+        aDoc = XMLUtil.getBuilder().parse(fromFile);
+    }
+    public static Document getDocument() throws SAXException, IOException, ParserConfigurationException {
+        if(aDoc == null) {
+            aDoc = createDocument();
+        }
+        return aDoc;
+    }
+    public static Document createDocument() throws SAXException, IOException, ParserConfigurationException {
+        setDocument(ICU_INFO_URL);
+        return aDoc;
+    }
+    
     
     public Set<String> productList() {
         return sortedKeys(products);

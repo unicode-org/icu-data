@@ -1,5 +1,9 @@
 package com.ibm.icu.dev.meta;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.*;
 
 // Copyright (c) 2004-2008 IBM Corporation and others. All Rights Reserved.
@@ -65,6 +69,16 @@ public class XMLUtil {
             }
         }
         return null;
+    }
+    private static DocumentBuilder db = null;
+    public static DocumentBuilder getBuilder() throws ParserConfigurationException {
+        if(db==null) {
+             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = factory.newDocumentBuilder();
+            docBuilder.setEntityResolver(new CachingEntityResolver());
+            db = docBuilder;
+        }
+        return db;
     }
     
 }
