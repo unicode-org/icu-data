@@ -1,5 +1,5 @@
+<!-- Copyright (C) 2008 IBM Corporation and Others. All Rights Reserved. -->
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (c) 2008 IBM Corporation and Others. All Rights Reserved. -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <xs:element name="icuInfo">
     <xs:complexType>
@@ -202,7 +202,7 @@
     <xs:complexType mixed="true">
       <xs:attribute name="type" use="required"/>
       <xs:attribute name="total"/>
-      <xs:attribute name="version" use="required"/>
+      <xs:attribute name="version"/>
     </xs:complexType>
   </xs:element>
 </xs:schema>

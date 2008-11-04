@@ -78,7 +78,7 @@ element icuInfo
                         {
                             attribute type {text },
                             attribute total {text}?,
-                            attribute version {text},
+                            attribute version {text}?,
                             text
                         }*
                     }?                    

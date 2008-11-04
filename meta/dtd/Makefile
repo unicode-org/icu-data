@@ -9,6 +9,8 @@ JING.VER=20030619
 
 # List of source RNCs.
 RNCS=icumeta.rnc
+YEAR=$(shell date '+%Y')
+COPYRIGHT=Copyright (C) $(YEAR) IBM Corporation and Others. All Rights Reserved.
 
 # --- boring stuff under this line --
 
@@ -34,7 +36,8 @@ distclean: clean
 	$(TRANG.RUN) -I rnc -O dtd $< $@
 
 %.xsd: %.rnc $(TRANG)
-	$(TRANG.RUN) -I rnc -O xsd $< $@
+	$(TRANG.RUN) -I rnc -O xsd $< $@ || ( rm $@ ; false )
+	( mv $@ _$@ ; echo "<!-- $(COPYRIGHT) -->" > $@ ; cat _$@ >> $@ ; rm _$@ ) || (rm $@;false)
 
 $(TRANG): $(TRANG).zip $(JING)
 	unzip $(TRANG).zip
