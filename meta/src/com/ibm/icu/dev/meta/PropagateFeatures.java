@@ -44,18 +44,18 @@ public class PropagateFeatures {
      * @throws SAXException 
      */
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
-        if(args.length!=1) {
-            throw new InternalError("Usage: java PropagateFeatures features.xml [ -o:out.xml ]");
+        if(args.length!=2) {
+            throw new InternalError("Usage: java PropagateFeatures icumeta.xml features.xml [ -o:out.xml ]");
         }
-        File f = new File(args[0]);
+        File f = new File(args[1]);
         if(f.exists()) {
             if(DBG_INSANE) if(DBG_INSANE) System.err.println("# willread: " + f.getAbsolutePath());
         } else {
             throw new InternalError("Doesn't exist: " + f.getAbsolutePath());
         }
-        IcuInfo.setDocument(new File("/xsrl/Wsvn/data/trunk/meta/xml/icumeta.xml"));
+        IcuInfo.setDocument(new File(args[0]));
          IcuInfo allVersions = IcuInfo.createInstance();
-         Document verDoc = IcuInfo.getDocument();
+         //Document verDoc = IcuInfo.getDocument();
          Document inDoc = XMLUtil.getBuilder().parse(f);
          IcuInfo theFeatures = new IcuInfo(inDoc);
          
@@ -144,7 +144,7 @@ public class PropagateFeatures {
              // OK. All features of all releases are in hash. 
              if(!allfeatures.isEmpty()) {
                  Element productNode = out.createElement(IcuInfo.ICU_PRODUCT);
-                 productNode.setAttribute(IcuInfo.NAME, p.name());
+                 productNode.setAttribute(IcuInfo.TYPE, p.name());
                  products.appendChild(productNode);
                  Element releasesNode = out.createElement(IcuInfo.RELEASES);
                  productNode.appendChild(releasesNode);

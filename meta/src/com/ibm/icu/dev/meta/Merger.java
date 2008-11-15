@@ -33,18 +33,18 @@ public class Merger {
     private static void addSource(String s) {
         sources = sources + " " + s;
         ElapsedTimer r = new ElapsedTimer();
-        if(verbose) { System.err.println("# Read: "+s+" ... "); System.err.flush(); }
+        //if(verbose) { System.err.println("" ... "); System.err.flush(); }
         Document next = LDMLUtilities.parse(s, false);
         if(full == null) {
-            if(verbose) System.err.println(" (1st) - " + r);
+            if(verbose) System.err.println("# Read: "+s+" .. " + r + "(1st)");
             full = next;
         } else {
-            if(verbose) System.err.println(" - "+ r);
-            r = new ElapsedTimer();
+            //if(verbose) System.err.println("# .. "+ r);
+            ElapsedTimer r2 = new ElapsedTimer();
             StringBuffer xpath = new StringBuffer();
-            if(verbose) { System.err.println("# Merge .. ");  System.err.flush(); }
+            if(verbose) { System.err.println("# Read: "+s+" .. " + r + ", Merge .. ");  System.err.flush(); }
             mergeXMLDocuments(full, next, xpath, "Something", "DotDotDot", false, false);
-            if(verbose) System.err.println(" merged - "+ r);
+            if(verbose) System.err.println("# .. merged - "+ r2);
         }
     }
     
@@ -113,6 +113,7 @@ public class Merger {
     
     
         // from LDMLUtilities
+    static final boolean DEBUG_MERGE = false;
     /**
      *   Resolved Data File
      *   <p>To produce fully resolved locale data file from CLDR for a locale ID L, you start with root, and 
@@ -141,13 +142,14 @@ public class Merger {
     private static Node mergeXMLDocuments(Document source, Node override, StringBuffer xpath, 
                                           String thisName, String sourceDir, boolean ignoreDraft,
                                           boolean ignoreVersion){
-        if(false) System.err.println("MM: xp: " + xpath);
         if(source==null){
+            if(DEBUG_MERGE) System.err.println("MM: 0: xp: " + xpath);
             return override;
         }
         if(xpath.length()==0){
             xpath.append("/");
         }
+        if(DEBUG_MERGE) System.err.println("MM: 1: xp: " + xpath);
         
 //        boolean gotcha = false;
 //        String oldx = new String(xpath);
@@ -165,6 +167,11 @@ public class Merger {
         //    recurse to replace any nodes that need to be overridded
         // else
         //    import the node into source
+        int savedLength_p=xpath.length();
+        String xpath_p = xpath.substring(0,savedLength_p);
+        Node nis_p = null;
+
+        
         Node child = override.getFirstChild();
         while( child!=null){
             // we are only concerned with element nodes
@@ -173,7 +180,6 @@ public class Merger {
                 continue;
             }   
             String childName = child.getNodeName();
-            if(false) System.err.println("MM: xp: " + xpath + " || " + childName);
 
             int savedLength=xpath.length();
             xpath.append("/");
@@ -181,12 +187,15 @@ public class Merger {
             appendXPathAttribute(child,xpath, false, false);
             Node nodeInSource = null;
             
+            
             if(childName.indexOf(":")>-1){ 
                 nodeInSource = getNode(source, xpath.toString(), child);
             }else{
                 nodeInSource =  getNode(source, xpath.toString());
             }
             
+            if(DEBUG_MERGE) System.err.println("MM: xp: " + xpath  + ", nis:" + nodeInSource);
+
             Node parentNodeInSource = null;
             if(nodeInSource==null){
                 // the child xml has a new node
@@ -196,7 +205,19 @@ public class Merger {
                 if(childName.indexOf(":")>-1){ 
                     parentNodeInSource = getNode(source, parentXpath, child);
                 }else{
-                    parentNodeInSource =  getNode(source,parentXpath);
+                    if(true && parentXpath.equals(xpath_p)) {
+                        //System.err.println("NIS: " + xpath_p);
+                        if(nis_p != null ) {
+                            parentNodeInSource = nis_p;
+                            //System.err.println("@@@ GOOL " + xpath_p);
+                        } else {
+                            parentNodeInSource =  getNode(source,parentXpath);
+                            nis_p = parentNodeInSource;
+                            //System.err.println("@@@ ----");
+                        }
+                    } else {
+                        parentNodeInSource =  getNode(source,parentXpath);
+                    }
                 }
                 if(parentNodeInSource==null){
                     throw new RuntimeException("Internal Error");
@@ -244,8 +265,11 @@ public class Merger {
             xpath.delete(savedLength,xpath.length());
             child= child.getNextSibling();
         }
-//        if(gotcha==true) {
+//        if(DEBUG_MERGE==true) {
 //            System.out.println("Final: " + getNode(source, oldx).toString());
+//        }
+//        if(DEBUG_MERGE) {
+//            System.err.println("F: " + source.getNodeName()+" / " + xpath);
 //        }
         return source;
     }    

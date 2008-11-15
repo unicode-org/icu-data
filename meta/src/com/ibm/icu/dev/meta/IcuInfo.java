@@ -621,4 +621,25 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
     public Iterator<IcuProduct> iterator() {
         return products.values().iterator();
     }
+    
+    /**
+     * Covert a VersionInfo to a String. Omit trailing 0's in the milli and micro place.
+     * @param info
+     * @return
+     */
+    public static String versionInfoToShortString(VersionInfo info) {
+        StringBuffer buf = new StringBuffer();
+        buf.append(info.getMajor());
+        buf.append(".");
+        buf.append(info.getMinor());
+        if(info.getMicro()>0 || info.getMilli()>0) {
+            buf.append(".");
+            buf.append(info.getMilli());
+            if(info.getMicro()>0) {
+                buf.append(".");
+                buf.append(info.getMicro());
+            }
+        }
+        return buf.toString();
+    }
 }

@@ -90,8 +90,8 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
             gCacheDir = System.getProperty(ICU_DTD_CACHE);
             
             if(gCacheDir == null) {
-                System.err.println("ICU_DTD_CACHE = " + System.getProperty(ICU_DTD_CACHE));
-                System.err.println("ICU_DTD_CACHE_DEBUG = " + System.getProperty("ICU_DTD_CACHE_DEBUG"));
+                if(gDebug) System.err.println("ICU_DTD_CACHE = " + System.getProperty(ICU_DTD_CACHE));
+                if(gDebug) System.err.println("ICU_DTD_CACHE_DEBUG = " + System.getProperty("ICU_DTD_CACHE_DEBUG"));
 //                String tmpdir = System.getProperty("java.io.tmpdir"));
 //                if(tmpdir != null && tmpdir.length()>0) {
 //                    File f = new File(tmpdir);
@@ -219,7 +219,7 @@ public class CachingEntityResolver implements EntityResolver, LSResourceResolver
 
     public LSInput resolveResource(String type, String namespaceURI, String publicId,
             String systemId, String baseURI) {
-        System.err.println("resolveResource("+type+", "+namespaceURI+","+publicId+","+systemId+","+baseURI+")");
+        if(gDebug) System.err.println("resolveResource("+type+", "+namespaceURI+","+publicId+","+systemId+","+baseURI+")");
         return null;
     }
 }
