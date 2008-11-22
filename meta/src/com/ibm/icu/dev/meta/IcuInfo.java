@@ -217,7 +217,7 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
         }
     }
 
-    public class Feature extends Nameable {
+    public static class Feature extends Nameable {
         String type;
         String version;
         int count = 0;
@@ -237,6 +237,14 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
             contents = other.contents;
             version = other.version;
             comment = other.comment;
+        }
+        public Feature(String type, String version) {
+            this.type = type;
+            this.version = version;
+        }
+        
+        public void setContents(String contents) {
+            this.contents = contents;
         }
         
         public void setComment(String c) {
@@ -280,6 +288,17 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
                 capabilities.appendChild(cmt);
             }
             capabilities.appendChild(me);
+        }
+        /**
+         * Get the version as a UVersionInfo, or null if not present.
+         * @return
+         */
+        public VersionInfo getVersion() {
+           if(version == null) {
+               return null;
+           } else {
+               return VersionInfo.getInstance(version);
+           }
         }
     }
 
@@ -547,6 +566,10 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
         parseFrom(fromDocument);
     }
     
+    public IcuInfo(File fromFile) throws SAXException, IOException, ParserConfigurationException {
+        parseFrom(XMLUtil.getBuilder().parse(fromFile));
+    }
+    
     private static IcuInfo info=null;
     /**
      * Get an IcuInfo
@@ -567,21 +590,53 @@ public class IcuInfo implements Iterable<IcuInfo.IcuProduct> {
         return new IcuInfo(getDocument());
     }
     private static Document aDoc = null;
+    /**
+     * Set the default document
+     * @param doc
+     */
     public static void setDocument(Document doc) {
         aDoc = doc;
     }
+    /**
+     * Set the default document
+     * @param fromUrl
+     * @throws SAXException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     */
     public static void setDocument(String fromUrl) throws SAXException, IOException, ParserConfigurationException {
         aDoc = XMLUtil.getBuilder().parse(fromUrl);
     }
+    /**
+     * Set the default document
+     * @param fromFile
+     * @throws SAXException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     */
     public static void setDocument(File fromFile) throws SAXException, IOException, ParserConfigurationException {
         aDoc = XMLUtil.getBuilder().parse(fromFile);
     }
+    /**
+     * Get the default document
+     * @return
+     * @throws SAXException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     */
     public static Document getDocument() throws SAXException, IOException, ParserConfigurationException {
         if(aDoc == null) {
             aDoc = createDocument();
         }
         return aDoc;
     }
+    /**
+     * Get the default document (default to load from URL)
+     * @return
+     * @throws SAXException
+     * @throws IOException
+     * @throws ParserConfigurationException
+     */
     public static Document createDocument() throws SAXException, IOException, ParserConfigurationException {
         setDocument(ICU_INFO_URL);
         return aDoc;
