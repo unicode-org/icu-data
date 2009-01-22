@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2008 IBM and Others. All Rights Reserved.
+# Copyright (C) 2006-2009 IBM and Others. All Rights Reserved.
 
 all:
 	@echo 
@@ -42,7 +42,10 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@echo "## Build OK."
 
 	@mkdir $(@D)
-	cp $(TZSRC)/zoneinfo.txt $(ICU_SRC)/data/misc/metazoneInfo.txt $(@D)
+	cp $(TZSRC)/zoneinfo.txt $(@D)
+	svn add $(@D)
+	@echo "## Copying metazoneInfo.txt from local SVN workspace $(ICU_SRC)/data/misc"
+	svn copy $(ICU_SRC)/data/misc/metazoneInfo.txt $(@D)
 	@echo "#" genrb and creating le/be/ee versions
 	@$(shell icu-config --invoke=genrb) -s $(@D) -d $(@D) zoneinfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 	@$(shell icu-config --invoke=genrb) -s $(@D) -d $(@D) metazoneInfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
@@ -56,7 +59,7 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@$(shell icu-config --invoke=icupkg) -s $(@D) -te metazoneInfo.res $(@D)/ee/metazoneInfo.res
 	@rm $(@D)/metazoneInfo.res
 	find $(@D)/* -type f
-	svn add $(@D)
+	svn add $(@D)/le $(@D)/be svn add $(@D)/ee
 
 update: update-mirror update-icu
 
