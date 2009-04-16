@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2007, International Business Machines
+*   Copyright (C) 2000-2009, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -289,15 +289,30 @@ knownStateTables[]={
            "<icu:state>                   21-7e\n"
            "<icu:state>\n",
 
-    964,0, "<icu:state>                   0-8d, 8e:2, 90-9f, a1-fe:1, aa-c1:5, c3:5, fe:5\n"
+    964,0, "# The fourth <icu:state> line is commented out (and does not count)\n"
+           "# because the state table is hand-optimized and does not use what would be\n"
+           "# the natural path for the encoding scheme.\n"
+           "# The third <icu:state> used to start with \"a1-b0:3\" but overrode every one\n"
+           "# of these byte values with a different state transition.\n"
+           "\n"
+           "# 0: Initial state, single bytes and lead bytes\n"
+           "<icu:state>                   0-8d, 8e:2, 90-9f, a1-fe:1, aa-c1:4, c3:4, fe:4\n"
+           "# 1: Trail byte state with mappings\n"
            "<icu:state>                   a1-fe\n"
-           "<icu:state>                   a1-b0:3, a1:4, a2:8, a3-ab:4, ac:7, ad:6, ae-b0:4\n"
-           "<icu:state>                   a1-fe:1\n"
-           "<icu:state>                   a1-fe:5\n"
+           "# 2: Second of four bytes, follows lead byte 8e\n"
+           "<icu:state>                   a1:3, a2:7, a3-ab:3, ac:6, ad:5, ae-b0:3\n"
+           "# (unreachable/optimized away)\n"
+           "# <icu:state>                   a1-fe:1\n"
+           "# 3: Third of four bytes, 8e xx .. .. for most xx in a1-b0; all-unassigned\n"
+           "<icu:state>                   a1-fe:4\n"
+           "# 4: All-unassigned trail byte state\n"
            "<icu:state>                   a1-fe.u\n"
-           "<icu:state>                   a1-a4:1, a5-fe:5\n"
-           "<icu:state>                   a1-e2:1, e3-fe:5\n"
-           "<icu:state>                   a1-f2:1, f3-fe:5\n",
+           "# 5: 8e ad .. .. with some mappings\n"
+           "<icu:state>                   a1-a4:1, a5-fe:4\n"
+           "# 6: 8e ac .. .. with some mappings\n"
+           "<icu:state>                   a1-e2:1, e3-fe:4\n"
+           "# 7: 8e a2 .. .. with some mappings\n"
+           "<icu:state>                   a1-f2:1, f3-fe:4\n",
 
     970,0, "<icu:state>                   0-9f, a1-fe:1\n"
            "<icu:state>                   a1-fe\n",
