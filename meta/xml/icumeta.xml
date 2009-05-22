@@ -5,7 +5,7 @@
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
 <?xml-stylesheet type="text/css" href="icumeta.css"?>
 
-<!-- Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved.
+<!-- Copyright (C) 2008-2009, International Business Machines Corporation and others.  All Rights Reserved.
  -->
 <icuInfo> 
     <icuProducts>
@@ -15,7 +15,12 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
-                <release draft="proposed" version="4.2">
+                <release draft="proposed" version="4.2.0.1">
+                    <dates>
+                        <date date="2009-05-25" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.2">
                     <dates>
                         <date date="2009-05-08" type="ga"/>
                     </dates>
@@ -317,6 +322,12 @@
                 <name type="short">ICU4J</name>
             </names>
             <releases>
+                <release draft="proposed" version="4.0.2">
+                <!--
+                    <dates>
+                    </dates>
+                    -->
+                </release>
                 <release draft="proposed" version="4.2">
                     <dates>
                         <date date="2009-05-08" type="ga"/>
