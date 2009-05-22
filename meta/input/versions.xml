@@ -12,7 +12,12 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
-                <release version="4.2" draft="proposed">
+                <release version="4.2.0.1" draft="proposed">
+                    <dates>
+                        <date type="ga" date="2009-05-25"/>
+                    </dates>
+                </release>
+                <release version="4.2" >
                     <dates>
                         <date type="ga" date="2009-05-08"/>
                     </dates>
@@ -180,6 +185,12 @@
                 <name type="short">ICU4J</name>
             </names>
             <releases>
+                <release version="4.0.2" draft="proposed">
+                <!--
+                    <dates>
+                    </dates>
+                    -->
+                </release>
                 <release version="4.2" draft="proposed">
                     <dates>
                         <date type="ga" date="2009-05-08"/>
