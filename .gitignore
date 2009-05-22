@@ -1,3 +1,6 @@
 meta/classes
+meta/dtd/jing*.zip
+meta/dtd/trang*.zip
 meta/dtdcache
+meta/icumeta.jar
 meta/lib/*.jar
