@@ -191,7 +191,7 @@
                     </dates>
                     -->
                 </release>
-                <release version="4.2" draft="proposed">
+                <release version="4.2" >
                     <dates>
                         <date type="ga" date="2009-05-08"/>
                     </dates>
