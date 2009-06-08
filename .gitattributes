@@ -1383,6 +1383,7 @@ tzdata/mirror/tzcode2009d.tar.gz -text
 tzdata/mirror/tzcode2009e.tar.gz -text
 tzdata/mirror/tzcode2009f.tar.gz -text
 tzdata/mirror/tzcode2009g.tar.gz -text
+tzdata/mirror/tzcode2009h.tar.gz -text
 tzdata/mirror/tzdata2003a.tar.gz -text
 tzdata/mirror/tzdata2003d.tar.gz -text
 tzdata/mirror/tzdata2004e.tar.gz -text
@@ -1427,4 +1428,5 @@ tzdata/mirror/tzdata2009d.tar.gz -text
 tzdata/mirror/tzdata2009e.tar.gz -text
 tzdata/mirror/tzdata2009f.tar.gz -text
 tzdata/mirror/tzdata2009g.tar.gz -text
+tzdata/mirror/tzdata2009h.tar.gz -text
 tzdata/readme.txt -text
