@@ -1448,3 +1448,7 @@ tzdata/mirror/tzdata2009g.tar.gz -text
 tzdata/mirror/tzdata2009h.tar.gz -text
 tzdata/mirror/tzdata2009i.tar.gz -text
 tzdata/readme.txt -text
+tzdata/tzu/icu.css svneol=native#text/css
+tzdata/tzu/icu.gif -text
+tzdata/tzu/manifest.stub -text
+tzdata/tzu/readme.html svneol=native#text/html
