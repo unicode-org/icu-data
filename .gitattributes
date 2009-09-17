@@ -1391,6 +1391,14 @@ tzdata/icu/2009l/le/metazoneInfo.res -text
 tzdata/icu/2009l/le/zoneinfo.res -text
 tzdata/icu/2009l/metazoneInfo.txt -text
 tzdata/icu/2009l/zoneinfo.txt -text
+tzdata/icu/2009m/be/metazoneInfo.res -text
+tzdata/icu/2009m/be/zoneinfo.res -text
+tzdata/icu/2009m/ee/metazoneInfo.res -text
+tzdata/icu/2009m/ee/zoneinfo.res -text
+tzdata/icu/2009m/le/metazoneInfo.res -text
+tzdata/icu/2009m/le/zoneinfo.res -text
+tzdata/icu/2009m/metazoneInfo.txt -text
+tzdata/icu/2009m/zoneinfo.txt -text
 tzdata/mirror/readme.txt -text
 tzdata/mirror/tzcode2006c.tar.gz -text
 tzdata/mirror/tzcode2006d.tar.gz -text
@@ -1435,6 +1443,7 @@ tzdata/mirror/tzcode2009i.tar.gz -text
 tzdata/mirror/tzcode2009j.tar.gz -text
 tzdata/mirror/tzcode2009k.tar.gz -text
 tzdata/mirror/tzcode2009l.tar.gz -text
+tzdata/mirror/tzcode2009m.tar.gz -text
 tzdata/mirror/tzdata2003a.tar.gz -text
 tzdata/mirror/tzdata2003d.tar.gz -text
 tzdata/mirror/tzdata2004e.tar.gz -text
@@ -1484,6 +1493,7 @@ tzdata/mirror/tzdata2009i.tar.gz -text
 tzdata/mirror/tzdata2009j.tar.gz -text
 tzdata/mirror/tzdata2009k.tar.gz -text
 tzdata/mirror/tzdata2009l.tar.gz -text
+tzdata/mirror/tzdata2009m.tar.gz -text
 tzdata/readme.txt -text
 tzdata/tzu/icu.css svneol=native#text/css
 tzdata/tzu/icu.gif -text
