@@ -42,7 +42,14 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@echo "## Build OK."
 
 	@mkdir $(@D)
-	cp $(TZSRC)/zoneinfo.txt $(ICU_SRC)/data/misc/metazoneInfo.txt $(@D)
+	cp $(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt $(@D)
+	@mkdir $(@D)/381
+	cp supplemental/381/supplementalData.txt $(@D)/381
+	@mkdir $(@D)/40
+	cp supplemental/40/supplementalData.txt $(@D)/40
+	@mkdir $(@D)/42
+	cp supplemental/42/supplementalData.txt $(@D)/42
+
 	@echo "#" genrb and creating le/be/ee versions
 	@$(shell icu-config --invoke=genrb) -s $(@D) -d $(@D) zoneinfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 	@$(shell icu-config --invoke=genrb) -s $(@D) -d $(@D) metazoneInfo.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
@@ -55,6 +62,30 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@$(shell icu-config --invoke=icupkg) -s $(@D) -tb metazoneInfo.res $(@D)/be/metazoneInfo.res
 	@$(shell icu-config --invoke=icupkg) -s $(@D) -te metazoneInfo.res $(@D)/ee/metazoneInfo.res
 	@rm $(@D)/metazoneInfo.res
+
+	@echo "#" creating version specific supplementalData resource files
+
+	@$(shell icu-config --invoke=genrb) -s $(@D)/381 -d $(@D)/381 supplementalData.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+	@mkdir $(@D)/le/381 $(@D)/be/381 $(@D)/ee/381
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/381 -tl supplementalData.res $(@D)/le/381/supplementalData.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/381 -tb supplementalData.res $(@D)/be/381/supplementalData.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/381 -te supplementalData.res $(@D)/ee/381/supplementalData.res
+	@rm $(@D)/381/supplementalData.res
+
+	@$(shell icu-config --invoke=genrb) -s $(@D)/40 -d $(@D)/40 supplementalData.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+	@mkdir $(@D)/le/40 $(@D)/be/40 $(@D)/ee/40
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/40 -tl supplementalData.res $(@D)/le/40/supplementalData.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/40 -tb supplementalData.res $(@D)/be/40/supplementalData.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/40 -te supplementalData.res $(@D)/ee/40/supplementalData.res
+	@rm $(@D)/40/supplementalData.res
+
+	@$(shell icu-config --invoke=genrb) -s $(@D)/42 -d $(@D)/42 supplementalData.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+	@mkdir $(@D)/le/42 $(@D)/be/42 $(@D)/ee/42
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/42 -tl supplementalData.res $(@D)/le/42/supplementalData.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/42 -tb supplementalData.res $(@D)/be/42/supplementalData.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/42 -te supplementalData.res $(@D)/ee/42/supplementalData.res
+	@rm $(@D)/42/supplementalData.res
+
 	find $(@D)/* -type f
 	svn add $(@D)
 
