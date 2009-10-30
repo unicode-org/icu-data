@@ -1515,6 +1515,10 @@ tzdata/mirror/tzdata2009m.tar.gz -text
 tzdata/mirror/tzdata2009n.tar.gz -text
 tzdata/mirror/tzdata2009o.tar.gz -text
 tzdata/readme.txt -text
+tzdata/supplemental/381/supplementalData.txt -text
+tzdata/supplemental/40/supplementalData.txt -text
+tzdata/supplemental/42/supplementalData.txt -text
+tzdata/supplemental/metazoneInfo.txt -text
 tzdata/tzu/icu.css svneol=native#text/css
 tzdata/tzu/icu.gif -text
 tzdata/tzu/manifest.stub -text
