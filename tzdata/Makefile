@@ -43,8 +43,8 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 
 	@mkdir $(@D)
 	cp $(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt $(@D)
-	@mkdir $(@D)/381
-	cp supplemental/381/supplementalData.txt $(@D)/381
+	@mkdir $(@D)/38
+	cp supplemental/38/supplementalData.txt $(@D)/38
 	@mkdir $(@D)/40
 	cp supplemental/40/supplementalData.txt $(@D)/40
 	@mkdir $(@D)/42
@@ -65,12 +65,12 @@ icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 
 	@echo "#" creating version specific supplementalData resource files
 
-	@$(shell icu-config --invoke=genrb) -s $(@D)/381 -d $(@D)/381 supplementalData.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
-	@mkdir $(@D)/le/381 $(@D)/be/381 $(@D)/ee/381
-	@$(shell icu-config --invoke=icupkg) -s $(@D)/381 -tl supplementalData.res $(@D)/le/381/supplementalData.res
-	@$(shell icu-config --invoke=icupkg) -s $(@D)/381 -tb supplementalData.res $(@D)/be/381/supplementalData.res
-	@$(shell icu-config --invoke=icupkg) -s $(@D)/381 -te supplementalData.res $(@D)/ee/381/supplementalData.res
-	@rm $(@D)/381/supplementalData.res
+	@$(shell icu-config --invoke=genrb) -s $(@D)/38 -d $(@D)/38 supplementalData.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
+	@mkdir $(@D)/le/38 $(@D)/be/38 $(@D)/ee/38
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/38 -tl supplementalData.res $(@D)/le/38/supplementalData.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/38 -tb supplementalData.res $(@D)/be/38/supplementalData.res
+	@$(shell icu-config --invoke=icupkg) -s $(@D)/38 -te supplementalData.res $(@D)/ee/38/supplementalData.res
+	@rm $(@D)/38/supplementalData.res
 
 	@$(shell icu-config --invoke=genrb) -s $(@D)/40 -d $(@D)/40 supplementalData.txt 2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 	@mkdir $(@D)/le/40 $(@D)/be/40 $(@D)/ee/40
