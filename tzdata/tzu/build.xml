@@ -109,11 +109,11 @@
         <mkdir dir="${tzu.test.dir}/40"/>
         <mkdir dir="${tzu.test.dir}/42"/>
         <echo file="${tzu.test.dir}/DirectorySearch.txt">+scandir</echo>
-        <get dest="${tzu.test.dir}/zoneinfo.res" src="http://icu-project.org/tzdata/2009p/be/zoneinfo.res"/>
-        <get dest="${tzu.test.dir}/metazoneInfo.res" src="http://icu-project.org/tzdata/2009p/be/metazoneInfo.res"/>
-        <get dest="${tzu.test.dir}/38/supplementalData.res" src="http://icu-project.org/tzdata/2009p/be/38/supplementalData.res"/>
-        <get dest="${tzu.test.dir}/40/supplementalData.res" src="http://icu-project.org/tzdata/2009p/be/40/supplementalData.res"/>
-        <get dest="${tzu.test.dir}/42/supplementalData.res" src="http://icu-project.org/tzdata/2009p/be/42/supplementalData.res"/>
+        <get dest="${tzu.test.dir}/zoneinfo.res" src="http://icu-project.org/tzdata/2009s/be/zoneinfo.res"/>
+        <get dest="${tzu.test.dir}/metazoneInfo.res" src="http://icu-project.org/tzdata/2009s/be/metazoneInfo.res"/>
+        <get dest="${tzu.test.dir}/38/supplementalData.res" src="http://icu-project.org/tzdata/2009s/be/38/supplementalData.res"/>
+        <get dest="${tzu.test.dir}/40/supplementalData.res" src="http://icu-project.org/tzdata/2009s/be/40/supplementalData.res"/>
+        <get dest="${tzu.test.dir}/42/supplementalData.res" src="http://icu-project.org/tzdata/2009s/be/42/supplementalData.res"/>
         <copy tofile="${tzu.test.dir}/icu4j.jar" file="${icu4j.jar.file}"/>
         <copy tofile="${tzu.test.dir}/scandir/target-icu4j.jar" file="${icu4j.jar.file}"/>
 
