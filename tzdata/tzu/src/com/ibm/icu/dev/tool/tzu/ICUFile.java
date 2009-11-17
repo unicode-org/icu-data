@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007-2008, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2009, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -63,6 +63,18 @@ public class ICUFile {
      * The metazone resource filename.
      */
     private static final String MZ_ENTRY_FILENAME = "metazoneInfo.res";
+
+    /**
+     * The supplemental data resource filename.
+     */
+    private static final String SD_ENTRY_FILENAME = "supplementalData.res";
+
+    /**
+    * The supplemental data versions
+    */
+    private static final String SD_ENTRY_38 = "38/";
+    private static final String SD_ENTRY_40 = "40/";
+    private static final String SD_ENTRY_42 = "42/";
 
     /**
      * Key to use when getting the version of a timezone resource.
@@ -224,6 +236,11 @@ public class ICUFile {
     private JarEntry mzEntry;
 
     /**
+     * The entry for the supplemental data resource inside the ICU4J jar.
+     */
+    private JarEntry sdEntry;
+
+    /**
      * The version of the timezone resource inside the ICU4J jar.
      */
     private String tzVersion;
@@ -383,8 +400,8 @@ public class ICUFile {
         if (!icuFile.canRead() || !icuFile.canWrite())
             throw new IOException("Missing permissions for " + icuFile.getPath());
 
-        JarEntry[] jarEntries = new JarEntry[2];
-        URL[] insertURLs = new URL[2];
+        JarEntry[] jarEntries = new JarEntry[3];
+        URL[] insertURLs = new URL[3];
 
         jarEntries[0] = tzEntry;
         insertURLs[0] = getCachedURL(insertURL);
@@ -392,17 +409,43 @@ public class ICUFile {
         if (insertURLs[0] == null)
             throw new IOException(
                     "Could not download the Time Zone data, skipping update for this jar.");
-
-        // Check if metazoneInfo.res is available
+        
+        // Check if metazoneInfo.res and/or supplementalData.res is available
         String tzURLStr = insertURL.toString();
         int lastSlashIdx = tzURLStr.lastIndexOf('/');
         if (lastSlashIdx >= 0) {
+            // get metazoneInfo.res
             String mzURLStr = tzURLStr.substring(0, lastSlashIdx + 1) + MZ_ENTRY_FILENAME;
             insertURLs[1] = getCachedURL(new URL(mzURLStr));
             if (insertURLs[1] != null) {
                 jarEntries[1] = mzEntry;
             }
-        }
+
+            // get the version of the cached zoneinfo.res file
+            String zVer = findFileTZVersion(new File(insertURLs[0].toString().substring(insertURLs[0].toString().indexOf('/', 0) + 1, insertURLs[0].toString().length())), logger);
+
+            // Use the appropriate version of the supplemental data resource.  This res file is only
+            // needed for ICU versions 3.8.x, 4.0.x, 4.2.x and using a time zone version of 2009p or later.
+            // This also assumes a path of <path to zoneonfo.res><sd_entry_xx><sd_entry_filename>
+            String sdURLStr = null;
+            if (zVer.compareTo("2009p") >= 0)
+            {
+                // determine version
+                if (icuVersion.startsWith("3.8"))
+                    sdURLStr = tzURLStr.substring(0, lastSlashIdx + 1) + SD_ENTRY_38 + SD_ENTRY_FILENAME;
+                else if (icuVersion.startsWith("4.0"))
+                   sdURLStr = tzURLStr.substring(0, lastSlashIdx + 1) + SD_ENTRY_40 + SD_ENTRY_FILENAME;
+                else if (icuVersion.startsWith("4.2"))
+                    sdURLStr = tzURLStr.substring(0, lastSlashIdx + 1) + SD_ENTRY_42 + SD_ENTRY_FILENAME;
+
+                // get supplementalData.res
+                insertURLs[2] = getCachedURL(new URL(sdURLStr));
+                if (insertURLs[2] != null)
+                {
+                    jarEntries[2] = sdEntry;
+                }
+            }
+		}
 
         File backupFile = null;
         if ((backupFile = createBackupFile(icuFile, backupDir)) == null)
@@ -799,6 +842,13 @@ public class ICUFile {
             if (success) {
                 mzEntry = getTZEntry(jar, MZ_ENTRY_FILENAME);
             }
+
+            // Check for supplementalData.res.  Its inclusion is dependent on which
+            // version of ICU we are updating and which version of zoneinfo is used
+            if (success) {
+                 sdEntry = getTZEntry(jar, SD_ENTRY_FILENAME);
+            }
+
         } catch (IOException ex) {
             // unable to create the JarFile or unable to get the Manifest
             // log the unexplained i/o error, but we must drudge on

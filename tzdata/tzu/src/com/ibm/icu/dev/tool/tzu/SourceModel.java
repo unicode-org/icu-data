@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2009, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -258,10 +258,10 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     public URL getURL(Object choice) {
         if (choice == null || !(choice instanceof String))
             return null;
-        else if (TZ_LOCAL_CHOICE.equalsIgnoreCase((String) choice))
+        else if ((TZ_LOCAL_CHOICE != null) && (TZ_LOCAL_CHOICE.equalsIgnoreCase((String)choice)))
             return TZ_LOCAL_URL;
         else
-            return (URL) urlMap.get(choice);
+            return (URL)urlMap.get(choice);
     }
 
     /**
