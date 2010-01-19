@@ -1522,6 +1522,21 @@ tzdata/icu/2009u/le/40/supplementalData.res -text
 tzdata/icu/2009u/le/42/supplementalData.res -text
 tzdata/icu/2009u/le/metazoneInfo.res -text
 tzdata/icu/2009u/le/zoneinfo.res -text
+tzdata/icu/2010a/be/38/supplementalData.res -text
+tzdata/icu/2010a/be/40/supplementalData.res -text
+tzdata/icu/2010a/be/42/supplementalData.res -text
+tzdata/icu/2010a/be/metazoneInfo.res -text
+tzdata/icu/2010a/be/zoneinfo.res -text
+tzdata/icu/2010a/ee/38/supplementalData.res -text
+tzdata/icu/2010a/ee/40/supplementalData.res -text
+tzdata/icu/2010a/ee/42/supplementalData.res -text
+tzdata/icu/2010a/ee/metazoneInfo.res -text
+tzdata/icu/2010a/ee/zoneinfo.res -text
+tzdata/icu/2010a/le/38/supplementalData.res -text
+tzdata/icu/2010a/le/40/supplementalData.res -text
+tzdata/icu/2010a/le/42/supplementalData.res -text
+tzdata/icu/2010a/le/metazoneInfo.res -text
+tzdata/icu/2010a/le/zoneinfo.res -text
 tzdata/mirror/readme.txt -text
 tzdata/mirror/tzcode2006c.tar.gz -text
 tzdata/mirror/tzcode2006d.tar.gz -text
@@ -1575,6 +1590,7 @@ tzdata/mirror/tzcode2009r.tar.gz -text
 tzdata/mirror/tzcode2009s.tar.gz -text
 tzdata/mirror/tzcode2009t.tar.gz -text
 tzdata/mirror/tzcode2009u.tar.gz -text
+tzdata/mirror/tzcode2010a.tar.gz -text
 tzdata/mirror/tzdata2003a.tar.gz -text
 tzdata/mirror/tzdata2003d.tar.gz -text
 tzdata/mirror/tzdata2004e.tar.gz -text
@@ -1633,6 +1649,7 @@ tzdata/mirror/tzdata2009r.tar.gz -text
 tzdata/mirror/tzdata2009s.tar.gz -text
 tzdata/mirror/tzdata2009t.tar.gz -text
 tzdata/mirror/tzdata2009u.tar.gz -text
+tzdata/mirror/tzdata2010a.tar.gz -text
 tzdata/readme.txt -text
 tzdata/supplemental/38/supplementalData.txt -text
 tzdata/supplemental/40/supplementalData.txt -text
