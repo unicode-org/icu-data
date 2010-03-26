@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -51,8 +51,8 @@ public class ICUJarFinder {
     public static ResultModel search(ResultModel resultModel, Logger logger, IncludePath[] paths,
             boolean subdirs, File curDir, File backupDir) throws InterruptedException {
         // sift the included / excluded paths into two seperate arraylists
-        List included = new ArrayList();
-        List excluded = new ArrayList();
+        List<File> included = new ArrayList<File>();
+        List<File> excluded = new ArrayList<File>();
         for (int i = 0; i < paths.length; i++) {
             IncludePath path = paths[i];
             File file = path.getPath();
@@ -83,7 +83,7 @@ public class ICUJarFinder {
         }
 
         // exclude the icu4j.jar that comes with this tool
-        File file = new File(curDir.getPath(), "icu4j.jar");
+        File file = new File(curDir.getPath(), "icu4j-core.jar");
         try {
             file = file.getCanonicalFile();
         } catch (IOException ex) {
@@ -95,7 +95,7 @@ public class ICUJarFinder {
 
         // search each of the included files/directories
         for (int i = 0; i < included.size(); i++)
-            search(resultModel, logger, (File) included.get(i), excluded, subdirs, 0);
+            search(resultModel, logger, included.get(i), excluded, subdirs, 0);
 
         // chain the result model
         return resultModel;
@@ -124,7 +124,7 @@ public class ICUJarFinder {
      * @throws InterruptedException
      */
     private static ResultModel search(ResultModel resultModel, Logger logger, File file,
-            List excluded, boolean subdirs, int depth) throws InterruptedException {
+            List<File> excluded, boolean subdirs, int depth) throws InterruptedException {
         // ensure we are not following a symbolic link
         if (isSymbolic(file))
             return resultModel;
@@ -142,9 +142,9 @@ public class ICUJarFinder {
             throw new InterruptedException();
 
         // make sure the current file/directory isn't excluded
-        Iterator iter = excluded.iterator();
+        Iterator<File> iter = excluded.iterator();
         while (iter.hasNext())
-            if (file.equals(((File) iter.next())))
+            if (file.equals(iter.next()))
                 return resultModel;
 
         if ((subdirs || depth == 0) && file.isDirectory()) {

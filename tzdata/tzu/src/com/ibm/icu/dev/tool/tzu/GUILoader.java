@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -105,12 +105,12 @@ public class GUILoader {
      *            The file to load paths from.
      * @param resultFile
      *            The file to load/save results to/from.
-     * @param tzFile
-     *            The local timezone resource file.
+     * @param tzresDir
+     *            The local time zone resource directory.
      * @param iconFile
      *            The icon file.
      */
-    public GUILoader(File curDir, File backupDir, File pathFile, File resultFile, File tzFile,
+    public GUILoader(File curDir, File backupDir, File pathFile, File resultFile, File tzresDir,
             File iconFile) {
         // set the backup dir
         this.backupDir = backupDir;
@@ -164,7 +164,7 @@ public class GUILoader {
         // initialize the models
         resultModel = new ResultModel(logger, resultFile);
         pathModel = new PathModel(logger, pathFile);
-        sourceModel = new SourceModel(logger, tzFile);
+        sourceModel = new SourceModel(logger, tzresDir);
 
         // attach the models to the guis
         resultGUI.setResultModel(resultModel);

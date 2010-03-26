@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007-2009, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -15,6 +15,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
@@ -41,15 +42,9 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     public static URL TZ_BASE_URL = null;
 
     /**
-     * The end of a URL string to any timezone resource in the ICU Timezone Repository meant for
-     * ICU4J.
-     */
-    public static final String TZ_BASE_URLSTRING_END = "/be/zoneinfo.res";
-
-    /**
      * The URL string of the ICU Timezone Repository.
      */
-    public static final String TZ_BASE_URLSTRING_START = "http://icu-project.org/tzdata/";
+    public static final String TZ_BASE_URLSTRING = "http://source.icu-project.org/repos/icu/data/trunk/tzdata/icunew";
 
     /**
      * The readable name of the local timezone resource file, ie. "Local Copy" or "Local Copy
@@ -59,7 +54,7 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     public static String TZ_LOCAL_CHOICE = null;
 
     /**
-     * The URL of the local timezone resource file. In order to catch a MalformedURLException, this
+     * The URL of the local timezone resource directory. In order to catch a MalformedURLException, this
      * field must be initialized by the constructor.
      */
     public static URL TZ_LOCAL_URL = null;
@@ -72,9 +67,9 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     public static String TZ_LOCAL_VERSION = null;
 
     /**
-     * The local timezone resource file.
+     * The local timezone resource directory.
      */
-    public static File tzLocalFile = null;
+    public static File tzresLocalDir = null;
 
     /**
      * The current logger.
@@ -89,33 +84,34 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     /**
      * The map of timezone resource names to their respective URL locations.
      */
-    private TreeMap urlMap = new TreeMap();
+    private TreeMap<String, URL> urlMap = new TreeMap<String, URL>();
 
     /**
      * Constructs a source model.
      * 
      * @param logger
      *            The current logger.
-     * @param tzLocalFile
-     *            The local timezone resource file.
+     * @param tzresLocalDir
+     *            The local time zone resource directory.
      */
-    public SourceModel(Logger logger, File tzLocalFile) {
+    public SourceModel(Logger logger, File tzresLocalDir) {
         this.logger = logger;
 
         // if all constants are not yet initialized
         // (this is where they get initialized)
         if (TZ_BASE_URL == null) {
             try {
-                TZ_BASE_URL = new URL(TZ_BASE_URLSTRING_START);
+                TZ_BASE_URL = new URL(TZ_BASE_URLSTRING);
 
-                SourceModel.tzLocalFile = tzLocalFile;
-                if (!tzLocalFile.exists()) {
+                SourceModel.tzresLocalDir = tzresLocalDir;
+                File zoneinfoFile = new File(tzresLocalDir, "44/be/zoneinfo64.res");
+                if (!zoneinfoFile.exists()) {
                     // not a critical error, but we won't be able to use the
                     // local tz file
-                    logger.errorln("Local copy (zoneinfo.res) does not exist (perhaps you are not running icutzu from the correct directory?)");
+                    logger.errorln("Local time zone resource file does not exist (perhaps you are not running icutzu from the correct directory?)");
                 } else {
-                    TZ_LOCAL_URL = tzLocalFile.toURL();
-                    TZ_LOCAL_VERSION = ICUFile.findFileTZVersion(tzLocalFile, logger);
+                    TZ_LOCAL_URL = tzresLocalDir.toURL();
+                    TZ_LOCAL_VERSION = ICUFile.findFileTZVersion(zoneinfoFile, logger);
                     if (TZ_LOCAL_VERSION == null) {
                         logger.errorln("Failed to determine version of local copy");
                         TZ_LOCAL_CHOICE = "Local Copy";
@@ -167,14 +163,13 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
                         if (!"..".equals(str))
                             try {
                                 // add the new item to the map
-                                urlMap.put(str, new URL(TZ_BASE_URLSTRING_START + str
-                                        + TZ_BASE_URLSTRING_END));
+                                urlMap.put(str, new URL(TZ_BASE_URLSTRING + "/" + str));
 
                                 // update the selected item and fire off an
                                 // event
                                 selected = urlMap.lastKey();
                                 int index = 0;
-                                for (Iterator iter = urlMap.keySet().iterator(); iter.hasNext();) {
+                                for (Iterator<String> iter = urlMap.keySet().iterator(); iter.hasNext();) {
                                     if (iter.next().equals(str))
                                         index++;
                                 }
@@ -219,7 +214,7 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
         else if (index < 0 || index > urlMap.size())
             return null;
         else {
-            Iterator iter = urlMap.keySet().iterator();
+            Iterator<String> iter = urlMap.keySet().iterator();
             for (int i = 1; i < index; i++)
                 iter.next();
             return iter.next();
@@ -288,7 +283,7 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
      * 
      * @return An iterator as described above.
      */
-    public Iterator iterator() {
+    public Iterator<Entry<String, URL>> iterator() {
         return urlMap.entrySet().iterator();
     }
 

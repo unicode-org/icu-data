@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -68,9 +68,9 @@ public class CLILoader {
     private SourceModel sourceModel;
 
     /**
-     * The local timezone resource file.
+     * The local time zone resource directory .
      */
-    private File tzFile = null;
+    private File tzresDir = null;
 
     /**
      * Entry point for the command-line version of the tool.
@@ -83,10 +83,10 @@ public class CLILoader {
      *            The file to load paths from.
      * @param resultFile
      *            The file to load/save results to/from.
-     * @param tzFile
-     *            The local timezone resource file.
+     * @param tzresDir
+     *            The local time zone resource dirctory.
      */
-    public CLILoader(File curDir, File backupDir, File pathFile, File resultFile, File tzFile) {
+    public CLILoader(File curDir, File backupDir, File pathFile, File resultFile, File tzresDir) {
         // determine whether we are running in discover only mode or patch mode
         boolean discoverOnly = "true".equalsIgnoreCase(System.getProperty("discoveronly"));
         boolean silentPatch = "true".equalsIgnoreCase(System.getProperty("silentpatch"));
@@ -103,7 +103,7 @@ public class CLILoader {
 
         this.pathFile = pathFile;
         this.resultFile = resultFile;
-        this.tzFile = tzFile;
+        this.tzresDir = tzresDir;
         this.backupDir = backupDir;
         this.curDir = curDir;
 
@@ -190,7 +190,7 @@ public class CLILoader {
 
         // initialize the result model and the source model
         resultModel = new ResultModel(logger, resultFile);
-        sourceModel = new SourceModel(logger, tzFile);
+        sourceModel = new SourceModel(logger, tzresDir);
 
         // load the results from the result list file
         resultModel.loadResults();

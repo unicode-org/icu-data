@@ -1,15 +1,16 @@
 <!--
 *******************************************************************************
-* Copyright (C) 2009, International Business Machines Corporation and         *
+* Copyright (C) 2009-2010, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 -->
 <project name="tzu" default="build" basedir=".">
-    <property environment="env"/>
- 
+    <property name="tzdata.ver" value="2010f"/>
+
     <property name="tzu.jar.file" value="icutzu.jar"/>
     <property name="tzu.src.zip.file" value="icutzu-src.zip"/>
     <property name="tzu.bin.zip.file" value="icutzu-bin.zip"/>
+    <property name="icu.tzres.zip" value="icu-tzres.zip"/>
 
     <property name="src.dir" value="src"/>
     <property name="out.dir" value="out"/>
@@ -19,18 +20,7 @@
     <property name="tzu.dist.tmp.dir" value="${tzu.dist.dir}/tmp"/>
     <property name="tzu.test.dir" value="${out.dir}/test"/>
 
-    <target name="build" depends="_check-icu4j-jar, src-zip, bin-zip"/>
-
-    <target name="_check-icu4j-jar">
-        <available file="${env.ICU4J_JAR}" type="file" property="icu4j.jar.file" value="${env.ICU4J_JAR}"/>
-        <fail message="Environment variable ICU4J_JAR is not properly set - ${env.ICU4J_JAR}">
-            <condition>
-                <not>
-                   <isset property="icu4j.jar.file"/>
-                </not>
-            </condition>
-        </fail>
-    </target>
+    <target name="build" depends="src-zip, bin-zip"/>
 
     <target name="clean" description="Clean up the build outputs">
         <delete dir="${out.dir}"/>
@@ -40,19 +30,14 @@
         <mkdir dir="${bin.dir}"/>
         <javac srcdir="${src.dir}"
                 destdir="${bin.dir}"
-                source="1.3"
-                target="1.3"
+                source="1.5"
+                target="1.5"
                 debug="on"
                 deprecation="off"
                 encoding="ascii"/>
     </target>
 
-    <target name="jar" depends="_check-icu4j-jar, compile" description="Create ICUTZU jar file">
-        <unjar src="${icu4j.jar.file}" dest="${bin.dir}">
-            <patternset>
-                <include name="license.html"/>
-            </patternset>
-        </unjar>
+    <target name="jar" depends="compile" description="Create ICUTZU jar file">
         <mkdir dir="${jar.dir}"/>
         <jar jarfile="${jar.dir}/${tzu.jar.file}"
                 manifest="${basedir}/manifest.stub"
@@ -62,22 +47,14 @@
 
     <target name="src-zip" description="Create ICUTZU distributable source zip file">
         <mkdir dir="${tzu.dist.dir}"/>
-        <zip zipfile="${tzu.dist.dir}/${tzu.src.zip.file}"
-                basedir="${basedir}"
-                excludes="${out.dir}/"/>
+        <zip zipfile="${tzu.dist.dir}/${tzu.src.zip.file}">
+            <fileset dir="${basedir}/src" includes="**/*.java"/>
+        </zip>
     </target>
 
     <target name="bin-zip" depends="jar" description="Create ICUTZU distributable binary zip file">
-        <mkdir dir="${tzu.dist.tmp.dir}"/>
-        <unjar src="${icu4j.jar.file}" dest="${tzu.dist.tmp.dir}">
-            <patternset>
-                <include name="com/ibm/icu/impl/data/*/zoneinfo.res"/>
-                <include name="com/ibm/icu/impl/data/*/metazoneInfo.res"/>
-                <include name="com/ibm/icu/impl/data/*/supplementalData.res"/>
-            </patternset>
-            <mapper type="flatten"/>
-        </unjar>
-        <copy file="${icu4j.jar.file}" tofile="${tzu.dist.tmp.dir}/icu4j.jar"/>
+        <mkdir dir="${tzu.dist.tmp.dir}/res"/>
+        <unzip src="icu-tzres.zip" dest="${tzu.dist.tmp.dir}/res"/>
 
         <mkdir dir="${tzu.dist.dir}"/>
         <zip zipfile="${tzu.dist.dir}/${tzu.bin.zip.file}">
@@ -91,7 +68,9 @@
                 <include name="icu.gif"/>
                 <include name="DirectorySearch.txt"/>
                 <include name="readme.html"/>
+                <include name="license.html"/>
                 <include name="icu.css"/>
+                <include name="icu4j-core.jar"/>
             </fileset>
             <fileset dir="${tzu.dist.tmp.dir}">
                 <include name="**/*"/>
@@ -105,17 +84,12 @@
         <echo>Testing ICUTZU ...</echo>
 
         <mkdir dir="${tzu.test.dir}/scandir"/>
-        <mkdir dir="${tzu.test.dir}/38"/>
-        <mkdir dir="${tzu.test.dir}/40"/>
-        <mkdir dir="${tzu.test.dir}/42"/>
         <echo file="${tzu.test.dir}/DirectorySearch.txt">+scandir</echo>
-        <get dest="${tzu.test.dir}/zoneinfo.res" src="http://icu-project.org/tzdata/2009s/be/zoneinfo.res"/>
-        <get dest="${tzu.test.dir}/metazoneInfo.res" src="http://icu-project.org/tzdata/2009s/be/metazoneInfo.res"/>
-        <get dest="${tzu.test.dir}/38/supplementalData.res" src="http://icu-project.org/tzdata/2009s/be/38/supplementalData.res"/>
-        <get dest="${tzu.test.dir}/40/supplementalData.res" src="http://icu-project.org/tzdata/2009s/be/40/supplementalData.res"/>
-        <get dest="${tzu.test.dir}/42/supplementalData.res" src="http://icu-project.org/tzdata/2009s/be/42/supplementalData.res"/>
-        <copy tofile="${tzu.test.dir}/icu4j.jar" file="${icu4j.jar.file}"/>
-        <copy tofile="${tzu.test.dir}/scandir/target-icu4j.jar" file="${icu4j.jar.file}"/>
+        <copy todir="${tzu.test.dir}" file="icu4j-core.jar"/>
+        <copy tofile="${tzu.test.dir}/scandir/target-icu4j.jar" file="icu4j-core.jar"/>
+
+        <mkdir dir="${tzu.test.dir}/res"/>
+        <unzip src="icu-tzres.zip" dest="${tzu.test.dir}/res"/>
 
         <echo>Running ICUTZU in Discovery Mode ...</echo>
         <java jar="${jar.dir}/${tzu.jar.file}" fork="true" dir="${tzu.test.dir}" failonerror="true">
@@ -126,10 +100,10 @@
             <arg value="."/>
             <arg value="DirectorySearch.txt"/>
             <arg value="ICUList.txt"/>
-            <arg value="zoneinfo.res"/>
+            <arg value="res"/>
             <arg value="backup_dir"/>
             <arg value="icu.gif"/>
-            <classpath location="icu4j.jar"/>
+            <classpath location="icu4j-core.jar"/>
         </java>
 
         <echo>Running ICUTZU in Patch Mode ...</echo>
@@ -141,40 +115,53 @@
             <arg value="."/>
             <arg value="DirectorySearch.txt"/>
             <arg value="ICUList.txt"/>
-            <arg value="zoneinfo.res"/>
+            <arg value="res"/>
             <arg value="backup_dir"/>
             <arg value="icu.gif"/>
-            <classpath location="icu4j.jar"/>
+            <classpath location="icu4j-core.jar"/>
         </java>
 
         <echo>Comparing results ...</echo>
         <unjar src="${tzu.test.dir}/scandir/target-icu4j.jar" dest="${tzu.test.dir}/scandir">
             <patternset>
-                <include name="com/ibm/icu/impl/data/*/zoneinfo.res" />
-                <include name="com/ibm/icu/impl/data/*/metazoneInfo.res" />
-                <include name="com/ibm/icu/impl/data/*/supplementalData.res" />
+                <include name="com/ibm/icu/impl/data/*/zoneinfo64.res" />
+                <include name="com/ibm/icu/impl/data/*/metaZones.res" />
+                <include name="com/ibm/icu/impl/data/*/timezoneTypes.res" />
+                <include name="com/ibm/icu/impl/data/*/windowsZones.res" />
             </patternset>
             <mapper type="flatten"/>
         </unjar>
 
-        <condition property="tzu.zoneinfo.match">
-            <filesmatch file1="${tzu.test.dir}/zoneinfo.res" file2="${tzu.test.dir}/scandir/zoneinfo.res" />
+        <condition property="tzu.zoneinfo64.match">
+            <filesmatch file1="${tzu.test.dir}/res/44/be/zoneinfo64.res" file2="${tzu.test.dir}/scandir/zoneinfo64.res" />
         </condition>
-        <fail unless="tzu.zoneinfo.match"
-                message="ICUTZU test failed. ${tzu.test.dir}/zoneinfo.res does not match ${tzu.test.dir}/scandir/zoneinfo.res"/>
+        <fail unless="tzu.zoneinfo64.match"
+                message="ICUTZU test failed. ${tzu.test.dir}/res/44/be/zoneinfo64.res does not match ${tzu.test.dir}/scandir/zoneinfo64.res"/>
 
-        <condition property="tzu.metazoneinfo.match">
-            <filesmatch file1="${tzu.test.dir}/metazoneInfo.res" file2="${tzu.test.dir}/scandir/metazoneInfo.res" />
+        <condition property="tzu.metazones.match">
+            <filesmatch file1="${tzu.test.dir}/res/44/be/metaZones.res" file2="${tzu.test.dir}/scandir/metaZones.res" />
         </condition>
-        <fail unless="tzu.metazoneinfo.match"
-                message="ICUTZU test failed. ${tzu.bin.dir}/metazoneInfo.res does not match ${tzu.test.dir}/metazoneInfo.res"/>
+        <fail unless="tzu.metazones.match"
+                message="ICUTZU test failed. ${tzu.bin.dir}/res/44/be/metaZones.res does not match ${tzu.test.dir}/scandir/metaZones.res"/>
 
-        <condition property="tzu.supplementalData.match">
-            <filesmatch file1="${tzu.test.dir}/42/supplementalData.res" file2="${tzu.test.dir}/scandir/supplementalData.res" />
+        <condition property="tzu.timezonetypes.match">
+            <filesmatch file1="${tzu.test.dir}/res/44/be/timezoneTypes.res" file2="${tzu.test.dir}/scandir/timezoneTypes.res" />
         </condition>
-        <fail unless="tzu.supplementalData.match"
-                message="ICUTZU test failed. ${tzu.bin.dir}/supplementalData.res does not match ${tzu.test.dir}/42/supplementalData.res"/>
+        <fail unless="tzu.timezonetypes.match"
+                message="ICUTZU test failed. ${tzu.bin.dir}/res/44/be/timezoneTypes.res does not match ${tzu.test.dir}/scandir/timezoneTypes.res"/>
+
+        <condition property="tzu.windowszones.match">
+            <filesmatch file1="${tzu.test.dir}/res/44/be/windowsZones.res" file2="${tzu.test.dir}/scandir/windowsZones.res" />
+        </condition>
+        <fail unless="tzu.windowszones.match"
+                message="ICUTZU test failed. ${tzu.bin.dir}/res/44/be/windowsZones.res does not match ${tzu.test.dir}/scandir/windowsZones.res"/>
 
         <echo>ICUTZU test successful.</echo>
+    </target>
+
+    <target name="createIcuTzRes">
+        <zip destfile="${icu.tzres.zip}">
+            <fileset dir="../icunew/${tzdata.ver}" includes="**/be/*.res"/>
+        </zip>
     </target>
 </project>

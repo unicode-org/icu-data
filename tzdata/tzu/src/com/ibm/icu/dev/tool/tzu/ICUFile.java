@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007-2009, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -19,10 +19,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
@@ -44,37 +46,42 @@ import java.util.jar.Manifest;
  * </ul>
  */
 public class ICUFile {
+    private static final String BUNDLED_ICU4J_JAR = "icu4j-core.jar";
+
     /**
      * ICU version to use if one cannot be found.
      */
-    public static final String ICU_VERSION_UNKNOWN = "Unknown";
+    private static final String ICU_VERSION_UNKNOWN = "Unknown";
 
     /**
      * A directory entry that is found in every updatable ICU4J jar file.
      */
-    public static final String TZ_ENTRY_DIR = "com/ibm/icu/impl";
+    private static final String TZ_ENTRY_DIR = "com/ibm/icu/impl";
 
     /**
-     * The timezone resource filename.
+     * The timezone resource files.
      */
-    public static final String TZ_ENTRY_FILENAME = "zoneinfo.res";
+    private static final String[] ZONEINFO_RESOURCES = {
+        "zoneinfo.res",
+        "zoneinfo64.res",
+    };
 
     /**
-     * The metazone resource filename.
+     * Other time zone resource files for ICU 4.4 or later
      */
-    private static final String MZ_ENTRY_FILENAME = "metazoneInfo.res";
+    private static final String[] OTHER_TZ_RESOURCES = {
+        "metaZones.res",
+        "timezoneTypes.res",
+        "windowsZones.res",
+    };
 
     /**
-     * The supplemental data resource filename.
+     * Other time zone resource files for ICU 3.8 to 4.2
      */
-    private static final String SD_ENTRY_FILENAME = "supplementalData.res";
-
-    /**
-    * The supplemental data versions
-    */
-    private static final String SD_ENTRY_38 = "38/";
-    private static final String SD_ENTRY_40 = "40/";
-    private static final String SD_ENTRY_42 = "42/";
+    private static final String[] OTHER_TZ_RESOURCES_38_TO_42 = {
+        "metazoneInfo.res",
+        "supplementalData.res",
+    };
 
     /**
      * Key to use when getting the version of a timezone resource.
@@ -100,6 +107,44 @@ public class ICUFile {
      * A map that caches links from URLs to time zone data to their downloaded File counterparts.
      */
     private static final Map cacheMap = new HashMap();
+
+
+    // ----------------- Instance Fields ---------------------------
+    /**
+     * The current logger.
+     */
+    private Logger logger;
+
+    /**
+     * The ICU4J jar file represented by this ICUFile.
+     */
+    private File icuFile;
+
+    /**
+     * The ICU version of the ICU4J jar.
+     */
+    private String icuVersion;
+
+    /**
+     * The ICU data version number
+     */
+    private int icuDataVersion;
+
+    /**
+     * The entry for the zoneinfo resource inside the ICU4J jar.
+     */
+    private JarEntry tzEntry;
+
+    /**
+     * The other time zone resource entries inside the ICU4J jar.
+     */
+    private List<JarEntry> otherTzEntries;
+
+    /**
+     * The version of the timezone resource inside the ICU4J jar.
+     */
+    private String tzVersion;
+
 
     /**
      * Determines the version of a timezone resource as a standard file without locking the file.
@@ -145,7 +190,7 @@ public class ICUFile {
             // UResourceBundle bundle = UResourceBundle.getBundleInstance("",
             // entryname, loader);
 
-            URL bundleURL = new URL(new File("icu4j.jar").toURL().toString());
+            URL bundleURL = new URL(new File(BUNDLED_ICU4J_JAR).toURL().toString());
             URLClassLoader bundleLoader = new URLClassLoader(new URL[] { bundleURL });
             Class bundleClass = bundleLoader.loadClass("com.ibm.icu.util.UResourceBundle");
             Method bundleGetInstance = bundleClass.getMethod("getBundleInstance", new Class[] {
@@ -184,6 +229,8 @@ public class ICUFile {
                 logger.errorln("icu4j.jar not correct");
                 logger.logStackTraceToBoth(ex);
             }
+        } catch (MissingResourceException ex) {
+            // fall through
         }
 
         return TZ_VERSION_UNKNOWN;
@@ -201,49 +248,14 @@ public class ICUFile {
      */
     private static JarEntry getTZEntry(JarFile jar, String entryName) {
         JarEntry tzEntry = null;
-        Enumeration e = jar.entries();
+        Enumeration<JarEntry> e = jar.entries();
         while (e.hasMoreElements()) {
-            tzEntry = (JarEntry) e.nextElement();
+            tzEntry = e.nextElement();
             if (tzEntry.getName().endsWith(entryName))
                 return tzEntry;
         }
         return null;
     }
-
-    /**
-     * The ICU4J jar file represented by this ICUFile.
-     */
-    private File icuFile;
-
-    /**
-     * The ICU version of the ICU4J jar.
-     */
-    private String icuVersion;
-
-    /**
-     * The current logger.
-     */
-    private Logger logger;
-
-    /**
-     * The entry for the timezone resource inside the ICU4J jar.
-     */
-    private JarEntry tzEntry;
-
-    /**
-     * The entry for the metazone resource inside the ICU4J jar.
-     */
-    private JarEntry mzEntry;
-
-    /**
-     * The entry for the supplemental data resource inside the ICU4J jar.
-     */
-    private JarEntry sdEntry;
-
-    /**
-     * The version of the timezone resource inside the ICU4J jar.
-     */
-    private String tzVersion;
 
     /**
      * Constructs an ICUFile around a file. See <code>initialize</code> for details.
@@ -385,14 +397,14 @@ public class ICUFile {
      * the new timezone resource and the backup directory <code>backupDir</code> to store a copy
      * of the ICUFile.
      * 
-     * @param insertURL
+     * @param baseURL
      *            The url location of the timezone resource to use.
      * @param backupDir
      *            The directory to store a backup for this ICUFile, or null if no backup.
      * @throws IOException
      * @throws InterruptedException
      */
-    public void update(URL insertURL, File backupDir) throws IOException, InterruptedException {
+    public void update(URL baseURL, File backupDir) throws IOException, InterruptedException {
         String message = "Updating " + icuFile.getPath() + " ...";
         logger.printlnToBoth("");
         logger.printlnToBoth(message);
@@ -400,52 +412,30 @@ public class ICUFile {
         if (!icuFile.canRead() || !icuFile.canWrite())
             throw new IOException("Missing permissions for " + icuFile.getPath());
 
-        JarEntry[] jarEntries = new JarEntry[3];
-        URL[] insertURLs = new URL[3];
+        int numEntries = 1;
+        if (otherTzEntries != null) {
+            numEntries += otherTzEntries.size();
+        }
+
+        JarEntry[] jarEntries = new JarEntry[numEntries];
+        URL[] insertURLs = new URL[numEntries];
 
         jarEntries[0] = tzEntry;
-        insertURLs[0] = getCachedURL(insertURL);
+        insertURLs[0] = getCachedURL(baseURL, tzEntry);
 
-        if (insertURLs[0] == null)
+        if (insertURLs[0] == null) {
             throw new IOException(
                     "Could not download the Time Zone data, skipping update for this jar.");
-        
-        // Check if metazoneInfo.res and/or supplementalData.res is available
-        String tzURLStr = insertURL.toString();
-        int lastSlashIdx = tzURLStr.lastIndexOf('/');
-        if (lastSlashIdx >= 0) {
-            // get metazoneInfo.res
-            String mzURLStr = tzURLStr.substring(0, lastSlashIdx + 1) + MZ_ENTRY_FILENAME;
-            insertURLs[1] = getCachedURL(new URL(mzURLStr));
-            if (insertURLs[1] != null) {
-                jarEntries[1] = mzEntry;
+        }
+
+        if (numEntries > 1) {
+            int i = 1;
+            for (JarEntry otherEntry : otherTzEntries) {
+                jarEntries[i] = otherEntry;
+                insertURLs[i] = getCachedURL(baseURL, otherEntry);
+                i++;
             }
-
-            // get the version of the cached zoneinfo.res file
-            String zVer = findFileTZVersion(new File(insertURLs[0].toString().substring(insertURLs[0].toString().indexOf('/', 0) + 1, insertURLs[0].toString().length())), logger);
-
-            // Use the appropriate version of the supplemental data resource.  This res file is only
-            // needed for ICU versions 3.8.x, 4.0.x, 4.2.x and using a time zone version of 2009p or later.
-            // This also assumes a path of <path to zoneonfo.res><sd_entry_xx><sd_entry_filename>
-            String sdURLStr = null;
-            if (zVer.compareTo("2009p") >= 0)
-            {
-                // determine version
-                if (icuVersion.startsWith("3.8"))
-                    sdURLStr = tzURLStr.substring(0, lastSlashIdx + 1) + SD_ENTRY_38 + SD_ENTRY_FILENAME;
-                else if (icuVersion.startsWith("4.0"))
-                   sdURLStr = tzURLStr.substring(0, lastSlashIdx + 1) + SD_ENTRY_40 + SD_ENTRY_FILENAME;
-                else if (icuVersion.startsWith("4.2"))
-                    sdURLStr = tzURLStr.substring(0, lastSlashIdx + 1) + SD_ENTRY_42 + SD_ENTRY_FILENAME;
-
-                // get supplementalData.res
-                insertURLs[2] = getCachedURL(new URL(sdURLStr));
-                if (insertURLs[2] != null)
-                {
-                    jarEntries[2] = sdEntry;
-                }
-            }
-		}
+        }
 
         File backupFile = null;
         if ((backupFile = createBackupFile(icuFile, backupDir)) == null)
@@ -640,15 +630,15 @@ public class ICUFile {
         byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead;
         boolean success = false;
-        Set possibleDuplicates = new HashSet();
+        Set<String> possibleDuplicates = new HashSet<String>();
 
         try {
             jar = new JarFile(inputFile);
             ostream = new JarOutputStream(new FileOutputStream(outputFile));
 
-            Enumeration e = jar.entries();
+            Enumeration<JarEntry> e = jar.entries();
             while (e.hasMoreElements()) {
-                JarEntry currentEntry = (JarEntry) e.nextElement();
+                JarEntry currentEntry = e.nextElement();
                 String entryName = currentEntry.getName();
                 if (entryName.startsWith(DUPLICATE_ENTRY_PATH)) {
                     if (!possibleDuplicates.contains(entryName)) {
@@ -821,9 +811,9 @@ public class ICUFile {
             Manifest manifest = jar.getManifest();
             icuVersion = ICU_VERSION_UNKNOWN;
             if (manifest != null) {
-                Iterator iter = manifest.getEntries().values().iterator();
+                Iterator<Attributes> iter = manifest.getEntries().values().iterator();
                 while (iter.hasNext()) {
-                    Attributes attr = (Attributes) iter.next();
+                    Attributes attr = iter.next();
                     String ver = attr.getValue(Attributes.Name.IMPLEMENTATION_VERSION);
                     if (ver != null) {
                         icuVersion = ver;
@@ -834,19 +824,45 @@ public class ICUFile {
 
             // if the jar's directory structure contains TZ_ENTRY_DIR and there
             // is a timezone resource in the jar, then the jar is updatable
-            success = (jar.getJarEntry(TZ_ENTRY_DIR) != null)
-                    && ((this.tzEntry = getTZEntry(jar, TZ_ENTRY_FILENAME)) != null);
-
-            // if the jar file contains metazoneInfo.res, initialize mzEntry -
-            // this is true for ICU4J 3.8.1 or later releases
-            if (success) {
-                mzEntry = getTZEntry(jar, MZ_ENTRY_FILENAME);
+            if (jar.getJarEntry(TZ_ENTRY_DIR) != null) {
+                for (String zoneinfo : ZONEINFO_RESOURCES) {
+                    tzEntry = getTZEntry(jar, zoneinfo);
+                    if (tzEntry != null) {
+                        // get icu data version
+                        String path = tzEntry.getName();
+                        String[] tokens = path.split("/");
+                        for (String token : tokens) {
+                            if (token.startsWith("icudt") && token.endsWith("b")) {
+                                String num = token.substring(5, token.length() - 1);
+                                try {
+                                    icuDataVersion = Integer.parseInt(num);
+                                    success = true;
+                                    break;
+                                } catch (NumberFormatException ex) {
+                                    // fall through
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
             }
 
-            // Check for supplementalData.res.  Its inclusion is dependent on which
-            // version of ICU we are updating and which version of zoneinfo is used
-            if (success) {
-                 sdEntry = getTZEntry(jar, SD_ENTRY_FILENAME);
+            // if the jar file contains other time zone resource entries, collect them.
+            // this is true for ICU4J 3.8.1 or later releases
+            if (success && icuDataVersion >= 38) {
+                String[] others = (icuDataVersion >= 44)
+                    ? OTHER_TZ_RESOURCES : OTHER_TZ_RESOURCES_38_TO_42;
+
+                for (String otherRes : others) {
+                    JarEntry je = getTZEntry(jar, otherRes);
+                    if (je != null) {
+                        if (otherTzEntries == null) {
+                            otherTzEntries = new ArrayList<JarEntry>();
+                        }
+                        otherTzEntries.add(je);
+                    }
+                }
             }
 
         } catch (IOException ex) {
@@ -864,7 +880,31 @@ public class ICUFile {
         return success;
     }
 
-    private URL getCachedURL(URL url) {
+    private URL getCachedURL(URL baseUrl, JarEntry entry) {
+        String path = entry.getName();
+        int lastSlash = path.lastIndexOf('/');
+        String resName = path.substring(lastSlash + 1);
+
+        String dataPath;
+        if (icuDataVersion >= 44) {
+            dataPath = "44";
+        } else if (icuDataVersion >= 42) {
+            dataPath = "42";
+        } else if (icuDataVersion >= 40) {
+            dataPath = "40";
+        } else if (icuDataVersion >= 38) {
+            dataPath = "38";
+        } else {
+            dataPath = "36";
+        }
+
+        URL url;
+        try {
+            url = new URL(baseUrl.toString() + "/" + dataPath + "/be/" + resName);
+        } catch (MalformedURLException ex) {
+            return null;
+        }
+
         File outputFile = (File) cacheMap.get(url);
         if (outputFile != null) {
             try {
@@ -880,10 +920,7 @@ public class ICUFile {
             boolean success = false;
 
             try {
-                String urlStr = url.toString();
-                int lastSlash = urlStr.lastIndexOf('/');
-                String fileName = lastSlash >= 0 ? urlStr.substring(lastSlash + 1) : urlStr;
-                outputFile = File.createTempFile(fileName, null);
+                outputFile = File.createTempFile(resName, null);
                 outputFile.deleteOnExit();
 
                 logger.loglnToBoth("Downloading from " + url + " to " + outputFile.getPath() + ".");

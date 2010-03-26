@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2007-2008 International Business Machines Corporation and others.
+# Copyright (c) 2007-2010 International Business Machines Corporation and others.
 # All rights reserved
 
 MissingICUTZUJAR() {
@@ -9,7 +9,7 @@ MissingICUTZUJAR() {
 }
 
 MissingICU4JJAR() {
-  echo "ICU for Java (icu4j.jar) doesn't exist in $ICUTZU_HOME"
+  echo "ICU for Java (icu4j-core.jar) doesn't exist in $ICUTZU_HOME"
   Failure
 }
 
@@ -46,7 +46,7 @@ echo
 
 # Make sure certain files are present.
 if [ ! -f "$ICUTZU_HOME/icutzu.jar" ] ; then MissingICUTZUJAR ; fi
-if [ ! -f "$ICUTZU_HOME/icu4j.jar" ] ; then MissingICU4JJAR ; fi
+if [ ! -f "$ICUTZU_HOME/icu4j-core.jar" ] ; then MissingICU4JJAR ; fi
 if [ ! -f "$ICUTZU_HOME/runicutzuenv.sh" ] ; then MissingICUTZUENV ; fi
 
 # Set environmental variables.

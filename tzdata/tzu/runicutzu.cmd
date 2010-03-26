@@ -1,6 +1,6 @@
 @echo off
 rem *******************************************************************************
-rem * Copyright (C) 2007-2008 International Business Machines Corporation and         *
+rem * Copyright (C) 2007-2010 International Business Machines Corporation and     *
 rem * others. All Rights Reserved.                                                *
 rem *******************************************************************************
 
@@ -14,7 +14,7 @@ set ICUTZU_HOME=/* ENTER YOUR ICUTZU HOME PATH LIKE C:\DESKTOP\ICUTZU\ */
 
 rem Make sure certain files are present.
 IF NOT EXIST "%ICUTZU_HOME%icutzu.jar" GOTO MissingICUTZUJAR
-IF NOT EXIST "%ICUTZU_HOME%icu4j.jar" GOTO MissingICU4JJAR
+IF NOT EXIST "%ICUTZU_HOME%icu4j-core.jar" GOTO MissingICU4JJAR
 IF NOT EXIST "%ICUTZU_HOME%runicutzuenv.cmd" GOTO MissingICUTZUENV
 
 rem Set environmental variables.
@@ -44,7 +44,7 @@ GOTO Failure
 GOTO Failure
 
 :MissingICU4JJAR
-@echo ICU for Java (icu4j.jar) doesn't exist in %ICUTZU_HOME%.
+@echo ICU for Java (icu4j-core.jar) doesn't exist in %ICUTZU_HOME%.
 GOTO Failure
 
 :MissingICUTZUENV

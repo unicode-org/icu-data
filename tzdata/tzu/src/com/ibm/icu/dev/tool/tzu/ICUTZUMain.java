@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007-2009, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -14,6 +14,9 @@ import java.util.Locale;
  * Entry point for the ICUTZU tool.
  */
 public class ICUTZUMain {
+
+    private static final String TZU_VER = "1.3";
+
     /**
      * Argument number for the backup directory.
      */
@@ -45,9 +48,10 @@ public class ICUTZUMain {
     public static final int RESULT_FILE = 2;
 
     /**
-     * Argument number for the timezone resource file.
+     * Argument number for the time zone resource dirctory.
      */
-    public static final int TZ_FILE = 3;
+    public static final int TZRES_DIR = 3;
+
 
     /**
      * Entry point for the ICUTZU tool.
@@ -58,7 +62,7 @@ public class ICUTZUMain {
      *            <li>Current directory</li>
      *            <li>Path list file</li>
      *            <li>Result list file</li>
-     *            <li>Timezone resource file</li>
+     *            <li>Locale time zone resource dirctory</li>
      *            <li>Backup directory</li>
      *            </ul>
      *            All directories and paths should be relative to the given current directory.
@@ -66,7 +70,7 @@ public class ICUTZUMain {
     public static void main(String[] args) {
         try {
             // TODO: fix this to properly set the user agent
-            String agent = "ICUTZU/1.3 (" + System.getProperty("os.name") + " "
+            String agent = "ICUTZU/" + TZU_VER + " (" + System.getProperty("os.name") + " "
                     + System.getProperty("os.version") + "; " + Locale.getDefault().toString()
                     + ")";
             System.setProperty("http.agent", agent);
@@ -82,7 +86,7 @@ public class ICUTZUMain {
 
                 new GUILoader(curDir, new File("Temp").getAbsoluteFile(), new File(
                         "DirectorySearch.txt").getAbsoluteFile(), new File("ICUList.txt")
-                        .getAbsoluteFile(), new File("zoneinfo.res").getAbsoluteFile(), new File(
+                        .getAbsoluteFile(), new File("res").getAbsoluteFile(), new File(
                         "icu.gif").getAbsoluteFile());
                 return;
             } else if (args.length != NUM_ARGS) {
@@ -102,13 +106,13 @@ public class ICUTZUMain {
                 File backupDir = new File(curDir, args[BACKUP_DIR]).getAbsoluteFile();
                 File pathFile = new File(curDir, args[PATH_FILE]).getAbsoluteFile();
                 File resultFile = new File(curDir, args[RESULT_FILE]).getAbsoluteFile();
-                File tzFile = new File(curDir, args[TZ_FILE]).getAbsoluteFile();
+                File tzresDir = new File(curDir, args[TZRES_DIR]).getAbsoluteFile();
                 File iconFile = new File(curDir, args[ICON_FILE]).getAbsoluteFile();
 
                 if ("true".equalsIgnoreCase(System.getProperty("nogui")))
-                    new CLILoader(curDir, backupDir, pathFile, resultFile, tzFile);
+                    new CLILoader(curDir, backupDir, pathFile, resultFile, tzresDir);
                 else
-                    new GUILoader(curDir, backupDir, pathFile, resultFile, tzFile, iconFile);
+                    new GUILoader(curDir, backupDir, pathFile, resultFile, tzresDir, iconFile);
             }
         } catch (Throwable ex) {
             // should any unexplained exception occur, we should exit

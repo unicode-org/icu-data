@@ -2098,7 +2098,10 @@ tzdata/supplemental/38/supplementalData.txt -text
 tzdata/supplemental/40/supplementalData.txt -text
 tzdata/supplemental/42/supplementalData.txt -text
 tzdata/supplemental/metazoneInfo.txt -text
+tzdata/tzu/icu-tzres.zip -text
 tzdata/tzu/icu.css svneol=native#text/css
 tzdata/tzu/icu.gif -text
+tzdata/tzu/icu4j-core.jar -text
+tzdata/tzu/license.html svneol=native#text/html
 tzdata/tzu/manifest.stub -text
 tzdata/tzu/readme.html svneol=native#text/html

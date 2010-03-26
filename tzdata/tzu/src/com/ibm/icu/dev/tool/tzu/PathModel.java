@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -33,7 +33,7 @@ class PathModel extends AbstractListModel {
     /**
      * The list of paths as IncludePaths.
      */
-    private List list = new ArrayList();
+    private List<IncludePath> list = new ArrayList<IncludePath>();
 
     /**
      * The current logger.
@@ -141,7 +141,7 @@ class PathModel extends AbstractListModel {
      * 
      * @return An iterator of the path list.
      */
-    public Iterator iterator() {
+    public Iterator<IncludePath> iterator() {
         return list.iterator();
     }
 
@@ -265,10 +265,10 @@ class PathModel extends AbstractListModel {
             IncludePath[] paths = new IncludePath[n];
 
             int k = 0;
-            Iterator iter = iterator();
+            Iterator<IncludePath> iter = iterator();
             for (int i = 0; k < n && iter.hasNext(); i++)
                 if (i == indices[k])
-                    paths[k++] = (IncludePath) iter.next();
+                    paths[k++] = iter.next();
                 else
                     iter.next();
 
@@ -295,9 +295,9 @@ class PathModel extends AbstractListModel {
         if (list.size() > 0) {
             int n = list.size();
             IncludePath[] paths = new IncludePath[n];
-            Iterator iter = iterator();
+            Iterator<IncludePath> iter = iterator();
             for (int i = 0; i < n; i++)
-                paths[i] = (IncludePath) iter.next();
+                paths[i] = iter.next();
             ICUJarFinder.search(resultModel, logger, paths, subdirs, curDir, backupDir);
         }
     }

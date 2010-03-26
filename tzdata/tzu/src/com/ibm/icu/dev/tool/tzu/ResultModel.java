@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -63,7 +63,7 @@ class ResultModel extends AbstractTableModel {
     /**
      * The list of ICUFiles represented by this result model.
      */
-    private List icuFileList = new ArrayList();
+    private List<ICUFile> icuFileList = new ArrayList<ICUFile>();
 
     /**
      * The current logger.
@@ -202,7 +202,7 @@ class ResultModel extends AbstractTableModel {
      * 
      * @return An iterator on the list of ICUFiles.
      */
-    public Iterator iterator() {
+    public Iterator<ICUFile> iterator() {
         return icuFileList.iterator();
     }
 
@@ -263,10 +263,10 @@ class ResultModel extends AbstractTableModel {
      */
     public void remove(File file) {
         if (icuFileList.size() > 0) {
-            Iterator iter = iterator();
+            Iterator<ICUFile> iter = iterator();
             int i = 0;
             while (iter.hasNext()) {
-                ICUFile icuFile = (ICUFile) iter.next();
+                ICUFile icuFile = iter.next();
                 if (icuFile.getFile().getAbsoluteFile().equals(file.getAbsoluteFile())) {
                     icuFileList.remove(icuFile);
                     fireTableRowsDeleted(i, i);
@@ -318,9 +318,9 @@ class ResultModel extends AbstractTableModel {
         try {
             writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(resultListFile), "UTF-8"), 4 * 1024);
-            Iterator iter = iterator();
+            Iterator<ICUFile> iter = iterator();
             while (iter.hasNext()) {
-                icuFile = (ICUFile) iter.next();
+                icuFile = iter.next();
                 String line = icuFile.getFile().getPath() + '\t' + icuFile.getTZVersion();
                 logger.printlnToScreen(line);
                 writer.write(line);
@@ -357,12 +357,12 @@ class ResultModel extends AbstractTableModel {
             int n = indices.length;
 
             int k = 0;
-            Iterator iter = iterator();
+            Iterator<ICUFile> iter = iterator();
             for (int i = 0; k < n && iter.hasNext(); i++)
                 if (i == indices[k])
                     try {
                         // update the file
-                        ((ICUFile) iter.next()).update(updateURL, backupDir);
+                        (iter.next()).update(updateURL, backupDir);
                         fireTableRowsUpdated(i, i);
                         k++;
                     } catch (IOException ex) {
@@ -391,7 +391,7 @@ class ResultModel extends AbstractTableModel {
         int numberFailed = 0;
         if (icuFileList.size() > 0) {
             int n = icuFileList.size();
-            Iterator iter = iterator();
+            Iterator<ICUFile> iter = iterator();
             for (int i = 0; i < n; i++)
                 try {
                     ((ICUFile) iter.next()).update(updateURL, backupDir);
