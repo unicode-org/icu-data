@@ -3,10 +3,10 @@ Main-Class: com.ibm.icu.dev.tool.tzu.ICUTZUMain
 
 Name: com/ibm/icu/dev/tool/tzu
 Specification-Title: ICU4J TimeZone Update Utility
-Specification-Version: 1.3
+Specification-Version: 1.4
 Specification-Vendor: ICU
 Implementation-Title: ICUTZU
-Implementation-Version: 1.3
+Implementation-Version: 1.4
 Implementation-Vendor: IBM Corporation
 Implementation-Vendor-Id: com.ibm
 Copyright-Info: Copyright 2000-2010, International Business Machines Corporation and others.  All Rights Reserved.

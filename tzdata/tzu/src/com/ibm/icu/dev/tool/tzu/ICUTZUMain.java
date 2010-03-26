@@ -15,7 +15,7 @@ import java.util.Locale;
  */
 public class ICUTZUMain {
 
-    private static final String TZU_VER = "1.3";
+    private static final String TZU_VER = "1.4.0";
 
     /**
      * Argument number for the backup directory.
