@@ -1,6 +1,6 @@
 
 /**
- * Copyright (c) 2008 IBM Corporation. All Rights Reserved.
+ * Copyright (c) 2008-2010 IBM Corporation. All Rights Reserved.
  */
 package com.ibm.icu.dev.meta;
 
@@ -105,7 +105,7 @@ public class UCharacterSupport {
 
 
     /**
-     * Storage of info for all locs…
+     * Storage of info for all locs
      */
     private Map<ULocale,Map<VersionInfo,UnicodeSet>> allLocs = new TreeMap<ULocale,Map<VersionInfo,UnicodeSet>>(getLocaleComparator());
     private Map<ULocale,VersionInfo> newestNeeded = new TreeMap<ULocale, VersionInfo>(getLocaleComparator());
