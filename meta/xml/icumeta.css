@@ -1,5 +1,5 @@
 /* 
-Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved.
+Copyright (C) 2008-2010, International Business Machines Corporation and others.  All Rights Reserved.
 
 */
 
@@ -24,12 +24,11 @@ icuInfo {
 }
 
 icuProducts {
-	display:  table;
-	list-style-type: disc;
+	display:  block;
 }
 
 icuProduct name{
-	display:  block;
+	display:  inline-table;
 	background: #00b2bc;
 	color: #f4fff8;
 	font-weight:  bold;
@@ -37,75 +36,73 @@ icuProduct name{
 	padding:  0.1em;
 }
 
-icuProduct name:before {
-	content:  attr(type) ": ";
+icuProduct name:after {
+	content:  "(" attr(type) " name) ";
 	font-size:  small;
+	float: right;
 }
 
 releases {
-	display:  inline;
+	display:  table;
 }
 
 release {
-	display:  block;
-	content:  attr(version);
-	border-bottom:  2px solid black;
+	display: table;
+	margin-top:  1em;
+	margin-left:  0.5em;
 }
 
 release:before {
+	display:block;
 	content:  attr(version);
-	border-bottom:  1px solid gray;
 	padding-right:  2em;
-	font-size:  x-large;
-	font-family: sans-serif;
+	display: block;
+	font: bold x-large sans-serif;
 }
 
 release:after {
+	display: block;
 	content:  attr(draft);
 	color:  red;
 	float: right;
 	font-size:  large;
 }
 
-dates {
-	display: inline;
-}
-
-date {
-	display:  inline;
-}
-
-
-date:after {
-	padding-left:  3em;
-	display:  inline;
-	content:  attr(date) " " attr(type);
-	border-bottom:  1px solid gray;
+date:before {
+	display: block;
+	content:  attr(date) " ";
 	font-weight: bold;
-	border-right:  1px dotted gray;
+	padding-left: 1em;
+	padding-right:  0.5em;
+	color: maroon;
+}
+date:after{
+	display: block;
+	content:  " " attr(type);
+	font-weight: bold;
 	padding-right:  0.5em;
 	font-variant: small-caps;
-	float: none;
-	position: absolute;
-	left: 10em;
+	color: maroon;
+	font-size: x-large;
 }
 
 platforms {
 	display:  block;
-	border-bottom:  1px solid gray;
+	border-bottom:  1px solid blue;
 }
 
 platforms:before {
 	font-size: larger;
 	font-weight: bold;
 	margin-left: 1em;
-	content: " " attr(owner) " ";
+	content: " (" attr(owner) ") ";
 	font-variant: small-caps;
 }
 
 platform {
 	display: block;
 	margin-left: 2em;
+	border-bottom:  1px solid gray;
 }
 
 platform:before {
@@ -118,6 +115,7 @@ builder:after {
 	margin-left:  1em;
 	content:  " " attr(binary);
 	margin-right:  0;
+	float:  right;
 }
 
 .works {
@@ -127,6 +125,40 @@ builder:after {
 	background-color: red;
 	color:  white;
 	font-weight: bold;
+}
+
+icuinfo icuproducts icuproduct releases release capabilities:before {
+	content:  "Capabilities: " attr(binary);
+}
+
+icuinfo icuproducts icuproduct releases release capabilities {
+	display:  inline-table;
+}
+
+capabilities {
+	clear: left;
+	float: left;
+	margin-left:  1em;
+}
+
+feature:before {
+	content:  "• " attr(type) ": ";
+	font-weight: bold;
+	font-variant: small-caps;
+}
+
+feature:after {
+	margin-left: 1em;
+	content:   attr(version);
+	font-family: "Courier New", Courier, mono;
+	display: block;
+}
+
+feature {
+	margin-top:  .5em;
+	display: compact;
+	font-size:  small;	
+	text-align: left;
 }
 
 
