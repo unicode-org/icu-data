@@ -2055,6 +2055,7 @@ tzdata/mirror/tzcode2010c.tar.gz -text
 tzdata/mirror/tzcode2010d.tar.gz -text
 tzdata/mirror/tzcode2010e.tar.gz -text
 tzdata/mirror/tzcode2010f.tar.gz -text
+tzdata/mirror/tzcode2010g.tar.gz -text
 tzdata/mirror/tzdata2003a.tar.gz -text
 tzdata/mirror/tzdata2003d.tar.gz -text
 tzdata/mirror/tzdata2004e.tar.gz -text
@@ -2119,6 +2120,7 @@ tzdata/mirror/tzdata2010c.tar.gz -text
 tzdata/mirror/tzdata2010d.tar.gz -text
 tzdata/mirror/tzdata2010e.tar.gz -text
 tzdata/mirror/tzdata2010f.tar.gz -text
+tzdata/mirror/tzdata2010g.tar.gz -text
 tzdata/readme.txt -text
 tzdata/supplemental/38/supplementalData.txt -text
 tzdata/supplemental/40/supplementalData.txt -text
