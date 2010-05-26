@@ -1103,6 +1103,12 @@ tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010e_3.3.2.v20100311_332-2
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010e_3.3.2.v20100311_332-2010e/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20100311_2010e.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010e_3.4.2.v20100311_342-2010e/updatesite/features/org.eclipse.rcp.patch.icudata2010e_3.4.2.v20100311_342.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010e_3.4.2.v20100311_342-2010e/updatesite/plugins/com.ibm.icu38.data.update_3.8.1.v20100311_2010e.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.2.2.v20100526_322-2010j/updatesite/features/org.eclipse.rcp.patch.icudata2010j_3.2.2.v20100526_322.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.2.2.v20100526_322-2010j/updatesite/plugins/com.ibm.icu34.data.update_3.4.5.v20100526_2010j.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.3.2.v20100526_332-2010j/updatesite/features/org.eclipse.rcp.patch.icudata2010j_3.3.2.v20100526_332.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.3.2.v20100526_332-2010j/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20100526_2010j.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.4.2.v20100526_342-2010j/updatesite/features/org.eclipse.rcp.patch.icudata2010j_3.4.2.v20100526_342.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.4.2.v20100526_342-2010j/updatesite/plugins/com.ibm.icu38.data.update_3.8.1.v20100526_2010j.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/icu_data_patch.properties -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/features/org.eclipse.rcp.patch1_3.3.0.v20070705_330.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20070701_2007f.jar -text
