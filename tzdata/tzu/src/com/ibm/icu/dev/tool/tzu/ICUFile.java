@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007-2009, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2010, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -422,7 +422,7 @@ public class ICUFile {
             }
 
             // get the version of the cached zoneinfo.res file
-            String zVer = findFileTZVersion(new File(insertURLs[0].toString().substring(insertURLs[0].toString().indexOf('/', 0) + 1, insertURLs[0].toString().length())), logger);
+            String zVer = findFileTZVersion(new File(insertURLs[0].toString().substring(insertURLs[0].toString().indexOf('/', 0), insertURLs[0].toString().length())), logger);
 
             // Use the appropriate version of the supplemental data resource.  This res file is only
             // needed for ICU versions 3.8.x, 4.0.x, 4.2.x and using a time zone version of 2009p or later.
