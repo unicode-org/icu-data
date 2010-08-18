@@ -24,9 +24,9 @@
 # Encoding name: TIS-620
 #
 <code_set_name>               "macos-21-10.5"
-<mb_cur_max>                  2
+<mb_cur_max>                  1
 <mb_cur_min>                  1
-<uconv_class>                 "MBCS"
+<uconv_class>                 "SBCS"
 <subchar>                     \x3F
 <icu:charsetFamily>           "ASCII"
 # Suggested ICU specific alias information
@@ -176,14 +176,6 @@ CHARMAP
 <U00AB> \x80 |0
 <U00AE> \xFA |0
 <U00BB> \x81 |0
-<U00D7> \x2A |1
-<U0132> \x49\x4A |1 # No roundtrip
-<U0133> \x69\x6A |1 # No roundtrip
-<U02BB> \x9D |1
-<U02BC> \x9E |1
-<U02CB> \x60 |1
-<U0300> \x60 |1
-<U0338> \x2F |1
 <U0E01> \xA1 |0
 <U0E02> \xA2 |0
 <U0E03> \xA3 |0

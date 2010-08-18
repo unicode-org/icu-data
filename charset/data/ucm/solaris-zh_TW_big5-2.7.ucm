@@ -1,9 +1,9 @@
-#________________________________________________________________________
-#
-# (C) COPYRIGHT International Business Machines Corp. 2001
-#     All Rights Reserved
-#
-#________________________________________________________________________
+# *******************************************************************************
+# *
+# *   Copyright (C) 2001-2010, International Business Machines
+# *   Corporation and others.  All Rights Reserved.
+# *
+# *******************************************************************************
 #
 # File created on Tue Jul 30 18:18:24 PDT 2002
 #
@@ -20,8 +20,14 @@
 #   |2 for the substitution character
 #   |3 for the best reverse fallback Unicode scaler value
 #
-<code_set_name>               "zh_TW_big5"
-<subchar>                     \x1A
+<code_set_name>               "solaris-zh_TW_big5-2.7"
+<mb_cur_max>                  2
+<mb_cur_min>                  1
+<uconv_class>                 "MBCS"
+<subchar1>                    \x1A
+<icu:charsetFamily>           "ASCII"
+<icu:state>                   0-7f, a1-f9:1, fa-ff.i
+<icu:state>                   0-3f.i, 40-fe, ff.i
 #
 CHARMAP
 #

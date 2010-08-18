@@ -1,9 +1,9 @@
-#________________________________________________________________________
-#
-# (C) COPYRIGHT International Business Machines Corp. 2001
-#     All Rights Reserved
-#
-#________________________________________________________________________
+# *******************************************************************************
+# *
+# *   Copyright (C) 2001-2010, International Business Machines
+# *   Corporation and others.  All Rights Reserved.
+# *
+# *******************************************************************************
 #
 # File created on Thu Apr 05 15:19:34 PDT 2001
 #
@@ -20,8 +20,17 @@
 #   |2 for the substitution character
 #   |3 for the best reverse fallback Unicode scaler value
 #
-<code_set_name>               "IBM_udcJP"
+<code_set_name>               "aix-IBM_udcJP-4.3.6"
+<char_name_mask>              "AXXXX"
+<mb_cur_max>                  2
+<mb_cur_min>                  2
+<uconv_class>                 "MBCS"
 <subchar>                     \x7E\x7F
+<icu:charsetFamily>           "ASCII"
+
+<icu:state>                   2d:1, 2e-64.u, 65-7e:1 
+<icu:state>                   20-7f
+
 #
 CHARMAP
 #
