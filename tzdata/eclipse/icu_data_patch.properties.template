@@ -141,3 +141,18 @@ update.site.category.name=Eclipse ${eclipse.version.string} patches
 ## ICU data patch feature label used by update site
 ##
 update.site.category.label=Eclipse ${eclipse.version.string} patches
+
+##
+## tzdata ICU version sub directory name
+##
+## For tzdata2010a or later versions, tzdata files are placed in
+## ICU version specific directory, such as tzdata/icunew/2010a/36.
+## This property specifies the target ICU version directory name.
+##
+## 36 - ICU4J 3.4 and 3.6
+## 38 - ICU4J 3.8
+## 40 - ICU4J 4.0
+## 42 - ICU4J 4.2
+## 44 - ICU4J 4.4 and later
+##
+icunew.version.dir=36

@@ -1013,6 +1013,16 @@ tzdata/eclipse/project_src/eclipse34/plugin/about.html svneol=native#text/html
 tzdata/eclipse/project_src/eclipse34/plugin/about_files/license.html svneol=native#text/html
 tzdata/eclipse/project_src/eclipse34/plugin/build.properties -text
 tzdata/eclipse/project_src/eclipse34/plugin/fragment-icu-data.properties -text
+tzdata/eclipse/project_src/eclipse35/feature/eclipse_update_120.jpg -text svneol=unset#image/jpeg
+tzdata/eclipse/project_src/eclipse35/feature/epl-v10.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse35/feature/license.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse35/plugin/META-INF/MANIFEST.MF -text
+tzdata/eclipse/project_src/eclipse35/plugin/about.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse36/feature/eclipse_update_120.jpg -text svneol=unset#image/jpeg
+tzdata/eclipse/project_src/eclipse36/feature/epl-v10.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse36/feature/license.html svneol=native#text/html
+tzdata/eclipse/project_src/eclipse36/plugin/META-INF/MANIFEST.MF -text
+tzdata/eclipse/project_src/eclipse36/plugin/about.html svneol=native#text/html
 tzdata/eclipse/readme.txt -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322-2007h/icu_data_patch.properties -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322-2007h/updatesite/features/org.eclipse.rcp.patch.icudata2007h_3.2.2.v20071018_322.jar -text
@@ -1110,6 +1120,16 @@ tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.3.2.v20100526_332-2
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.3.2.v20100526_332-2010j/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20100526_2010j.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.4.2.v20100526_342-2010j/updatesite/features/org.eclipse.rcp.patch.icudata2010j_3.4.2.v20100526_342.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010j_3.4.2.v20100526_342-2010j/updatesite/plugins/com.ibm.icu38.data.update_3.8.1.v20100526_2010j.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.2.2.v20100903_322-2010l/updatesite/features/org.eclipse.rcp.patch.icudata2010l_3.2.2.v20100903_322.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.2.2.v20100903_322-2010l/updatesite/plugins/com.ibm.icu34.data.update_3.4.5.v20100903_2010l.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.3.2.v20100903_332-2010l/updatesite/features/org.eclipse.rcp.patch.icudata2010l_3.3.2.v20100903_332.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.3.2.v20100903_332-2010l/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20100903_2010l.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.4.2.v20100903_342-2010l/updatesite/features/org.eclipse.rcp.patch.icudata2010l_3.4.2.v20100903_342.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.4.2.v20100903_342-2010l/updatesite/plugins/com.ibm.icu38.data.update_3.8.1.v20100903_2010l.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.5.2.v20100903_352-2010l/updatesite/features/org.eclipse.rcp.patch.icudata2010l_3.5.2.v20100903_352.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.5.2.v20100903_352-2010l/updatesite/plugins/com.ibm.icu40.data.update_4.0.1.v20100903_2010l.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.6.0.v20100903_360-2010l/updatesite/features/org.eclipse.rcp.patch.icudata2010l_3.6.0.v20100903_360.jar -text
+tzdata/eclipse/versions/org.eclipse.rcp.patch.icudata2010l_3.6.0.v20100903_360-2010l/updatesite/plugins/com.ibm.icu42.data.update_4.2.1.v20100903_2010l.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/icu_data_patch.properties -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/features/org.eclipse.rcp.patch1_3.3.0.v20070705_330.jar -text
 tzdata/eclipse/versions/org.eclipse.rcp.patch1_3.3.0.v20070705_330-2007f/updatesite/plugins/com.ibm.icu36.data.update_3.6.1.v20070701_2007f.jar -text

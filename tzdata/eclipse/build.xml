@@ -1,7 +1,7 @@
 <!--
 /*
 *******************************************************************************
-* Copyright (C) 2007-2008, International Business Machines Corporation and    *
+* Copyright (C) 2007-2010, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 * This is the ant build file for eclipse ICU4J plug-in data patch.
@@ -11,7 +11,7 @@
 <project name="Eclipse_ICU_Data_Update" default="build.all" basedir=".">
     <property file="icu_data_patch.properties"/>
     <property file="eclipse_env.properties"/>
-    <property name="tz.file.name" value="zoneinfo.res"/>
+    <property name="zoneinfo.res.name" value="zoneinfo.res"/>
 
     <target name="check.props"
             depends="check.prop.tz.version, check.prop.eclipse.dir, check.prop.eclipse.version"
@@ -20,10 +20,32 @@
 
     <target name="check.prop.tz.version"
             description="Display error message when tz.version is not set">
-        <property name="tz.file.dir" value="../icu/${tz.version}/be"/>
-        <property name="tz.file" value="${tz.file.dir}/${tz.file.name}"/>
+
+        <!-- Set the new resource directory path to new.tz.res.dir if available -->
+        <available file="../icunew/${tz.version}/${icunew.version.dir}/be"
+                    type="dir"
+                    property="new.tz.res.dir"
+                    value="../icunew/${tz.version}/${icunew.version.dir}/be"/>
+
+        <!-- Otherwise, set the old resource directory path to old.tz.res.dir -->
+        <condition property="old.tz.res.dir" value="../icu/${tz.version}/be">
+            <not>
+                <isset property="new.tz.res.dir"/>
+            </not>
+        </condition>
+
+        <!-- Check if the main tzdata resource file exists -->
         <condition property="tz.file.available">
-            <available file="${tz.file}"/>
+            <or>
+                <and>
+                    <isset property="new.tz.res.dir"/>
+                    <available file="${new.tz.res.dir}/${zoneinfo.res.name}"/>
+                </and>
+                <and>
+                    <isset property="old.tz.res.dir"/>
+                    <available file="${old.tz.res.dir}/${zoneinfo.res.name}"/>
+                </and>
+            </or>
         </condition>
         <antcall target="err.tz.version"/>
     </target>
@@ -33,7 +55,7 @@
             description="Display error message when zoneinfo.res for the specified version is not found">
         <echo message="########################################################"/>
         <echo message="ERROR: The required property tz.version is not set or"/>
-        <echo message="invalid.  The build cannot locate the ${tz.file.name} file."/>
+        <echo message="invalid.  The build cannot locate the ${zoneinfo.res.name} file."/>
         <echo message="########################################################"/>
         <fail message="The build stopped due to the fatal error"/>
     </target>
@@ -222,24 +244,39 @@
             </filterset>
         </copy>
 
-        <!-- Copy zoneinfo.res and other resource files -->
+        <!-- Copy time zone resource files -->
         <property name="icu.data.dir" value="${project.dir}/plugins/${icu.patch.plugin.id}/src/com/ibm/icu/impl/data/icudt${icu.data.version}b"/>
         <mkdir dir="${icu.data.dir}"/>
-        <copy file="${tz.file}" tofile="${icu.data.dir}/${tz.file.name}" verbose="true"/>
+
+        <antcall target="copy.tzdata.new"/>
+        <antcall target="copy.tzdata.old"/>
+
+    </target>
+
+
+    <target name="copy.tzdata.new" if="new.tz.res.dir">
+        <copy todir="${icu.data.dir}" verbose="true">
+            <fileset dir="${new.tz.res.dir}" includes="**/*.res"/>
+        </copy>
+    </target>
+
+    <target name="copy.tzdata.old" if="old.tz.res.dir">
+        <!-- Copy zoneinfo.res and other resource files -->
+        <copy todir="${icu.data.dir}" file="${old.tz.res.dir}/${zoneinfo.res.name}" verbose="true"/>
         <condition property="copy.zoneinfo.only">
            <or>
               <equals arg1="${icu.data.version}" arg2="34"/>
               <equals arg1="${icu.data.version}" arg2="36"/>
            </or>
         </condition>
-        <antcall target="copy.other.res"/>
+        <antcall target="copy.tzdata.old.other.res"/>
     </target>
 
-    <target name="copy.other.res" unless="copy.zoneinfo.only">
+    <target name="copy.tzdata.old.other" unless="copy.zoneinfo.only">
         <copy todir="${icu.data.dir}" verbose="true" failonerror="false">
-            <fileset dir="${tz.file.dir}" includes="*.res" excludes="${tz.file.name}"/>
+            <fileset dir="${old.tz.res.dir}" includes="*.res" excludes="${zoneinfo.res.name}"/>
         </copy>
-        <copy file="${tz.file.dir}/${icu.data.version}/supplementalData.res"
+        <copy file="${old.tz.res.dir}/${icu.data.version}/supplementalData.res"
             todir="${icu.data.dir}"
             verbose="true"
             failonerror="false"/>
