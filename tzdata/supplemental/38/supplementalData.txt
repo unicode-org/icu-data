@@ -9448,11 +9448,11 @@ supplementalData:table(nofallback){
             "America:Asuncion"{"Paraguay"}
             "America:Bogota"{"SA Pacific"}
             "America:Buenos_Aires"{"Argentina"}
-            "America:Campo_Grande"{"Central Brazilian"}
             "America:Caracas"{"Venezuela"}
             "America:Cayenne"{"SA Eastern"}
             "America:Chicago"{"Central"}
             "America:Chihuahua"{"Mountain Standard Time (Mexico)"}
+            "America:Cuiaba"{"Central Brazilian"}
             "America:Denver"{"Mountain"}
             "America:Godthab"{"Greenland"}
             "America:Guatemala"{"Central America"}
@@ -9464,10 +9464,10 @@ supplementalData:table(nofallback){
             "America:New_York"{"Eastern"}
             "America:Phoenix"{"US Mountain"}
             "America:Regina"{"Canada Central"}
+            "America:Santa_Isabel"{"Pacific Standard Time (Mexico)"}
             "America:Santiago"{"Pacific SA"}
             "America:Sao_Paulo"{"E. South America"}
             "America:St_Johns"{"Newfoundland"}
-            "America:Tijuana"{"Pacific Standard Time (Mexico)"}
             "Asia:Almaty"{"Central Asia"}
             "Asia:Amman"{"Jordan"}
             "Asia:Baghdad"{"Arabic"}
@@ -9476,6 +9476,7 @@ supplementalData:table(nofallback){
             "Asia:Beirut"{"Middle East"}
             "Asia:Calcutta"{"India"}
             "Asia:Colombo"{"Sri Lanka"}
+            "Asia:Damascus"{"Syria"}
             "Asia:Dhaka"{"Bangladesh"}
             "Asia:Dubai"{"Arabian"}
             "Asia:Irkutsk"{"North Asia East"}
@@ -9493,6 +9494,7 @@ supplementalData:table(nofallback){
             "Asia:Singapore"{"Singapore"}
             "Asia:Taipei"{"Taipei"}
             "Asia:Tashkent"{"West Asia"}
+            "Asia:Tbilisi"{"Georgian"}
             "Asia:Tehran"{"Iran"}
             "Asia:Tokyo"{"Tokyo"}
             "Asia:Ulaanbaatar"{"Ulaanbaatar"}
@@ -9510,10 +9512,11 @@ supplementalData:table(nofallback){
             "Australia:Perth"{"W. Australia"}
             "Australia:Sydney"{"AUS Eastern"}
             "Etc:GMT"{"UTC"}
+            "Etc:GMT+11"{"UTC-11"}
             "Etc:GMT+12"{"Dateline"}
-            "Etc:GMT+2"{"Mid-Atlantic"}
+            "Etc:GMT+2"{"UTC-02"}
             "Etc:GMT+5"{"US Eastern"}
-            "Etc:GMT-3"{"Georgian"}
+            "Etc:GMT-12"{"UTC+12"}
             "Europe:Berlin"{"W. Europe"}
             "Europe:Budapest"{"Central Europe"}
             "Europe:Istanbul"{"GTB"}
@@ -10126,7 +10129,6 @@ supplementalData:table(nofallback){
         "America:Anchorage"{
             territory{"US"}
             aliases{
-                "SystemV/YST9YDT",
                 "US/Alaska",
                 "AST",
             }
@@ -10228,8 +10230,6 @@ supplementalData:table(nofallback){
         "America:Chicago"{
             territory{"US"}
             aliases{
-                "CST6CDT",
-                "SystemV/CST6CDT",
                 "US/Central",
                 "CST",
             }
@@ -10271,8 +10271,6 @@ supplementalData:table(nofallback){
         "America:Denver"{
             territory{"US"}
             aliases{
-                "MST7MDT",
-                "SystemV/MST7MDT",
                 "US/Mountain",
             }
         }
@@ -10331,7 +10329,6 @@ supplementalData:table(nofallback){
             territory{"CA"}
             aliases{
                 "Canada/Atlantic",
-                "SystemV/AST4ADT",
             }
         }
         "America:Havana"{
@@ -10410,8 +10407,6 @@ supplementalData:table(nofallback){
         "America:Los_Angeles"{
             territory{"US"}
             aliases{
-                "PST8PDT",
-                "SystemV/PST8PDT",
                 "US/Pacific",
                 "US/Pacific-New",
                 "PST",
@@ -10492,8 +10487,6 @@ supplementalData:table(nofallback){
         "America:New_York"{
             territory{"US"}
             aliases{
-                "EST5EDT",
-                "SystemV/EST5EDT",
                 "US/Eastern",
             }
         }
@@ -11197,47 +11190,32 @@ supplementalData:table(nofallback){
         }
         "Etc:GMT+4"{
             territory{"001"}
-            aliases{
-                "SystemV/AST4",
-            }
         }
         "Etc:GMT+5"{
             territory{"001"}
             aliases{
                 "EST",
-                "SystemV/EST5",
             }
         }
         "Etc:GMT+6"{
             territory{"001"}
-            aliases{
-                "SystemV/CST6",
-            }
         }
         "Etc:GMT+7"{
             territory{"001"}
             aliases{
                 "MST",
-                "SystemV/MST7",
             }
         }
         "Etc:GMT+8"{
             territory{"001"}
-            aliases{
-                "SystemV/PST8",
-            }
         }
         "Etc:GMT+9"{
             territory{"001"}
-            aliases{
-                "SystemV/YST9",
-            }
         }
         "Etc:GMT+10"{
             territory{"001"}
             aliases{
                 "HST",
-                "SystemV/HST10",
             }
         }
         "Etc:GMT+11"{
@@ -11620,6 +11598,18 @@ supplementalData:table(nofallback){
         }
         "Pacific:Wallis"{
             territory{"WF"}
+        }
+        "CST6CDT"{
+            territory{"001"}
+        }
+        "EST5EDT"{
+            territory{"001"}
+        }
+        "MST7MDT"{
+            territory{"001"}
+        }
+        "PST8PDT"{
+            territory{"001"}
         }
         multizone{
             "001",
