@@ -1,12 +1,19 @@
 #!/bin/sh
-# Copyright (C) 2005-2007, International Business Machines
+# Copyright (C) 2005-2011, International Business Machines
 #   Corporation and others.  All Rights Reserved.
 
 OS_INFO="`uname -a`"
 OS_VERSION="`uname -r`"
 OS_TYPE="`uname`"
-ICU_ARGS="-I../../../../../icu/source/common -L../../../../../icu/source/lib -licuuc -licudata"
-ICU_LIB_PATH="../../../../../icu/source/lib"
+if [ ! -d "${ICU_SRC}" -o ! -d "${ICU_SRC}/common" ];
+then
+	echo Error cannot find "${ICU_SRC}/common" - make sure '$ICU_SRC' is set and points to your icu/source directory.
+	exit 1
+fi
+
+
+ICU_LIB_PATH="${ICU_SRC}/lib"
+ICU_ARGS="-I${ICU_SRC}/common -L${ICU_LIB_PATH} -licuuc -licudata"
 
 echo "Collecting Unicode conversion mappings for $OS_TYPE"
 rm -f genucm
@@ -35,6 +42,11 @@ case "$OS_TYPE" in
         FILES="genucm.cpp mactec.cpp"
         g++ $ICU_ARGS $FILES -framework CoreServices -o genucm
         DYLD_LIBRARY_PATH=$ICU_LIB_PATH ./genucm $*
+        ;;
+    FreeBSD)
+        FILES="genucm.cpp iconv.cpp"
+        g++ $ICU_ARGS -I/usr/local/include -L/usr/local/lib $FILES -liconv -o genucm
+        LD_LIBRARY_PATH=$ICU_LIB_PATH ./genucm $*
         ;;
     *)
         echo "Don't know how to get the list of mappings for $OS_TYPE"

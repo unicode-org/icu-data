@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2007, International Business Machines
+*   Copyright (C) 2000-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -188,7 +188,7 @@ uhash_compareChars, NULL, 65537, &status);
         }
 
         // This contains the set of all Unicode characters supported by this codepage.
-        UVector unicodeSetVect(uhash_deleteUnicodeString, uhash_compareUnicodeString, status);
+        UVector unicodeSetVect(uhash_deleteUObject, uhash_compareUnicodeString, status);
         // This contains the set of all multi-codepoint Unicode characters supported by this codepage.
         UVector multiCharUnicodeSetVect(NULL, uhash_compareUnicodeString, status);
         // lookup tables 
@@ -200,8 +200,8 @@ uhash_compareChars, NULL, 65537, &status);
         UHashtable *cp_to_uni_by_cp = uhash_openSize(uhash_hashChars,
 uhash_compareChars, NULL, 65537, &status);
         uhash_setValueDeleter(uni_to_cp, uhash_freeBlock);
-        uhash_setValueDeleter(cp_to_uni_by_uni, uhash_deleteUVector);
-        uhash_setValueDeleter(cp_to_uni_by_cp, uhash_deleteUVector);
+        uhash_setValueDeleter(cp_to_uni_by_uni, uhash_deleteUObject);
+        uhash_setValueDeleter(cp_to_uni_by_cp, uhash_deleteUObject);
 //        map<UChar32, string> uni_to_cp;                 // 1\uA -> n\xB fb
 //        map<UChar32, vector<string> > cp_to_uni_by_uni; // 1\uA <- n\xB rt after fb
 //        map<string, vector<UChar32> > cp_to_uni_by_cp;  // n\uA <- 1\xC rfb
@@ -795,7 +795,7 @@ void emit_ucm_header(FILE* fp, const converter &cnv, encoding_info* encoding_inf
     
     fputs("# ***************************************************************************\n", fp);
     fputs("# *\n", fp);
-    fputs("# *   Copyright (C) 2001-2007, International Business Machines\n", fp);
+    fputs("# *   Copyright (C) 2001-2011, International Business Machines\n", fp);
     fputs("# *   Corporation and others.  All Rights Reserved.\n", fp);
     fputs("# *\n", fp);
     fputs("# ***************************************************************************\n", fp);

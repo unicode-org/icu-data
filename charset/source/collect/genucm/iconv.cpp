@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2000-2005, International Business Machines
+*   Copyright (C) 2000-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 
 /* The definition of iconv varies by platform, and this helps fix the cast */
-#if defined(U_SOLARIS)
+#if defined(U_SOLARIS) || defined(U_BSD)
 #define ICONV_SRC_PARAM_CAST (const char **)
 #else
 #define ICONV_SRC_PARAM_CAST (char **)
@@ -69,6 +69,8 @@ converter::get_supported_encodings(UVector *p_encodings,
     static const char cmd[] = "/bin/ls -F /usr/lib/iconv/UTF-8%*.so | fgrep -v '@' | cut -d '%' -f 2 | sed 's/\\.so\\*//'";
 #elif defined(U_HPUX)
     static const char cmd[] = "/bin/ls /usr/lib/nls/iconv/tables.1/ucs2=* | cut -d = -f 2";
+#elif defined(U_BSD)
+    static const char cmd[] = "iconv -l | cut -d ' ' -f 2";
 #endif
     static char buf[4096] = "UTF-8";
     size_t n;
