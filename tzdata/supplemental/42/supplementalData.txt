@@ -11090,7 +11090,6 @@ supplementalData:table(nofallback){
             "meta:Marshall_Islands_001"{"Pacific/Majuro"}
             "meta:Mauritius_001"{"Indian/Mauritius"}
             "meta:Mawson_001"{"Antarctica/Mawson"}
-            "meta:Metlakatla_001"{"America/Metlakatla"}
             "meta:Mongolia_001"{"Asia/Ulaanbaatar"}
             "meta:Moscow_001"{"Europe/Moscow"}
             "meta:Myanmar_001"{"Asia/Rangoon"}
