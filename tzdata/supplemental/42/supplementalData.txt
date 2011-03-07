@@ -4795,6 +4795,7 @@ supplementalData:table(nofallback){
             "america:mendoza"{"armdz"}
             "america:menominee"{"usmnm"}
             "america:merida"{"mxmid"}
+            "america:metlakatla"{"usmtm"}
             "america:mexico_city"{"mxmex"}
             "america:miquelon"{"pmmqc"}
             "america:moncton"{"camon"}
@@ -4830,6 +4831,7 @@ supplementalData:table(nofallback){
             "america:sao_paulo"{"brsao"}
             "america:scoresbysund"{"globy"}
             "america:shiprock"{"usnavajo"}
+            "america:sitka"{"ussit"}
             "america:st_barthelemy"{"gpsbh"}
             "america:st_johns"{"casjf"}
             "america:st_kitts"{"knbas"}
@@ -11088,6 +11090,7 @@ supplementalData:table(nofallback){
             "meta:Marshall_Islands_001"{"Pacific/Majuro"}
             "meta:Mauritius_001"{"Indian/Mauritius"}
             "meta:Mawson_001"{"Antarctica/Mawson"}
+            "meta:Metlakatla_001"{"America/Metlakatla"}
             "meta:Mongolia_001"{"Asia/Ulaanbaatar"}
             "meta:Moscow_001"{"Europe/Moscow"}
             "meta:Myanmar_001"{"Asia/Rangoon"}
@@ -13577,6 +13580,10 @@ supplementalData:table(nofallback){
             canonical{"America/Merida"}
             territory{"MX"}
         }
+        "America:Metlakatla"{
+            canonical{"America/Metlakatla"}
+            territory{"US"}
+        }
         "America:Mexico_City"{
             canonical{"America/Mexico_City"}
             territory{"MX"}
@@ -13758,6 +13765,10 @@ supplementalData:table(nofallback){
             aliases{
                 "Navajo",
             }
+        }
+        "America:Sitka"{
+            canonical{"America/Sitka"}
+            territory{"US"}
         }
         "America:St_Barthelemy"{
             canonical{"America/St_Barthelemy"}
