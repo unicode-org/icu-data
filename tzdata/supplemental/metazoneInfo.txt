@@ -458,11 +458,6 @@ metazoneInfo:table(nofallback){
                 "1983-10-30 12:00",
             }
             mz1{
-                "Alaska_Hawaii",
-                "1983-10-30 12:00",
-                "1983-11-30 10:00",
-            }
-            mz2{
                 "Hawaii_Aleutian",
                 "1983-11-30 10:00",
                 "9999-12-31 23:59",
