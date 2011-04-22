@@ -27,7 +27,7 @@
 # All-unassigned 4-byte sequences
 <icu:state> 30-39:4, 40-50, 51-53.p, 54-6b, 6c.p, 6d-75, 76.p, 77-7e, 80-90, 91.p, 92-fe
 <icu:state> 81-fe:5
-<icu:state> 30-39.u
+<icu:state> 30-36.u, 37, 38-39.u
 
 # Some unassigned 4-byte sequences, one state for each of the lead bytes 81-84
 # Each of these states branch on the second of four bytes; for the third and fourth bytes,
@@ -1154,6 +1154,7 @@ CHARMAP
 <U044F> \xA7\xF1 |0
 <U0450> \x81\x30\xD2\x39 |0
 <U0451> \xA7\xD7 |0
+<U1E3F> \xA8\xBC |0
 <U2010> \xA9\x5C |0
 <U2011> \x81\x36\xA5\x32 |0
 <U2012> \x81\x36\xA5\x33 |0
@@ -30067,7 +30068,7 @@ CHARMAP
 <UE7C4> \xA8\x9E |0
 <UE7C5> \xA8\x9F |0
 <UE7C6> \xA8\xA0 |0
-<UE7C7> \xA8\xBC |0
+<UE7C7> \x81\x35\xF4\x37 |0
 <UE7C8> \x83\x36\xC8\x30 |0
 <UE7C9> \xA8\xC1 |0
 <UE7CA> \xA8\xC2 |0
