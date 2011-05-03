@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Copyright (c) 2010 IBM Corporation and Others, All Rights Reserved. -->
+<!-- Copyright (c) 2011 IBM Corporation and Others, All Rights Reserved. -->
 
 <!-- This file was generated from:  input/versions.xml input/testing_ibm.xml -->
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
 <?xml-stylesheet type="text/css" href="icumeta.css"?>
 
-<!-- Copyright (C) 2008-2010, International Business Machines Corporation and others.  All Rights Reserved.
+<!-- Copyright (C) 2008-2011, International Business Machines Corporation and others.  All Rights Reserved.
  -->
 <icuInfo> 
     <icuProducts>
@@ -15,6 +15,33 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
+                <release draft="proposed" version="5.0">
+                </release>
+                <release draft="proposed" version="4.8">
+                  <dates>
+                    <date date="2011-05-25" type="ga"/>
+                  </dates>
+                </release>
+                <release version="4.6.1">
+                    <dates>
+                        <date date="2011-03-11" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.6">
+                    <dates>
+                        <date date="2010-12-02" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.4.2">
+                    <dates>
+                        <date date="2010-10-01" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.4.1">
+                    <dates>
+                        <date date="2010-04-28" type="ga"/>
+                    </dates>
+                </release>
                 <release version="4.4">
                     <dates>
                         <date date="2010-03-17" type="ga"/>
@@ -114,11 +141,11 @@
 	    </platform>
 	  </platforms>
                 </release>
-                <release draft="proposed" type="development" version="4.1.2">
-                    <dates>
-                        <date date="2009-01-20" type="ga"/>
-                    </dates>
-                </release>
+                <!-- <release version="4.1.2" type="development" draft="proposed"> -->
+                <!--     <dates> -->
+                <!--         <date type="ga" date="2009-01-20"/> -->
+                <!--     </dates> -->
+                <!-- </release> -->
                 <release version="4.0.1">
                     <dates>
                         <date date="2009-01-15" type="ga"/>
@@ -332,6 +359,38 @@
                 <name type="short">ICU4J</name>
             </names>
             <releases>
+                <release draft="proposed" version="5.0">
+                </release>
+                <release draft="proposed" version="4.8">
+                  <dates>
+                    <date date="2011-05-25" type="ga"/>
+                  </dates>
+                </release>
+                <release version="4.6.1">
+                    <dates>
+                        <date date="2011-03-11" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.6">
+                    <dates>
+                        <date date="2010-12-02" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.4.2">
+                    <dates>
+                        <date date="2010-10-01" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.4.1.1">
+                    <dates>
+                        <date date="2010-06-23" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.4.1">
+                    <dates>
+                        <date date="2010-04-28" type="ga"/>
+                    </dates>
+                </release>
                 <release version="4.4">
                     <dates>
                         <date date="2010-03-17" type="ga"/>

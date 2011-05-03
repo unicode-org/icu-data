@@ -1,11 +1,10 @@
 
 /**
- * Copyright (c) 2008-2010 IBM Corporation. All Rights Reserved.
+ * Copyright (c) 2008-2011 IBM Corporation. All Rights Reserved.
  */
 package com.ibm.icu.dev.meta;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;

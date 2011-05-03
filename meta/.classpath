@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2008-2009 IBM Corporation and Others. All Rights Reserved. -->
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/cldr.jar"/>
-	<classpathentry kind="lib" path="lib/icu4j.jar"/>
-	<classpathentry kind="lib" path="lib/utilities.jar"/>
-	<classpathentry kind="lib" path="lib/xalan.jar"/>
-	<classpathentry kind="lib" path="lib/xerces.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/icu4j"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/cldr"/>
-	<classpathentry kind="lib" path="/cldr/classes"/>
-	<classpathentry kind="lib" path="/icu4j/classes"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CLDR_JAR"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ICU_UTILITIES_JAR"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/XERCES_JAR"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

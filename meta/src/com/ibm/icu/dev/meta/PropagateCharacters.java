@@ -1,18 +1,16 @@
 /**
- * Copyright (c) 2008 IBM and others, all rights reserved
+ * Copyright (c) 2008-2011 IBM and others, all rights reserved
  */
 package com.ibm.icu.dev.meta;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import javax.xml.parsers.ParserConfigurationException;
