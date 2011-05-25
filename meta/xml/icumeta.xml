@@ -15,9 +15,12 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
-                <release draft="proposed" version="5.0">
+                <release draft="proposed" version="49">
+                  <dates>
+                    <date date="2012-04-04" type="ga"/>
+                  </dates>
                 </release>
-                <release draft="proposed" version="4.8">
+                <release version="4.8">
                   <dates>
                     <date date="2011-05-25" type="ga"/>
                   </dates>
@@ -359,9 +362,12 @@
                 <name type="short">ICU4J</name>
             </names>
             <releases>
-                <release draft="proposed" version="5.0">
+                <release draft="proposed" version="49">
+                  <dates>
+                    <date date="2012-04-04" type="ga"/>
+                  </dates>
                 </release>
-                <release draft="proposed" version="4.8">
+                <release version="4.8">
                   <dates>
                     <date date="2011-05-25" type="ga"/>
                   </dates>
