@@ -17,7 +17,7 @@
             <releases>
                 <release draft="proposed" version="49">
                   <dates>
-                    <date date="2012-04-04" type="ga"/>
+                    <date date="2012-03-21" type="ga"/>
                   </dates>
                 </release>
                 <release version="4.8">
@@ -364,7 +364,7 @@
             <releases>
                 <release draft="proposed" version="49">
                   <dates>
-                    <date date="2012-04-04" type="ga"/>
+                    <date date="2012-03-21" type="ga"/>
                   </dates>
                 </release>
                 <release version="4.8">
