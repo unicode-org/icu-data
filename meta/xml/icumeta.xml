@@ -20,6 +20,11 @@
                     <date date="2012-03-21" type="ga"/>
                   </dates>
                 </release>
+                <release version="4.8.1">
+                  <dates>
+                    <date date="2011-07-20" type="ga"/>
+                  </dates>
+                </release>
                 <release version="4.8">
                   <dates>
                     <date date="2011-05-25" type="ga"/>
@@ -367,6 +372,11 @@
                     <date date="2012-03-21" type="ga"/>
                   </dates>
                 </release>
+                <release version="4.8.1">
+                  <dates>
+                    <date date="2011-07-20" type="ga"/>
+                  </dates>
+                </release>
                 <release version="4.8">
                   <dates>
                     <date date="2011-05-25" type="ga"/>
@@ -380,6 +390,11 @@
                 <release version="4.6">
                     <dates>
                         <date date="2010-12-02" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.4.2.1">
+                    <dates>
+                        <date date="2011-07-01" type="ga"/>
                     </dates>
                 </release>
                 <release version="4.4.2">
