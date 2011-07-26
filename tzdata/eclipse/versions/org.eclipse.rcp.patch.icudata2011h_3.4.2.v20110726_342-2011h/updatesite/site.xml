@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.eclipse.rcp.patch.icudata2011h_3.4.2.v20110726_342.jar" id="org.eclipse.rcp.patch.icudata2011h" version="3.4.2.v20110726_342" patch="true">
+      <category name="Eclipse 3.4.2 patches"/>
+   </feature>
+   <category-def name="Eclipse 3.4.2 patches" label="Eclipse 3.4.2 patches"/>
+</site>

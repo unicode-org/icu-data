@@ -132,6 +132,11 @@
         <property name="build.label" value="ICU_data_patch"/>
         <property name="output.archive" value="${project.dir}/${build.label}/${patch.feature.id}-${patch.version}.zip"/>
         <property name="update.site.dir" value="${build.dir}/updatesite"/>
+
+        <pathconvert property="release.dir" dirsep="/">
+            <path location="${basedir}/versions/${patch.feature.id}_${patch.version}-${tz.version}"/>
+        </pathconvert>
+
     </target>
 
     <target name="init.eclipse.env"
@@ -328,14 +333,31 @@
         </copy>
     </target>
 
+    <target name="copy.results"
+            depends="init"
+            description="Copy the build results to the release location">
+        <delete dir="${relaese.dir}"/>
+        <mkdir dir="${release.dir}"/>
+
+        <!-- copy the property file -->
+        <copy file="icu_data_patch.properties"
+            todir="${release.dir}"/>
+
+        <!-- copy the update site files -->
+        <mkdir dir="${release.dir}/updatesite"/>
+        <copy todir="${release.dir}/updatesite">
+            <fileset dir="${update.site.dir}"/>
+        </copy>
+    </target>
 
     <target name="build.all"
-            depends="build.info, project.files, pde.build, update.site"
+            depends="build.info, project.files, pde.build, update.site, copy.results"
             description="Build ICU plug-in data patch">
     </target>
 
     <target name="clean" depends="init">
         <delete dir="${build.dir}"/>
+        <delete dir="${release.dir}"/>
     </target>
 
 </project>
