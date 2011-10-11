@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2010 IBM and Others. All Rights Reserved.
+# Copyright (C) 2006-2011 IBM and Others. All Rights Reserved.
 
 all:
 	@echo 
@@ -17,9 +17,9 @@ VERSION_LIST=36 38 40 42 44
 ENDIAN_LIST=be le ee
 
 update-mirror:
-	cd mirror && ${FETCH} 'ftp://elsie.nci.nih.gov/pub/tzdata*'
+	cd mirror && ${FETCH} 'ftp://munnari.oz.au/pub/tzdata*'
 	svn add mirror/tzdata*.tar.gz
-	cd mirror && ${FETCH} 'ftp://elsie.nci.nih.gov/pub/tzcode*'
+	cd mirror && ${FETCH} 'ftp://munnari.oz.au/pub/tzcode*'
 	svn add mirror/tzcode*.tar.gz
 
 update-icu:
