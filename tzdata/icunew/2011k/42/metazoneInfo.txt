@@ -2380,6 +2380,18 @@ metazoneInfo:table(nofallback){
                 "9999-12-31 23:59",
             }
         }
+        "Asia:Hebron"{
+            mz0{
+                "Israel",
+                "1970-01-01 00:00",
+                "1995-12-31 22:00",
+            }
+            mz1{
+                "Europe_Eastern",
+                "1995-12-31 22:00",
+                "9999-12-31 23:59",
+            }
+        }
         "Asia:Hong_Kong"{
             mz0{
                 "Hong_Kong",
@@ -3198,7 +3210,7 @@ metazoneInfo:table(nofallback){
             mz1{
                 "Europe_Eastern",
                 "1990-06-30 23:00",
-                "9999-12-31 23:59",
+                "2011-03-27 00:00",
             }
         }
         "Europe:Lisbon"{
@@ -3279,7 +3291,7 @@ metazoneInfo:table(nofallback){
             mz1{
                 "Europe_Eastern",
                 "1991-03-30 23:00",
-                "9999-12-31 23:59",
+                "2011-03-27 00:00",
             }
         }
         "Europe:Monaco"{
@@ -3403,7 +3415,7 @@ metazoneInfo:table(nofallback){
             mz3{
                 "Europe_Eastern",
                 "1997-03-30 01:00",
-                "9999-12-31 23:59",
+                "2011-03-27 01:00",
             }
         }
         "Europe:Skopje"{
@@ -3460,7 +3472,7 @@ metazoneInfo:table(nofallback){
             mz2{
                 "Europe_Eastern",
                 "1991-03-31 02:00",
-                "9999-12-31 23:59",
+                "2011-03-27 01:00",
             }
         }
         "Europe:Vaduz"{
@@ -3536,7 +3548,7 @@ metazoneInfo:table(nofallback){
             mz1{
                 "Europe_Eastern",
                 "1991-03-30 23:00",
-                "9999-12-31 23:59",
+                "2011-03-27 01:00",
             }
         }
         "Europe:Zurich"{

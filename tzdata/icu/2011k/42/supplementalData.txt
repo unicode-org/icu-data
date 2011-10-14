@@ -14034,6 +14034,10 @@ supplementalData:table(nofallback){
             canonical{"Asia/Harbin"}
             territory{"CN"}
         }
+        "Asia:Hebron"{
+            canonical{"Asia/Hebron"}
+            territory{"PS"}
+        }
         "Asia:Hong_Kong"{
             canonical{"Asia/Hong_Kong"}
             territory{"HK"}

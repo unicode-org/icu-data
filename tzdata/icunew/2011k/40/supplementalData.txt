@@ -12254,6 +12254,9 @@ supplementalData:table(nofallback){
         "Asia:Harbin"{
             territory{"CN"}
         }
+        "Asia:Hebron"{
+            territory{"PS"}
+        }
         "Asia:Hong_Kong"{
             territory{"HK"}
             aliases{
