@@ -13087,6 +13087,7 @@ supplementalData:table(nofallback){
             "MY",
             "NZ",
             "PF",
+            "PS",
             "PT",
             "RU",
             "UA",
