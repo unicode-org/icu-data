@@ -10,6 +10,7 @@ all:
 ICU_CONFIG=icu-config
 FETCH=wget -nc -nd
 FULL_BUILD_OLD=false
+BUILD_OLD_STRUCTURE=false
 -include Makefile.local
 
 TZSRC=$(ICU_SRC)/tools/tzcode
@@ -99,6 +100,7 @@ icunew/%/zoneinfo64.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	svn add $(@D)
 	@echo "## Build OK."
 
+ifeq (BUILD_OLD_STRUCTURE, true)
 icu/%/zoneinfo.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@test ! -f $@ || (echo Remove $(@D)  and $@ manually - will not overwrite. ; touch $@ ;  false)
 	@test ! -d $(@D) || (echo Remove $(@D)  manually - will not overwrite. ;   false)
@@ -166,6 +168,10 @@ endif
 
 	find $(@D)/* -type f
 	svn add $(@D)
+else
+icu/%/zoneinfo.txt:
+	# Do nothing
+endif
 
 update: update-mirror update-icu
 
