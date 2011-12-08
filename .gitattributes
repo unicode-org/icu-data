@@ -2133,6 +2133,7 @@ tzdata/icu/2011n/le/metazoneInfo.res -text
 tzdata/icu/2011n/le/zoneinfo.res -text
 tzdata/icu/2011n/metazoneInfo.txt -text
 tzdata/icu/2011n/zoneinfo.txt -text
+tzdata/icu/readme.txt -text
 tzdata/icunew/2010a/36/be/zoneinfo.res -text
 tzdata/icunew/2010a/36/ee/zoneinfo.res -text
 tzdata/icunew/2010a/36/le/zoneinfo.res -text
