@@ -1,0 +1,96 @@
+<!--
+/*
+*******************************************************************************
+* Copyright (C) 2012, International Business Machines Corporation and         *
+* others. All Rights Reserved.                                                *
+*******************************************************************************
+*/
+-->
+
+<project name="Old Supplemental Data Updater" default="generate" basedir=".">
+    <property name="src.dir" value="src"/>
+    <property name="template.dir" value="templates"/>
+    <property name="out.dir" value="out"/>
+    <property name="classes.dir" value="${out.dir}/bin"/>
+    <property name="outfile.dir" value="${out.dir}/files"/>
+    <property name="supplemental.dir" value="../supplemental"/>
+
+    <target name="clean">
+        <delete dir="${out.dir}"/>
+    </target>
+
+    <target name="icu4jInfo">
+        <java jar="${icu4j.jar}" fork="true"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${classes.dir}"
+               classpath="${icu4j.jar}"
+               encoding="UTF-8"
+               source="1.6"
+               includeAntRuntime="false"/>
+    </target>
+
+    <target name="generate" depends="compile" description="Generate supplemental data files">
+        <mkdir dir="${outfile.dir}"/>
+        <!-- metazoneInfo.txt -->
+        <java classname="com.ibm.icu.dev.tztools.SupplementalDataUpdater"
+              fork="true"
+              failonerror="true">
+            <arg value="42"/>
+            <arg value="${template.dir}/metazoneInfo.txt"/>
+            <arg value="${outfile.dir}/metazoneInfo.txt"/>
+            <classpath>
+                <pathelement location="${icu4j.jar}"/>
+                <pathelement path="${classes.dir}"/>
+            </classpath>
+        </java>
+        <!-- supplementalData.txt -->
+        <antcall target="generate.supplementalData">
+            <param name="target.ver" value="38"/>
+        </antcall>
+        <antcall target="generate.supplementalData">
+            <param name="target.ver" value="40"/>
+        </antcall>
+        <antcall target="generate.supplementalData">
+            <param name="target.ver" value="42"/>
+        </antcall>
+    </target>
+
+    <target name="generate.supplementalData">
+        <mkdir dir="${outfile.dir}/${target.ver}"/>
+        <java classname="com.ibm.icu.dev.tztools.SupplementalDataUpdater"
+              fork="true"
+              failonerror="true">
+            <arg value="${target.ver}"/>
+            <arg value="${template.dir}/${target.ver}/supplementalData.txt"/>
+            <arg value="${outfile.dir}/${target.ver}/supplementalData.txt"/>
+            <classpath>
+                <pathelement location="${icu4j.jar}"/>
+                <pathelement path="${classes.dir}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="update" depends="clean, generate"
+            description="Generate supplemental data files and copy them to the supplemental master directory">
+        <!-- metazoneInfo.txt -->
+        <copy todir="${supplemental.dir}"
+              file="${outfile.dir}/metazoneInfo.txt"
+              overwrite="true"/>
+        <!-- supplementalData.txt -->
+        <copy todir="${supplemental.dir}/38"
+              file="${outfile.dir}/38/supplementalData.txt"
+              overwrite="true"/>
+        <copy todir="${supplemental.dir}/40"
+              file="${outfile.dir}/40/supplementalData.txt"
+              overwrite="true"/>
+        <copy todir="${supplemental.dir}/42"
+              file="${outfile.dir}/42/supplementalData.txt"
+              overwrite="true"/>
+    </target>
+
+
+</project>

@@ -1,0 +1,17 @@
+﻿// ***************************************************************************
+// *
+// * Copyright (C) 2010-2012 International Business Machines
+// * Corporation and others.  All Rights Reserved.
+// * Tool: com.ibm.icu.dev.tool.cldr.LDML2ICUConverter.java
+// * Source File:<path>/metazoneInfo.xml
+// *
+// ***************************************************************************
+//
+// Note: This file was originally generated from CLDR metazoneInfo.xml.
+//       Because the version of supplementalData.xml is no longer maintained,
+//       we edit this file manually to make necessary changes for new time zone
+//       related changes.
+//
+metazoneInfo:table(nofallback){
+    @metazoneMappings@
+}
