@@ -905,6 +905,13 @@ metazoneInfo:table(nofallback){
                 "9999-12-31 23:59",
             }
         }
+        "America:Creston"{
+            mz0{
+                "America_Mountain",
+                "1970-01-01 00:00",
+                "9999-12-31 23:59",
+            }
+        }
         "America:Cuiaba"{
             mz0{
                 "Amazon",
@@ -1311,6 +1318,13 @@ metazoneInfo:table(nofallback){
                 "9999-12-31 23:59",
             }
         }
+        "America:Kralendijk"{
+            mz0{
+                "Atlantic",
+                "1970-01-01 00:00",
+                "9999-12-31 23:59",
+            }
+        }
         "America:La_Paz"{
             mz0{
                 "Bolivia",
@@ -1346,6 +1360,13 @@ metazoneInfo:table(nofallback){
             mz2{
                 "America_Eastern",
                 "1974-10-27 07:00",
+                "9999-12-31 23:59",
+            }
+        }
+        "America:Lower_Princes"{
+            mz0{
+                "Atlantic",
+                "1970-01-01 00:00",
                 "9999-12-31 23:59",
             }
         }
@@ -2019,9 +2040,24 @@ metazoneInfo:table(nofallback){
                 "1970-01-01 00:00",
                 "2009-10-17 18:00",
             }
-            mz1 {
+            mz1{
+                "Casey",
+                "2009-10-17 18:00",
+                "2010-03-04 15:00",
+            }
+            mz2{
                 "Australia_Western",
                 "2010-03-04 15:00",
+                "2011-10-27 18:00",
+            }
+            mz3{
+                "Casey",
+                "2011-10-27 18:00",
+                "2012-02-21 17:00",
+            }
+            mz4{
+                "Australia_Western",
+                "2012-02-21 17:00",
                 "9999-12-31 23:59",
             }
         }
@@ -3028,6 +3064,20 @@ metazoneInfo:table(nofallback){
                 "9999-12-31 23:59",
             }
         }
+        "CST6CDT"{
+            mz0{
+                "America_Central",
+                "1970-01-01 00:00",
+                "9999-12-31 23:59",
+            }
+        }
+        "EST5EDT"{
+            mz0{
+                "America_Eastern",
+                "1970-01-01 00:00",
+                "9999-12-31 23:59",
+            }
+        }
         "Europe:Amsterdam"{
             mz0{
                 "Europe_Central",
@@ -3210,7 +3260,7 @@ metazoneInfo:table(nofallback){
             mz1{
                 "Europe_Eastern",
                 "1990-06-30 23:00",
-                "2011-03-27 00:00",
+                "9999-12-31 23:59",
             }
         }
         "Europe:Lisbon"{
@@ -3415,7 +3465,7 @@ metazoneInfo:table(nofallback){
             mz3{
                 "Europe_Eastern",
                 "1997-03-30 01:00",
-                "2011-03-27 01:00",
+                "9999-12-31 23:59",
             }
         }
         "Europe:Skopje"{
@@ -3472,7 +3522,7 @@ metazoneInfo:table(nofallback){
             mz2{
                 "Europe_Eastern",
                 "1991-03-31 02:00",
-                "2011-03-27 01:00",
+                "9999-12-31 23:59",
             }
         }
         "Europe:Vaduz"{
@@ -3548,7 +3598,7 @@ metazoneInfo:table(nofallback){
             mz1{
                 "Europe_Eastern",
                 "1991-03-30 23:00",
-                "2011-03-27 01:00",
+                "9999-12-31 23:59",
             }
         }
         "Europe:Zurich"{
@@ -3631,6 +3681,20 @@ metazoneInfo:table(nofallback){
         "Indian:Reunion"{
             mz0{
                 "Reunion",
+                "1970-01-01 00:00",
+                "9999-12-31 23:59",
+            }
+        }
+        "MST7MDT"{
+            mz0{
+                "America_Mountain",
+                "1970-01-01 00:00",
+                "9999-12-31 23:59",
+            }
+        }
+        "PST8PDT"{
+            mz0{
+                "America_Pacific",
                 "1970-01-01 00:00",
                 "9999-12-31 23:59",
             }

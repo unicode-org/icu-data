@@ -960,7 +960,6 @@ test/perf/udhr/udhr_kor.txt -text
 test/perf/udhr/udhr_rus.txt -text
 test/perf/udhr/udhr_spa.txt -text
 test/perf/udhr/udhr_tha.txt -text
-tzdata/Makefile -text
 tzdata/eclipse/build.xml -text
 tzdata/eclipse/icu_data_patch.properties.template -text
 tzdata/eclipse/project_src/eclipse322/buildconfig/allElements.xml -text
@@ -3807,11 +3806,6 @@ tzdata/mirror/tzdata2011h.tar.gz -text
 tzdata/mirror/tzdata2011i.tar.gz -text
 tzdata/mirror/tzdata2011j.tar.gz -text
 tzdata/mirror/tzdata2011k.tar.gz -text
-tzdata/readme.txt -text
-tzdata/supplemental/38/supplementalData.txt -text
-tzdata/supplemental/40/supplementalData.txt -text
-tzdata/supplemental/42/supplementalData.txt -text
-tzdata/supplemental/metazoneInfo.txt -text
 tzdata/tzu/icu-tzres.zip -text
 tzdata/tzu/icu.css svneol=native#text/css
 tzdata/tzu/icu.gif -text
