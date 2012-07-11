@@ -1,14 +1,10 @@
 ﻿/* 
-Copyright (C) 2008-2012, International Business Machines Corporation and others.  All Rights Reserved.
+Copyright (C) 2012, International Business Machines Corporation and others.  All Rights Reserved.
 
 */
 
-/* @override 
-	http://icu-project.org/download/icumeta.css
-	http://icu-project.org/xml/icumeta.css
-*/
 
-/* stylesheet for  icu metadata */
+/* stylesheet for  icucaps*/
 
 body {
 	margin: 1em !important;
@@ -16,7 +12,7 @@ body {
 
 icuInfo:before {
 	display:  block;
-	content: "This is the ICU metadata file, see http://icu-project.org for ICU info.";
+	content: "This is the ICUCAPS file, see http://icu-project.org for ICU info.";
 }
 
 icuInfo {
