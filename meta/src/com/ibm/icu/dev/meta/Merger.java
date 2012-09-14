@@ -1,4 +1,4 @@
-// Copyright (C) 2008, International Business Machines Corporation and others.  All Rights Reserved.
+// Copyright (C) 2008-2012, International Business Machines Corporation and others.  All Rights Reserved.
 
 package com.ibm.icu.dev.meta;
 
@@ -20,7 +20,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.ibm.icu.dev.test.util.ElapsedTimer;
+import com.ibm.icu.dev.util.ElapsedTimer;
 
 
 public class Merger {
