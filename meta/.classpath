@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CLDR_JAR"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ICU_UTILITIES_JAR"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/XERCES_JAR"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ICU_UTILITIES"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
