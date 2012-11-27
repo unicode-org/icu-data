@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/css" href="icumeta.css"?>
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
-<!-- Copyright (C) 2008-2011, International Business Machines Corporation and others.  All Rights Reserved.
+<!-- Copyright (C) 2008-2012, International Business Machines Corporation and others.  All Rights Reserved.
  -->
 
 <icuInfo> 
@@ -12,11 +12,34 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
-                <release version="5.0" draft="proposed">
-                </release>
-                <release version="4.8" draft="proposed">
+              <release version="50.1">
+                <dates>
+                  <date date="2012-11-05" type="ga"/>
+                </dates>
+              </release>
+              <release version="49.1.2">
+                <dates>
+                  <date date="2012-06-06" type="ga"/>
+                </dates>
+              </release>
+                <release version="49.1.1">
                   <dates>
-                    <date type="ga" date="2011-05-25"/>
+                    <date date="2012-04-06" type="ga"/>
+                  </dates>
+                </release>
+                <release version="49.1">
+                  <dates>
+                    <date date="2012-03-21" type="ga"/>
+                  </dates>
+                </release>
+                <release version="4.8.1">
+                  <dates>
+                    <date date="2011-07-20" type="ga"/>
+                  </dates>
+                </release>
+                <release version="4.8">
+                  <dates>
+                    <date date="2011-05-25" type="ga"/>
                   </dates>
                 </release>
                 <release version="4.6.1" >
@@ -222,11 +245,24 @@
                 <name type="short">ICU4J</name>
             </names>
             <releases>
-                <release version="5.0" draft="proposed">
-                </release>
-                <release version="4.8" draft="proposed">
+                <release version="50.1">
                   <dates>
-                    <date type="ga" date="2011-05-25"/>
+                    <date date="2012-11-05" type="ga"/>
+                  </dates>
+                </release>
+                <release version="49.1">
+                  <dates>
+                    <date date="2012-03-21" type="ga"/>
+                  </dates>
+                </release>
+                <release version="4.8.1">
+                  <dates>
+                    <date date="2011-07-20" type="ga"/>
+                  </dates>
+                </release>
+                <release version="4.8">
+                  <dates>
+                    <date date="2011-05-25" type="ga"/>
                   </dates>
                 </release>
                 <release version="4.6.1" >
@@ -242,6 +278,11 @@
                 <release version="4.4.2" >
                     <dates>
                         <date type="ga" date="2010-10-01"/>
+                    </dates>
+                </release>
+                <release version="4.4.2.1">
+                    <dates>
+                        <date date="2011-07-01" type="ga"/>
                     </dates>
                 </release>
                 <release version="4.4.1.1" >

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Copyright (c) 2011-2012 IBM Corporation and Others, All Rights Reserved. -->
+<!-- Copyright (c) 2012 IBM Corporation and Others, All Rights Reserved. -->
 
 <!-- This file was generated from:  input/versions.xml input/testing_ibm.xml -->
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
@@ -15,10 +15,10 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
-            <release version="50.1">
-              <dates>
-                <date date="2012-11-05" type="ga"/>
-              </dates>
+              <release version="50.1">
+                <dates>
+                  <date date="2012-11-05" type="ga"/>
+                </dates>
               <platforms date="2012-11-05" owner="ibm">
                 <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
                 <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="12.1">
@@ -97,12 +97,12 @@
                     <builder name="sysxp" status="works"/>
                 </platform>
               </platforms>
-            </release>
-            <release version="49.1.2">
-                  <dates>
-                    <date date="2012-06-06" type="ga"/>
-                  </dates>
-                  <platforms date="2012-06-06" owner="ibm">
+                </release>
+              <release version="49.1.2">
+                <dates>
+                  <date date="2012-06-06" type="ga"/>
+                </dates>
+              <platforms date="2012-06-06" owner="ibm">
                     <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
                     <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="11.1">
                         <builder binary="AIX7_1-VA" name="comino" status="works"/>
@@ -182,7 +182,7 @@
                   <dates>
                     <date date="2012-04-06" type="ga"/>
                   </dates>
-                  <platforms date="2012-04-06" owner="ibm">
+                <platforms date="2012-04-06" owner="ibm">
                     <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
                     <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="11.1">
                         <builder binary="AIX7_1-VA" name="comino" status="works"/>
@@ -262,7 +262,7 @@
                   <dates>
                     <date date="2012-03-21" type="ga"/>
                   </dates>
-                  <platforms date="2012-03-21" owner="ibm">
+                <platforms date="2012-03-21" owner="ibm">
                     <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
                     <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="11.1">
                         <builder binary="AIX7_1-VA" name="comino" status="works"/>
@@ -715,14 +715,14 @@
                         <date date="2010-12-02" type="ga"/>
                     </dates>
                 </release>
-                <release version="4.4.2.1">
-                    <dates>
-                        <date date="2011-07-01" type="ga"/>
-                    </dates>
-                </release>
                 <release version="4.4.2">
                     <dates>
                         <date date="2010-10-01" type="ga"/>
+                    </dates>
+                </release>
+                <release version="4.4.2.1">
+                    <dates>
+                        <date date="2011-07-01" type="ga"/>
                     </dates>
                 </release>
                 <release version="4.4.1.1">
