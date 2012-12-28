@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2011 IBM and Others. All Rights Reserved.
+# Copyright (C) 2006-2012 IBM and Others. All Rights Reserved.
 
 all:
 	@echo 
@@ -19,9 +19,8 @@ ENDIAN_LIST=be le ee
 
 update-mirror:
 	cd mirror && ${FETCH} 'ftp://munnari.oz.au/pub/tzdata*'
-	svn add mirror/tzdata*.tar.gz
 	cd mirror && ${FETCH} 'ftp://munnari.oz.au/pub/tzcode*'
-	svn add mirror/tzcode*.tar.gz
+	svn add mirror/tzdata*.tar.gz mirror/tzcode*.tar.gz
 
 update-icu:
 	@for tzver in `ls mirror/tzdata*.tar.gz` ; do \
@@ -32,7 +31,7 @@ update-icu:
 			$(MAKE) icunew/$$tzver/zoneinfo64.txt; \
 			$(MAKE) icu/$$tzver/zoneinfo.txt; \
 		else \
-			echo "No loner genearate tzdata for year 2009 or older."; \
+			echo "No longer generate tzdata for year 2009 or older."; \
 		fi \
 	done
 
@@ -68,11 +67,11 @@ icunew/%/zoneinfo64.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 		if [ $$icuver = "36" ]; then \
 			TXTFILES="$(TZSRC)/zoneinfo.txt" ; \
 		elif [ $$icuver = "38" ]; then \
-			TXTFILES="$(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt supplemental/38/supplementalData.txt" ; \
+			TXTFILES="$(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt supplemental/windowsZones.txt supplemental/38/supplementalData.txt" ; \
 		elif [ $$icuver = "40" ]; then \
-			TXTFILES="$(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt supplemental/40/supplementalData.txt" ; \
+			TXTFILES="$(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt supplemental/windowsZones.txt supplemental/40/supplementalData.txt" ; \
 		elif [ $$icuver = "42" ]; then \
-			TXTFILES="$(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt supplemental/42/supplementalData.txt" ; \
+			TXTFILES="$(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt supplemental/windowsZones.txt supplemental/42/supplementalData.txt" ; \
 		else \
 			TXTFILES="$(TZSRC)/zoneinfo64.txt supplemental/metaZones.txt supplemental/windowsZones.txt supplemental/timezoneTypes.txt" ; \
 			GENRBOPT="" ; \
