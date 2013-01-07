@@ -1,11 +1,11 @@
 <!--
 *******************************************************************************
-* Copyright (C) 2009-2010, International Business Machines Corporation and    *
+* Copyright (C) 2009-2013, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 -->
 <project name="tzu" default="build" basedir=".">
-    <property name="tzdata.ver" value="2010f"/>
+    <property name="tzdata.ver" value="2012j"/>
 
     <property name="tzu.jar.file" value="icutzu.jar"/>
     <property name="tzu.src.zip.file" value="icutzu-src.zip"/>

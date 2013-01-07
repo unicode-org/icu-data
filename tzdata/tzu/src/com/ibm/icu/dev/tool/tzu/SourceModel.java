@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007-2010, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2013, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -70,6 +70,11 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
      * The local timezone resource directory.
      */
     public static File tzresLocalDir = null;
+
+    /**
+     * The tz database version pattern
+     */
+    private static final String TZ_VERSION_PATTERN = "\\d{4}[a-z]";
 
     /**
      * The current logger.
@@ -151,8 +156,16 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
                 }
 
                 public void handleStartTag(HTML.Tag tag, MutableAttributeSet attr, int pos) {
-                    if (tag == HTML.Tag.LI)
+                    if (tag == HTML.Tag.DIR) {
+                        // Current Trac version uses <dir> for sub directories
+                        String name = attr.getAttribute(HTML.Attribute.NAME).toString();
+                        if (name != null && name.matches(TZ_VERSION_PATTERN)) {
+                            addVersion(name);
+                        }
+                    } else if (tag == HTML.Tag.LI) {
+                        // Older Trac version uses <li> for sub directories
                         listItem = true;
+                    }
                 }
 
                 public void handleText(char[] data, int pos) {
@@ -160,24 +173,28 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
                         String str = new String(data);
                         if (str.charAt(str.length() - 1) == '/')
                             str = str.substring(0, str.length() - 1);
-                        if (!"..".equals(str))
-                            try {
-                                // add the new item to the map
-                                urlMap.put(str, new URL(TZ_BASE_URLSTRING + "/" + str));
+                        if (str.matches(TZ_VERSION_PATTERN))
+                            addVersion(str);
+                    }
+                }
 
-                                // update the selected item and fire off an
-                                // event
-                                selected = urlMap.lastKey();
-                                int index = 0;
-                                for (Iterator<String> iter = urlMap.keySet().iterator(); iter.hasNext();) {
-                                    if (iter.next().equals(str))
-                                        index++;
-                                }
-                                fireIntervalAdded(this, index, index);
-                            } catch (MalformedURLException ex) {
-                                logger.errorln("Internal program error.");
-                                ex.printStackTrace();
-                            }
+                private void addVersion(String tzver) {
+                    try {
+                        // add the new item to the map
+                        urlMap.put(tzver, new URL(TZ_BASE_URLSTRING + "/" + tzver));
+
+                        // update the selected item and fire off an
+                        // event
+                        selected = urlMap.lastKey();
+                        int index = 0;
+                        for (Iterator<String> iter = urlMap.keySet().iterator(); iter.hasNext();) {
+                            if (iter.next().equals(tzver))
+                                index++;
+                        }
+                        fireIntervalAdded(this, index, index);
+                    } catch (MalformedURLException ex) {
+                        logger.errorln("Internal program error.");
+                        ex.printStackTrace();
                     }
                 }
             };

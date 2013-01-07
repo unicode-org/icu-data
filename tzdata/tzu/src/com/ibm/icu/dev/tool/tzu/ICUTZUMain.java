@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007-2010, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2013, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -15,7 +15,7 @@ import java.util.Locale;
  */
 public class ICUTZUMain {
 
-    private static final String TZU_VER = "1.4.0";
+    private static final String TZU_VER = "1.5.0";
 
     /**
      * Argument number for the backup directory.

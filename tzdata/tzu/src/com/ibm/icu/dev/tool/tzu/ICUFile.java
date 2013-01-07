@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- * Copyright (C) 2007-2010, International Business Machines Corporation and others.
+ * Copyright (C) 2007-2013, International Business Machines Corporation and others.
  * All Rights Reserved.
  * ******************************************************************************
  */
@@ -811,13 +811,21 @@ public class ICUFile {
             Manifest manifest = jar.getManifest();
             icuVersion = ICU_VERSION_UNKNOWN;
             if (manifest != null) {
-                Iterator<Attributes> iter = manifest.getEntries().values().iterator();
-                while (iter.hasNext()) {
-                    Attributes attr = iter.next();
-                    String ver = attr.getValue(Attributes.Name.IMPLEMENTATION_VERSION);
-                    if (ver != null) {
-                        icuVersion = ver;
-                        break;
+                // try main attributes first
+                Attributes attrs = manifest.getMainAttributes();
+                String ver = attrs.getValue(Attributes.Name.IMPLEMENTATION_VERSION);
+                if (ver != null) {
+                    icuVersion = ver;
+                } else {
+                    // try per-entry attributes
+                    Iterator<Attributes> iter = manifest.getEntries().values().iterator();
+                    while (iter.hasNext()) {
+                        Attributes attr = iter.next();
+                        ver = attr.getValue(Attributes.Name.IMPLEMENTATION_VERSION);
+                        if (ver != null) {
+                            icuVersion = ver;
+                            break;
+                        }
                     }
                 }
             }
