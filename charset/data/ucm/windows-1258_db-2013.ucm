@@ -1,0 +1,125 @@
+# ***************************************************************************
+# *
+# *   Copyright (C) 2013, International Business Machines
+# *   Corporation and others.  All Rights Reserved.
+# *
+# ***************************************************************************
+#
+# This is a custom file made specifically to handle only double byte sequences for
+# Vietnamese characters
+#
+<code_set_name>               "windows-1258_db-2013"
+<char_name_mask>              "AXXXX"
+<mb_cur_max>                  2
+<mb_cur_min>                  2
+<uconv_class>                 "DBCS"
+<subchar>                     \xFE\xFE
+<icu:charsetFamily>           "ASCII"
+
+<icu:state>                   1a, 41:1, 45:1, 49:1, 4f:1, 55:1, 59:1, 61:1, 65:1, 69:1, 6f:1, 75:1, 79:1, c2-c3:1, ca:1, d4-d5:1, dd:1, e2-e3:1, ea:1, f4-f5:1, fd-fe:1
+<icu:state>                   0-ff
+
+CHARMAP
+<U00C3> \x41\xDE |0
+<U00CC> \x49\xCC |0
+<U00D2> \x4F\xCC |0
+<U00D5> \x4F\xDE |0
+<U00E3> \x61\xDE |0
+<U00EC> \x69\xCC |0
+<U00F2> \x6F\xCC |0
+<U00F5> \x6F\xDE |0
+<U0128> \x49\xDE |0
+<U0129> \x69\xDE |0
+<U0168> \x55\xDE |0
+<U0169> \x75\xDE |0
+<U1EA0> \x41\xF2 |0
+<U1EA1> \x61\xF2 |0
+<U1EA2> \x41\xD2 |0
+<U1EA3> \x61\xD2 |0
+<U1EA4> \xC2\xEC |0
+<U1EA5> \xE2\xEC |0
+<U1EA6> \xC2\xCC |0
+<U1EA7> \xE2\xCC |0
+<U1EA8> \xC2\xD2 |0
+<U1EA9> \xE2\xD2 |0
+<U1EAA> \xC2\xDE |0
+<U1EAB> \xE2\xDE |0
+<U1EAC> \xC2\xF2 |0
+<U1EAD> \xE2\xF2 |0
+<U1EAE> \xC3\xEC |0
+<U1EAF> \xE3\xEC |0
+<U1EB0> \xC3\xCC |0
+<U1EB1> \xE3\xCC |0
+<U1EB2> \xC3\xD2 |0
+<U1EB3> \xE3\xD2 |0
+<U1EB4> \xC3\xDE |0
+<U1EB5> \xE3\xDE |0
+<U1EB6> \xC3\xF2 |0
+<U1EB7> \xE3\xF2 |0
+<U1EB8> \x45\xF2 |0
+<U1EB9> \x65\xF2 |0
+<U1EBA> \x45\xD2 |0
+<U1EBB> \x65\xD2 |0
+<U1EBC> \x45\xDE |0
+<U1EBD> \x65\xDE |0
+<U1EBE> \xCA\xEC |0
+<U1EBF> \xEA\xEC |0
+<U1EC0> \xCA\xCC |0
+<U1EC1> \xEA\xCC |0
+<U1EC2> \xCA\xD2 |0
+<U1EC3> \xEA\xD2 |0
+<U1EC4> \xCA\xDE |0
+<U1EC5> \xEA\xDE |0
+<U1EC6> \xCA\xF2 |0
+<U1EC7> \xEA\xF2 |0
+<U1EC8> \x49\xD2 |0
+<U1EC9> \x69\xD2 |0
+<U1ECA> \x49\xF2 |0
+<U1ECB> \x69\xF2 |0
+<U1ECC> \x4F\xF2 |0
+<U1ECD> \x6F\xF2 |0
+<U1ECE> \x4F\xD2 |0
+<U1ECF> \x6F\xD2 |0
+<U1ED0> \xD4\xEC |0
+<U1ED1> \xF4\xEC |0
+<U1ED2> \xD4\xCC |0
+<U1ED3> \xF4\xCC |0
+<U1ED4> \xD4\xD2 |0
+<U1ED5> \xF4\xD2 |0
+<U1ED6> \xD4\xDE |0
+<U1ED7> \xF4\xDE |0
+<U1ED8> \xD4\xF2 |0
+<U1ED9> \xF4\xF2 |0
+<U1EDA> \xD5\xEC |0
+<U1EDB> \xF5\xEC |0
+<U1EDC> \xD5\xCC |0
+<U1EDD> \xF5\xCC |0
+<U1EDE> \xD5\xD2 |0
+<U1EDF> \xF5\xD2 |0
+<U1EE0> \xD5\xDE |0
+<U1EE1> \xF5\xDE |0
+<U1EE2> \xD5\xF2 |0
+<U1EE3> \xF5\xF2 |0
+<U1EE4> \x55\xF2 |0
+<U1EE5> \x75\xF2 |0
+<U1EE6> \x55\xD2 |0
+<U1EE7> \x75\xD2 |0
+<U1EE8> \xDD\xEC |0
+<U1EE9> \xFD\xEC |0
+<U1EEA> \xDD\xCC |0
+<U1EEB> \xFD\xCC |0
+<U1EEC> \xDD\xD2 |0
+<U1EED> \xFD\xD2 |0
+<U1EEE> \xDD\xDE |0
+<U1EEF> \xFD\xDE |0
+<U1EF0> \xDD\xF2 |0
+<U1EF1> \xFD\xF2 |0
+<U1EF2> \x59\xCC |0
+<U1EF3> \x79\xCC |0
+<U1EF4> \x59\xF2 |0
+<U1EF5> \x79\xF2 |0
+<U1EF6> \x59\xD2 |0
+<U1EF7> \x79\xD2 |0
+<U1EF8> \x59\xDE |0
+<U1EF9> \x79\xDE |0
+END CHARMAP
