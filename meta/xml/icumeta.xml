@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Copyright (c) 2012 IBM Corporation and Others, All Rights Reserved. -->
+<!-- Copyright (c) 2013 IBM Corporation and Others, All Rights Reserved. -->
 
 <!-- This file was generated from:  input/versions.xml input/testing_ibm.xml -->
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
 <?xml-stylesheet type="text/css" href="icumeta.css"?>
 
-<!-- Copyright (C) 2008-2012, International Business Machines Corporation and others.  All Rights Reserved.
+<!-- Copyright (C) 2008-2013, International Business Machines Corporation and others.  All Rights Reserved.
  -->
 <icuInfo> 
     <icuProducts>
@@ -15,11 +15,21 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
+              <release version="51.2">
+                <dates>
+                  <date date="2013-05-23" type="ga"/>
+                </dates>
+              </release>
+              <release version="51.1">
+                <dates>
+                  <date date="2013-03-22" type="ga"/>
+                </dates>
+              </release>
               <release version="50.1.1">
                 <dates>
                   <date date="2012-12-17" type="ga"/>
                 </dates>
-                <platforms date="2012-12-17" owner="ibm">
+              <platforms date="2012-12-17" owner="ibm">
                     <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
                     <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="12.1">
                         <builder binary="AIX7_1-VA" name="firelight" status="works"/>
@@ -97,90 +107,90 @@
                         <builder name="sysxp" status="works"/>
                     </platform>
                 </platforms>
-              </release>
+                </release>
               <release version="50.1">
                 <dates>
                   <date date="2012-11-05" type="ga"/>
                 </dates>
-                <platforms date="2012-11-05" owner="ibm">
-                    <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
-                    <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="12.1">
-                        <builder binary="AIX7_1-VA" name="firelight" status="works"/>
-                    </platform>
-                    <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="12.1">
-                        <builder name="comino" status="works"/>
-                    </platform>
-                    <platform arch="power" bits="64" os="AIX" os-version="6.1" tool="VisualAge" tool-version="11.1">
-                        <builder name="sys2000" status="works"/>
-                    </platform>
-                    <platform arch="power" bits="64" os="AIX" os-version="6.1" tool="gcc" tool-version="4.2.0">
-                        <builder name="sys2000" status="works"/>
-                    </platform>
-                    <platform arch="ia64" bits="64" os="HP/UX" os-version="11iv3" tool="aCC" tool-version="A.06.15">
-                        <builder binary="HPUX11iv3-aCC" name="hp1" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="MacOSX" os-version="10.6 Snow Leopard" tool="gcc" tool-version="4.2.1">
-                        <builder name="macx" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="64" os="MacOSX" os-version="10.8 Mountain Lion" tool="gcc" tool-version="4.2.1">
-                        <builder name="moonlight" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Red Hat Enterprise Linux" os-version="6.2" tool="gcc" tool-version="4.4.6">
-                        <builder binary="RHEL6-i386" name="redhat3" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="64" os="Red Hat Enterprise Linux" os-version="6.2" tool="gcc" tool-version="4.4.6">
-                        <builder binary="RHEL6-x64" name="redhat1" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="64" os="Red Hat Enterprise Linux" os-version="6.2" tool="icc" tool-version="11.1">
-                        <builder name="redhat1" status="works"/>
-                    </platform>
-                    <platform arch="power" bits="64" os="Red Hat Enterprise Linux" os-version="6.2" tool="gcc" tool-version="4.4.6">
-                        <builder name="sys98" status="works"/>
-                    </platform>
-                    <platform arch="sparc" bits="64" os="Solaris" os-version="10" tool="Solaris Studio" tool-version="12.2">
-                        <builder binary="Solaris10-CC" name="ultra1" status="works"/>
-                    </platform>
-                    <platform arch="sparc" bits="64" os="Solaris" os-version="10" tool="gcc" tool-version="4.2.1">
-                        <builder name="ultra1" status="works"/>
-                    </platform>
-                    <platform arch="sparc" bits="64" os="Solaris" os-version="11 Express" tool="Solaris Studio" tool-version="12">
-                        <builder name="ultra3" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Solaris" os-version="11" tool="Solaris Studio" tool-version="12">
-                        <builder name="zippy" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Solaris" os-version="11" tool="gcc" tool-version="4.5.2">
-                        <builder name="zippy" status="works"/>
-                    </platform>
-                    <platform arch="sparc" bits="64" os="Solaris" os-version="9" tool="Solaris Studio" tool-version="12">
-                        <builder name="saturn2" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Windows" os-version="7" tool="MS Visual Studio" tool-version="10">
-                        <builder binary="Win32-msvc10" name="redhat2" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="64" os="Windows Server" os-version="2008" tool="MS Visual Studio" tool-version="10">
-                        <builder binary="Win64-msvc10" name="sysnt" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="64" os="Windows Server" os-version="2008" tool="MS Visual Studio" tool-version="10 via Cygwin">
-                        <builder name="sysnt" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Windows" os-version="Vista" tool="MS Visual Studio" tool-version="10">
-                        <builder name="lab3" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Windows" os-version="Vista" tool="gcc" tool-version="4.5.2 via MinGW">
-                        <builder name="lab3" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Windows" os-version="XP Professional" tool="MS Visual Studio" tool-version="10">
-                        <builder name="sysxp" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Windows" os-version="XP Professional" tool="MS Visual Studio" tool-version="9 via Cygwin">
-                        <builder name="sysxp" status="works"/>
-                    </platform>
-                    <platform arch="x86" bits="32" os="Windows" os-version="XP Professional" tool="gcc" tool-version="4.3.4 via Cygwin">
-                        <builder name="sysxp" status="works"/>
-                    </platform>
-                </platforms>
-              </release>
+              <platforms date="2012-11-05" owner="ibm">
+                <!-- in IBM-ICU parlance, regularly means 'reference platform', often means 'in our system, built from time to time during the release' -->
+                <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="12.1">
+                    <builder binary="AIX7_1-VA" name="firelight" status="works"/>
+                </platform>
+                <platform arch="power" bits="64" os="AIX" os-version="7.1" tool="VisualAge" tool-version="12.1">
+                    <builder name="comino" status="works"/>
+                </platform>
+                <platform arch="power" bits="64" os="AIX" os-version="6.1" tool="VisualAge" tool-version="11.1">
+                    <builder name="sys2000" status="works"/>
+                </platform>
+                <platform arch="power" bits="64" os="AIX" os-version="6.1" tool="gcc" tool-version="4.2.0">
+                    <builder name="sys2000" status="works"/>
+                </platform>
+                <platform arch="ia64" bits="64" os="HP/UX" os-version="11iv3" tool="aCC" tool-version="A.06.15">
+                    <builder binary="HPUX11iv3-aCC" name="hp1" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="MacOSX" os-version="10.6 Snow Leopard" tool="gcc" tool-version="4.2.1">
+                    <builder name="macx" status="works"/>
+                </platform>
+                <platform arch="x86" bits="64" os="MacOSX" os-version="10.8 Mountain Lion" tool="gcc" tool-version="4.2.1">
+                    <builder name="moonlight" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Red Hat Enterprise Linux" os-version="6.2" tool="gcc" tool-version="4.4.6">
+                    <builder binary="RHEL6-i386" name="redhat3" status="works"/>
+                </platform>
+                <platform arch="x86" bits="64" os="Red Hat Enterprise Linux" os-version="6.2" tool="gcc" tool-version="4.4.6">
+                    <builder binary="RHEL6-x64" name="redhat1" status="works"/>
+                </platform>
+                <platform arch="x86" bits="64" os="Red Hat Enterprise Linux" os-version="6.2" tool="icc" tool-version="11.1">
+                    <builder name="redhat1" status="works"/>
+                </platform>
+                <platform arch="power" bits="64" os="Red Hat Enterprise Linux" os-version="6.2" tool="gcc" tool-version="4.4.6">
+                    <builder name="sys98" status="works"/>
+                </platform>
+                <platform arch="sparc" bits="64" os="Solaris" os-version="10" tool="Solaris Studio" tool-version="12.2">
+                    <builder binary="Solaris10-CC" name="ultra1" status="works"/>
+                </platform>
+                <platform arch="sparc" bits="64" os="Solaris" os-version="10" tool="gcc" tool-version="4.2.1">
+                    <builder name="ultra1" status="works"/>
+                </platform>
+                <platform arch="sparc" bits="64" os="Solaris" os-version="11 Express" tool="Solaris Studio" tool-version="12">
+                    <builder name="ultra3" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Solaris" os-version="11" tool="Solaris Studio" tool-version="12">
+                    <builder name="zippy" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Solaris" os-version="11" tool="gcc" tool-version="4.5.2">
+                    <builder name="zippy" status="works"/>
+                </platform>
+                <platform arch="sparc" bits="64" os="Solaris" os-version="9" tool="Solaris Studio" tool-version="12">
+                    <builder name="saturn2" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Windows" os-version="7" tool="MS Visual Studio" tool-version="10">
+                    <builder binary="Win32-msvc10" name="redhat2" status="works"/>
+                </platform>
+                <platform arch="x86" bits="64" os="Windows Server" os-version="2008" tool="MS Visual Studio" tool-version="10">
+                    <builder binary="Win64-msvc10" name="sysnt" status="works"/>
+                </platform>
+                <platform arch="x86" bits="64" os="Windows Server" os-version="2008" tool="MS Visual Studio" tool-version="10 via Cygwin">
+                    <builder name="sysnt" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Windows" os-version="Vista" tool="MS Visual Studio" tool-version="10">
+                    <builder name="lab3" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Windows" os-version="Vista" tool="gcc" tool-version="4.5.2 via MinGW">
+                    <builder name="lab3" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Windows" os-version="XP Professional" tool="MS Visual Studio" tool-version="10">
+                    <builder name="sysxp" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Windows" os-version="XP Professional" tool="MS Visual Studio" tool-version="9 via Cygwin">
+                    <builder name="sysxp" status="works"/>
+                </platform>
+                <platform arch="x86" bits="32" os="Windows" os-version="XP Professional" tool="gcc" tool-version="4.3.4 via Cygwin">
+                    <builder name="sysxp" status="works"/>
+                </platform>
+              </platforms>
+                </release>
               <release version="49.1.2">
                 <dates>
                   <date date="2012-06-06" type="ga"/>
@@ -768,11 +778,21 @@
                 <name type="short">ICU4J</name>
             </names>
             <releases>
-                <release version="50.1.1">
-                  <dates>
-                    <date date="2012-12-17" type="ga"/>
-                  </dates>
-                </release>
+              <release version="51.2">
+                <dates>
+                  <date date="2013-05-23" type="ga"/>
+                </dates>
+              </release>
+              <release version="51.1">
+                <dates>
+                  <date date="2013-03-22" type="ga"/>
+                </dates>
+              </release>
+              <release version="50.1.1">
+                <dates>
+                  <date date="2012-12-17" type="ga"/>
+                </dates>
+              </release>
                 <release version="50.1">
                   <dates>
                     <date date="2012-11-05" type="ga"/>
