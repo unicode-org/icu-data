@@ -918,6 +918,7 @@ meta/dtd/icumeta.xsd -text svneol=unset#text/xml
 meta/icumeta.jar -text
 meta/input/testing_ibm.xml svneol=native#text/xml
 meta/input/versions.xml svneol=native#text/xml
+meta/scripts/syncicu.py -text
 meta/xml/icucaps.css svneol=native#text/css
 meta/xml/icucaps.xml svneol=native#text/xml
 meta/xml/icumeta.css svneol=native#text/css
