@@ -1499,6 +1499,14 @@ test/perf/collation/TestNames_SerbianSH.txt -text
 test/perf/collation/TestNames_SerbianSR.txt -text
 test/perf/collation/TestNames_Simplified_Chinese.txt -text
 test/perf/collation/TestNames_Thai.txt -text
+test/perf/collation/TestRandomWordsUDHR_ar.txt -text
+test/perf/collation/TestRandomWordsUDHR_el.txt -text
+test/perf/collation/TestRandomWordsUDHR_es.txt -text
+test/perf/collation/TestRandomWordsUDHR_he.txt -text
+test/perf/collation/TestRandomWordsUDHR_pl.txt -text
+test/perf/collation/TestRandomWordsUDHR_ru.txt -text
+test/perf/collation/TestRandomWordsUDHR_th.txt -text
+test/perf/collation/TestRandomWordsUDHR_tr.txt -text
 test/perf/collation/nvsbl10.txt -text
 test/perf/collation/th18057.txt -text
 test/perf/collation/thesis.txt -text
