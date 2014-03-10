@@ -9548,6 +9548,8 @@ supplementalData:table(nofallback){
             "meta:Marshall_Islands_001"{"Pacific/Majuro"}
             "meta:Mauritius_001"{"Indian/Mauritius"}
             "meta:Mawson_001"{"Antarctica/Mawson"}
+            "meta:Mexico_Northwest_001"{"America/Santa_Isabel"}
+            "meta:Mexico_Pacific_001"{"America/Mazatlan"}
             "meta:Mongolia_001"{"Asia/Ulaanbaatar"}
             "meta:Moscow_001"{"Europe/Moscow"}
             "meta:Myanmar_001"{"Asia/Rangoon"}
@@ -9646,7 +9648,6 @@ supplementalData:table(nofallback){
             "Dateline Standard Time"{"Etc/GMT+12"}
             "E. Africa Standard Time"{"Africa/Nairobi"}
             "E. Australia Standard Time"{"Australia/Brisbane"}
-            "E. Europe Standard Time"{"Asia/Nicosia"}
             "E. South America Standard Time"{"America/Sao_Paulo"}
             "Eastern Standard Time"{"America/New_York"}
             "Egypt Standard Time"{"Africa/Cairo"}

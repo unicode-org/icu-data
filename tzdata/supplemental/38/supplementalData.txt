@@ -9382,6 +9382,8 @@ supplementalData:table(nofallback){
             "meta:Marshall_Islands_001"{"Pacific/Majuro"}
             "meta:Mauritius_001"{"Indian/Mauritius"}
             "meta:Mawson_001"{"Antarctica/Mawson"}
+            "meta:Mexico_Northwest_001"{"America/Santa_Isabel"}
+            "meta:Mexico_Pacific_001"{"America/Mazatlan"}
             "meta:Mongolia_001"{"Asia/Ulaanbaatar"}
             "meta:Moscow_001"{"Europe/Moscow"}
             "meta:Myanmar_001"{"Asia/Rangoon"}
@@ -9502,7 +9504,6 @@ supplementalData:table(nofallback){
             "Asia:Katmandu"{"Nepal"}
             "Asia:Krasnoyarsk"{"North Asia"}
             "Asia:Magadan"{"Magadan"}
-            "Asia:Nicosia"{"E. Europe"}
             "Asia:Novosibirsk"{"N. Central Asia"}
             "Asia:Rangoon"{"Myanmar"}
             "Asia:Riyadh"{"Arab"}
