@@ -4,7 +4,7 @@
 <!-- Copyright (C) 2008-2014, International Business Machines Corporation and others.  All Rights Reserved.
  -->
 
-<icuInfo> 
+<icuInfo>
     <icuProducts>
         <icuProduct type="icu4c">
             <names>
@@ -157,12 +157,12 @@
                         <date type="ga" date="2006-02-28"/>
                     </dates>
                 </release>
-                <release version="3.2"> 
+                <release version="3.2">
                     <dates>
                         <date type="ga" date="2004-11-23"/>
                     </dates>
                 </release>
-                <release version="3.0"> 
+                <release version="3.0">
                     <dates>
                         <date type="ga" date="2004-06-19"/>
                     </dates>
@@ -435,12 +435,12 @@
                         <date type="ga" date="2005-08-01"/>
                     </dates>
                 </release>
-                <release version="3.2"> 
+                <release version="3.2">
                     <dates>
                         <date type="ga" date="2004-11-23"/>
                     </dates>
                 </release>
-                <release version="3.0"> 
+                <release version="3.0">
                     <dates>
                         <date type="ga" date="2004-06-19"/>
                     </dates>
@@ -489,12 +489,12 @@
                         <date type="ga" date="2006-10-02"/>
                     </dates>
                 </release>
-                <release version="3.2"> 
+                <release version="3.2">
                     <dates>
                         <date type="ga" date="2004-11-23"/>
                     </dates>
                 </release>
-                <release version="3.0"> 
+                <release version="3.0">
                     <dates>
                         <date type="ga" date="2004-06-19"/>
                     </dates>

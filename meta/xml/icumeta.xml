@@ -3,8 +3,8 @@
 
 <!-- This file was generated from:  input/versions.xml input/testing_ibm.xml -->
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
-<?xml-stylesheet type="text/css" href="icumeta.css"?><!-- Copyright (C) 2008-2013, International Business Machines Corporation and others.  All Rights Reserved.
- --><icuInfo> 
+<?xml-stylesheet type="text/css" href="icumeta.css"?><!-- Copyright (C) 2008-2014, International Business Machines Corporation and others.  All Rights Reserved.
+ --><icuInfo>
     <icuProducts>
         <icuProduct type="icu4c">
             <names>
@@ -672,12 +672,12 @@
                         <date date="2006-02-28" type="ga"/>
                     </dates>
                 </release>
-                <release version="3.2"> 
+                <release version="3.2">
                     <dates>
                         <date date="2004-11-23" type="ga"/>
                     </dates>
                 </release>
-                <release version="3.0"> 
+                <release version="3.0">
                     <dates>
                         <date date="2004-06-19" type="ga"/>
                     </dates>
@@ -962,12 +962,12 @@
                         <date date="2005-08-01" type="ga"/>
                     </dates>
                 </release>
-                <release version="3.2"> 
+                <release version="3.2">
                     <dates>
                         <date date="2004-11-23" type="ga"/>
                     </dates>
                 </release>
-                <release version="3.0"> 
+                <release version="3.0">
                     <dates>
                         <date date="2004-06-19" type="ga"/>
                     </dates>
@@ -1016,12 +1016,12 @@
                         <date date="2006-10-02" type="ga"/>
                     </dates>
                 </release>
-                <release version="3.2"> 
+                <release version="3.2">
                     <dates>
                         <date date="2004-11-23" type="ga"/>
                     </dates>
                 </release>
-                <release version="3.0"> 
+                <release version="3.0">
                     <dates>
                         <date date="2004-06-19" type="ga"/>
                     </dates>
