@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- Copyright (c) 2013 IBM Corporation and Others, All Rights Reserved. -->
+<!-- Copyright (c) 2014 IBM Corporation and Others, All Rights Reserved. -->
 
 <!-- This file was generated from:  input/versions.xml input/testing_ibm.xml -->
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
-<?xml-stylesheet type="text/css" href="icumeta.css"?>
-
-<!-- Copyright (C) 2008-2013, International Business Machines Corporation and others.  All Rights Reserved.
- -->
-<icuInfo> 
+<?xml-stylesheet type="text/css" href="icumeta.css"?><!-- Copyright (C) 2008-2013, International Business Machines Corporation and others.  All Rights Reserved.
+ --><icuInfo> 
     <icuProducts>
         <icuProduct type="icu4c">
             <names>
@@ -15,6 +12,21 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
+              <release draft="proposed" version="54.1">
+                <dates>
+                  <date date="2014-10-01" type="ga"/>
+                </dates>
+              </release>
+              <release version="53.1">
+                <dates>
+                  <date date="2013-04-02" type="ga"/>
+                </dates>
+              </release>
+              <release version="52.1">
+                <dates>
+                  <date date="2013-10-09" type="ga"/>
+                </dates>
+              </release>
               <release version="51.2">
                 <dates>
                   <date date="2013-05-23" type="ga"/>
@@ -778,6 +790,21 @@
                 <name type="short">ICU4J</name>
             </names>
             <releases>
+              <release draft="proposed" version="54.1">
+                <dates>
+                  <date date="2014-10-01" type="ga"/>
+                </dates>
+              </release>
+              <release version="53.1">
+                <dates>
+                  <date date="2013-04-02" type="ga"/>
+                </dates>
+              </release>
+              <release version="52.1">
+                <dates>
+                  <date date="2013-10-09" type="ga"/>
+                </dates>
+              </release>
               <release version="51.2">
                 <dates>
                   <date date="2013-05-23" type="ga"/>

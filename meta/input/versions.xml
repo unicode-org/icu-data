@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/css" href="icumeta.css"?>
 <!DOCTYPE icuInfo SYSTEM "http://icu-project.org/dtd/icumeta.dtd">
-<!-- Copyright (C) 2008-2013, International Business Machines Corporation and others.  All Rights Reserved.
+<!-- Copyright (C) 2008-2014, International Business Machines Corporation and others.  All Rights Reserved.
  -->
 
 <icuInfo> 
@@ -12,6 +12,21 @@
                 <name type="short">ICU4C</name>
             </names>
             <releases>
+              <release version="54.1" draft="proposed">
+                <dates>
+                  <date date="2014-10-01" type="ga"/>
+                </dates>
+              </release>
+              <release version="53.1">
+                <dates>
+                  <date date="2013-04-02" type="ga"/>
+                </dates>
+              </release>
+              <release version="52.1">
+                <dates>
+                  <date date="2013-10-09" type="ga"/>
+                </dates>
+              </release>
               <release version="51.2">
                 <dates>
                   <date date="2013-05-23" type="ga"/>
@@ -260,6 +275,21 @@
                 <name type="short">ICU4J</name>
             </names>
             <releases>
+              <release version="54.1" draft="proposed">
+                <dates>
+                  <date date="2014-10-01" type="ga"/>
+                </dates>
+              </release>
+              <release version="53.1">
+                <dates>
+                  <date date="2013-04-02" type="ga"/>
+                </dates>
+              </release>
+              <release version="52.1">
+                <dates>
+                  <date date="2013-10-09" type="ga"/>
+                </dates>
+              </release>
               <release version="51.2">
                 <dates>
                   <date date="2013-05-23" type="ga"/>
