@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2012 IBM and Others. All Rights Reserved.
+# Copyright (C) 2006-2014 IBM and Others. All Rights Reserved.
 
 all:
 	@echo 
@@ -18,9 +18,9 @@ VERSION_LIST=36 38 40 42 44
 ENDIAN_LIST=be le ee
 
 update-mirror:
-	cd mirror && ${FETCH} 'ftp://munnari.oz.au/pub/tzdata*'
-	cd mirror && ${FETCH} 'ftp://munnari.oz.au/pub/tzcode*'
-	svn add mirror/tzdata*.tar.gz mirror/tzcode*.tar.gz
+	cd mirror && ${FETCH} 'ftp://ftp.iana.org/tz/releases/tzdata201*.tar.gz'
+	cd mirror && ${FETCH} 'ftp://ftp.iana.org/tz/releases/tzcode201*.tar.gz'
+	# svn add mirror/tzdata*.tar.gz mirror/tzcode*.tar.gz
 
 update-icu:
 	@for tzver in `ls mirror/tzdata*.tar.gz` ; do \
