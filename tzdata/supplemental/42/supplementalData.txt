@@ -11213,6 +11213,7 @@ supplementalData:table(nofallback){
             "Kaliningrad Standard Time"{"Europe/Kaliningrad"}
             "Korea Standard Time"{"Asia/Seoul"}
             "Libya Standard Time"{"Africa/Tripoli"}
+            "Line Islands Standard Time"{"Pacific/Kiritimati"}
             "Magadan Standard Time"{"Asia/Magadan"}
             "Mauritius Standard Time"{"Indian/Mauritius"}
             "Middle East Standard Time"{"Asia/Beirut"}

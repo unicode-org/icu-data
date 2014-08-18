@@ -9550,6 +9550,7 @@ supplementalData:table(nofallback){
             "Pacific:Fiji"{"Fiji"}
             "Pacific:Guadalcanal"{"Central Pacific"}
             "Pacific:Honolulu"{"Hawaiian"}
+            "Pacific:Kiritimati"{"Line Islands"}
             "Pacific:Port_Moresby"{"West Pacific"}
             "Pacific:Tongatapu"{"Tonga"}
         }
