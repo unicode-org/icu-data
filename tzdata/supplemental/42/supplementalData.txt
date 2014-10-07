@@ -11177,6 +11177,7 @@ supplementalData:table(nofallback){
             "Azores Standard Time"{"Atlantic/Azores"}
             "Bahia Standard Time"{"America/Bahia"}
             "Bangladesh Standard Time"{"Asia/Dhaka"}
+            "Belarus Standard Time"{"Europe/Minsk"}
             "Canada Central Standard Time"{"America/Regina"}
             "Cape Verde Standard Time"{"Atlantic/Cape_Verde"}
             "Caucasus Standard Time"{"Asia/Yerevan"}
@@ -11234,6 +11235,9 @@ supplementalData:table(nofallback){
             "Pakistan Standard Time"{"Asia/Karachi"}
             "Paraguay Standard Time"{"America/Asuncion"}
             "Romance Standard Time"{"Europe/Paris"}
+            "Russia Time Zone 10"{"Asia/Srednekolymsk"}
+            "Russia Time Zone 11"{"Asia/Kamchatka"}
+            "Russia Time Zone 3"{"Europe/Samara"}
             "Russian Standard Time"{"Europe/Moscow"}
             "SA Eastern Standard Time"{"America/Cayenne"}
             "SA Pacific Standard Time"{"America/Bogota"}
@@ -13042,9 +13046,6 @@ supplementalData:table(nofallback){
         "Africa:Harare"{
             canonical{"Africa/Harare"}
             territory{"ZW"}
-            aliases{
-                "CAT",
-            }
         }
         "Africa:Johannesburg"{
             canonical{"Africa/Johannesburg"}
@@ -13101,6 +13102,9 @@ supplementalData:table(nofallback){
         "Africa:Maputo"{
             canonical{"Africa/Maputo"}
             territory{"MZ"}
+            aliases{
+                "CAT",
+            }
         }
         "Africa:Maseru"{
             canonical{"Africa/Maseru"}

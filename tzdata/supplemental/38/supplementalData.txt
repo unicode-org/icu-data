@@ -9499,6 +9499,7 @@ supplementalData:table(nofallback){
             "Asia:Irkutsk"{"North Asia East"}
             "Asia:Jerusalem"{"Israel"}
             "Asia:Kabul"{"Afghanistan"}
+            "Asia:Kamchatka"{"Russia Time Zone 11"}
             "Asia:Karachi"{"Pakistan"}
             "Asia:Katmandu"{"Nepal"}
             "Asia:Krasnoyarsk"{"North Asia"}
@@ -9509,6 +9510,7 @@ supplementalData:table(nofallback){
             "Asia:Seoul"{"Korea"}
             "Asia:Shanghai"{"China"}
             "Asia:Singapore"{"Singapore"}
+            "Asia:Srednekolymsk"{"Russia Time Zone 10"}
             "Asia:Taipei"{"Taipei"}
             "Asia:Tashkent"{"West Asia"}
             "Asia:Tbilisi"{"Georgian"}
@@ -9540,8 +9542,10 @@ supplementalData:table(nofallback){
             "Europe:Kaliningrad"{"Kaliningrad"}
             "Europe:Kiev"{"FLE"}
             "Europe:London"{"GMT"}
+            "Europe:Minsk"{"Belarus"}
             "Europe:Moscow"{"Russian"}
             "Europe:Paris"{"Romance"}
+            "Europe:Samara"{"Russia Time Zone 3"}
             "Europe:Warsaw"{"Central European"}
             "Indian:Mauritius"{"Mauritius"}
             "Pacific:Apia"{"Samoa"}
@@ -10049,9 +10053,6 @@ supplementalData:table(nofallback){
         }
         "Africa:Harare"{
             territory{"ZW"}
-            aliases{
-                "CAT",
-            }
         }
         "Africa:Johannesburg"{
             territory{"ZA"}
@@ -10094,6 +10095,9 @@ supplementalData:table(nofallback){
         }
         "Africa:Maputo"{
             territory{"MZ"}
+            aliases{
+                "CAT",
+            }
         }
         "Africa:Maseru"{
             territory{"LS"}
