@@ -1,4 +1,4 @@
-# Copyright (C) 2006-2014 IBM and Others. All Rights Reserved.
+# Copyright (C) 2006-2015 IBM and Others. All Rights Reserved.
 
 all:
 	@echo 
@@ -74,7 +74,7 @@ icunew/%/zoneinfo64.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 			TXTFILES="$(TZSRC)/zoneinfo.txt supplemental/metazoneInfo.txt supplemental/windowsZones.txt supplemental/42/supplementalData.txt" ; \
 		else \
 			TXTFILES="$(TZSRC)/zoneinfo64.txt supplemental/metaZones.txt supplemental/windowsZones.txt supplemental/timezoneTypes.txt" ; \
-			GENRBOPT="" ; \
+			GENRBOPT="--formatVersion 2" ; \
 		fi ; \
 		for srctxt in $$TXTFILES; do \
 			cp $$srctxt $(@D)/$$icuver ; \
