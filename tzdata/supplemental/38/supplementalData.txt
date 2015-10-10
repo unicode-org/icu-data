@@ -1,6 +1,6 @@
 ﻿// ***************************************************************************
 // *
-// * Copyright (C) 2010-2014 International Business Machines
+// * Copyright (C) 2010-2015 International Business Machines
 // * Corporation and others.  All Rights Reserved.
 // * Tool: com.ibm.icu.dev.tool.cldr.LDML2ICUConverter.java
 // * Source File:<path>/supplementalData.xml
@@ -9463,6 +9463,7 @@ supplementalData:table(nofallback){
             "America:Bahia"{"Bahia"}
             "America:Bogota"{"SA Pacific"}
             "America:Buenos_Aires"{"Argentina"}
+            "America:Cancun"{"Eastern Standard Time (Mexico)"}
             "America:Caracas"{"Venezuela"}
             "America:Cayenne"{"SA Eastern"}
             "America:Chicago"{"Central"}
@@ -10324,6 +10325,9 @@ supplementalData:table(nofallback){
         }
         "America:El_Salvador"{
             territory{"SV"}
+        }
+        "America:Fort_Nelson"{
+            territory{"CA"}
         }
         "America:Fortaleza"{
             territory{"BR"}

@@ -1,6 +1,6 @@
 ﻿// ***************************************************************************
 // *
-// * Copyright (C) 2010-2014 International Business Machines
+// * Copyright (C) 2010-2015 International Business Machines
 // * Corporation and others.  All Rights Reserved.
 // * Tool: com.ibm.icu.dev.tool.cldr.LDML2ICUConverter.java
 // * Source File:<path>/supplementalData.xml
@@ -9649,6 +9649,7 @@ supplementalData:table(nofallback){
             "E. Australia Standard Time"{"Australia/Brisbane"}
             "E. South America Standard Time"{"America/Sao_Paulo"}
             "Eastern Standard Time"{"America/New_York"}
+            "Eastern Standard Time (Mexico)"{"America/Cancun"}
             "Egypt Standard Time"{"Africa/Cairo"}
             "Ekaterinburg Standard Time"{"Asia/Yekaterinburg"}
             "FLE Standard Time"{"Europe/Kiev"}
@@ -11747,6 +11748,9 @@ supplementalData:table(nofallback){
         }
         "America:El_Salvador"{
             territory{"SV"}
+        }
+        "America:Fort_Nelson"{
+            territory{"CA"}
         }
         "America:Fortaleza"{
             territory{"BR"}
