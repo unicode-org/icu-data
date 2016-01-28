@@ -1,6 +1,6 @@
 ﻿// ***************************************************************************
 // *
-// * Copyright (C) 2010-2015 International Business Machines
+// * Copyright (C) 2010-2016 International Business Machines
 // * Corporation and others.  All Rights Reserved.
 // * Tool: com.ibm.icu.dev.tool.cldr.LDML2ICUConverter.java
 // * Source File:<path>/supplementalData.xml
@@ -9408,6 +9408,7 @@ supplementalData:table(nofallback){
             "meta:Pierre_Miquelon_001"{"America/Miquelon"}
             "meta:Pitcairn_001"{"Pacific/Pitcairn"}
             "meta:Ponape_001"{"Pacific/Ponape"}
+            "meta:Pyongyang_001"{"Asia/Pyongyang"}
             "meta:Qyzylorda_001"{"Asia/Qyzylorda"}
             "meta:Reunion_001"{"Indian/Reunion"}
             "meta:Rothera_001"{"Antarctica/Rothera"}
@@ -9481,7 +9482,6 @@ supplementalData:table(nofallback){
             "America:New_York"{"Eastern"}
             "America:Phoenix"{"US Mountain"}
             "America:Regina"{"Canada Central"}
-            "America:Santa_Isabel"{"Pacific Standard Time (Mexico)"}
             "America:Santiago"{"Pacific SA"}
             "America:Sao_Paulo"{"E. South America"}
             "America:St_Johns"{"Newfoundland"}
@@ -9505,6 +9505,7 @@ supplementalData:table(nofallback){
             "Asia:Krasnoyarsk"{"North Asia"}
             "Asia:Magadan"{"Magadan"}
             "Asia:Novosibirsk"{"N. Central Asia"}
+            "Asia:Pyongyang"{"North Korea"}
             "Asia:Rangoon"{"Myanmar"}
             "Asia:Riyadh"{"Arab"}
             "Asia:Seoul"{"Korea"}
@@ -9538,6 +9539,7 @@ supplementalData:table(nofallback){
             "Europe:Berlin"{"W. Europe"}
             "Europe:Bucharest"{"GTB"}
             "Europe:Budapest"{"Central Europe"}
+            "Europe:Chisinau"{"E. Europe"}
             "Europe:Istanbul"{"Turkey"}
             "Europe:Kaliningrad"{"Kaliningrad"}
             "Europe:Kiev"{"FLE"}

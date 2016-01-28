@@ -6,3 +6,6 @@ meta/dtd/trang*.zip
 meta/dtdcache
 meta/icumeta.jar
 meta/lib/*.jar
+tzdata/Makefile.local
+tzdata/mirror/*.tar.gz
+tzdata/supplemental_updater/out

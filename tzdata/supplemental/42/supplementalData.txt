@@ -1,6 +1,6 @@
 ﻿// ***************************************************************************
 // *
-// * Copyright (C) 2010-2015 International Business Machines
+// * Copyright (C) 2010-2016 International Business Machines
 // * Corporation and others.  All Rights Reserved.
 // * Tool: com.ibm.icu.dev.tool.cldr.LDML2ICUConverter.java
 // * Source File:<path>/supplementalData.xml
@@ -11120,6 +11120,7 @@ supplementalData:table(nofallback){
             "meta:Pierre_Miquelon_001"{"America/Miquelon"}
             "meta:Pitcairn_001"{"Pacific/Pitcairn"}
             "meta:Ponape_001"{"Pacific/Ponape"}
+            "meta:Pyongyang_001"{"Asia/Pyongyang"}
             "meta:Qyzylorda_001"{"Asia/Qyzylorda"}
             "meta:Reunion_001"{"Indian/Reunion"}
             "meta:Rothera_001"{"Antarctica/Rothera"}
@@ -11193,6 +11194,7 @@ supplementalData:table(nofallback){
             "Dateline Standard Time"{"Etc/GMT+12"}
             "E. Africa Standard Time"{"Africa/Nairobi"}
             "E. Australia Standard Time"{"Australia/Brisbane"}
+            "E. Europe Standard Time"{"Europe/Chisinau"}
             "E. South America Standard Time"{"America/Sao_Paulo"}
             "Eastern Standard Time"{"America/New_York"}
             "Eastern Standard Time (Mexico)"{"America/Cancun"}
@@ -11229,9 +11231,9 @@ supplementalData:table(nofallback){
             "Newfoundland Standard Time"{"America/St_Johns"}
             "North Asia East Standard Time"{"Asia/Irkutsk"}
             "North Asia Standard Time"{"Asia/Krasnoyarsk"}
+            "North Korea Standard Time"{"Asia/Pyongyang"}
             "Pacific SA Standard Time"{"America/Santiago"}
             "Pacific Standard Time"{"America/Los_Angeles"}
-            "Pacific Standard Time (Mexico)"{"America/Santa_Isabel"}
             "Pakistan Standard Time"{"Asia/Karachi"}
             "Paraguay Standard Time"{"America/Asuncion"}
             "Romance Standard Time"{"Europe/Paris"}
