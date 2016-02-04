@@ -919,9 +919,11 @@ meta/icumeta.jar -text
 meta/input/testing_ibm.xml svneol=native#text/xml
 meta/input/versions.xml svneol=native#text/xml
 meta/scripts/syncicu.py -text
+meta/src/com/ibm/icu/dev/meta/JSONWriter.java svneol=native#text/plain%3Bcharset%3Dutf-8
 meta/xml/icucaps.css svneol=native#text/css
 meta/xml/icucaps.xml svneol=native#text/xml
 meta/xml/icumeta.css svneol=native#text/css
+meta/xml/icumeta.json -text
 meta/xml/icumeta.xml svneol=native#text/xml
 test/icu4j_serialization/ICU_3.6/com.ibm.icu.impl.OlsonTimeZone.dat -text
 test/icu4j_serialization/ICU_3.6/com.ibm.icu.impl.TimeZoneAdapter.dat -text

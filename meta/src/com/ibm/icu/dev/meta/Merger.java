@@ -1,4 +1,4 @@
-// Copyright (C) 2008-2012, International Business Machines Corporation and others.  All Rights Reserved.
+// Copyright (C) 2008-2016, International Business Machines Corporation and others.  All Rights Reserved.
 
 package com.ibm.icu.dev.meta;
 
@@ -29,6 +29,7 @@ public class Merger {
     private static boolean verbose = false;
     private static boolean copyright= true;
     private static String outfile = null;
+    private static String outjson = null;
     
     private static void addSource(String s) {
         sources = sources + " " + s;
@@ -64,6 +65,14 @@ public class Merger {
                 outfile = s.substring(3);
                 if(verbose) System.err.println("# Outfile: "+outfile);
                 continue;
+            } else if(s.startsWith("-j")) {
+            	if(!s.startsWith("-j:")) {
+                    System.err.println("# Err: usage:   -j:outfile.json ");
+                    return;
+            	}
+            	outjson = s.substring(3);
+                if(verbose) System.err.println("# JSON: "+outjson);
+                continue;
             } else if(s.endsWith("/")) {
                 if(verbose) System.err.println("# / adding contents of " +s);
                 File subdir = new File(s);
@@ -97,17 +106,19 @@ public class Merger {
             out = System.out;
             if(verbose) System.err.println("# Write <stdout>");
         }
-//        try {
-             java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
-                     out);
-             String copy = "";
-             if(copyright) copy = ("<!-- Copyright (c) "+Calendar.getInstance().get(Calendar.YEAR)+" IBM Corporation and Others, All Rights Reserved. -->\n");
-             LDMLUtilities.printDOMTree(full, new PrintWriter(writer),copy+"\n<!-- This file was generated from: "+sources+" -->\n<!DOCTYPE icuInfo SYSTEM \"http://icu-project.org/dtd/icumeta.dtd\">\n",null); //
-             writer.flush();
-//        } catch (IOException e) {
-//            Syste
-//        }
+         java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(
+                 out);
+         String copy = "";
+         String copyin = null;
+         if(copyright) {
+        	 copyin = "Copyright (c) "+Calendar.getInstance().get(Calendar.YEAR)+" IBM Corporation and Others, All Rights Reserved.";
+        	 copy = "<!-- " + copyin + " -->\n";
+         }
+         LDMLUtilities.printDOMTree(full, new PrintWriter(writer),copy+"\n<!-- This file was generated from: "+sources+" -->\n<!DOCTYPE icuInfo SYSTEM \"http://icu-project.org/dtd/icumeta.dtd\">\n",null); //
+         writer.flush();
           if(fos!=null) fos.close();
+          
+          JSONWriter.write(full, outjson, copyin, sources);
     }
     
     

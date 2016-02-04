@@ -3,7 +3,7 @@
 <!--
 /*
 *******************************************************************************
-* Copyright (C) 2008-2012, International Business Machines Corporation and    *
+* Copyright (C) 2008-2016, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 * This is the ant build file for ICU Meta.
@@ -28,6 +28,7 @@
     <property name="xml.dir" value="xml" />
     <property name="xml-base.file" value="icumeta.xml" />
     <property name="xml.file" value="${xml.dir}/${xml-base.file}" />
+    <property name="json.file" value="${xml.dir}/icumeta.json" />
     <property name="input.dir" value="input" />
     <property name="lib.dir" value="lib" />
     <property name="jar.file" value="icumeta.jar" />
@@ -110,6 +111,7 @@
     <java classname="${merger.class}" classpathref="build.classpath">
         <arg value="-v"/>
         <arg value="-o:${xml.file}"/>
+        <arg value="-j:${json.file}"/>
         <arg value="${input.dir}/"/> <!--  load all .xml files from there -->
         <sysproperty key="CLDR_DTD_CACHE" value="${dtdcache.dir}"/>
         <sysproperty key="CLDR_DTD_OVERRIDE" value="${dtd.dir}"/>
