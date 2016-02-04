@@ -112,7 +112,7 @@ public class Merger {
          String copyin = null;
          if(copyright) {
         	 copyin = "Copyright (c) "+Calendar.getInstance().get(Calendar.YEAR)+" IBM Corporation and Others, All Rights Reserved.";
-        	 copy = "<!-- " + copyin + " -->\n";
+        	 copy = "<!-- " + copyin + " \n  Docs: " + DOCS_URL + " \n metadata version: " + METAVERSION + "\n  -->\n";
          }
          LDMLUtilities.printDOMTree(full, new PrintWriter(writer),copy+"\n<!-- This file was generated from: "+sources+" -->\n<!DOCTYPE icuInfo SYSTEM \"http://icu-project.org/dtd/icumeta.dtd\">\n",null); //
          writer.flush();
@@ -125,6 +125,14 @@ public class Merger {
     
         // from LDMLUtilities
     static final boolean DEBUG_MERGE = false;
+    /**
+     * URL of metadata docs
+     */
+	public static final String DOCS_URL = "http://icu-project.org/xml/README.md";
+	/**
+	 * Version # of metadata
+	 */
+	public static final int METAVERSION = 1;
     /**
      *   Resolved Data File
      *   <p>To produce fully resolved locale data file from CLDR for a locale ID L, you start with root, and 

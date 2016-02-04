@@ -17,7 +17,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class JSONWriter {
-
 	/**
 	 * 
 	 * @param full - full contents
@@ -32,7 +31,8 @@ public class JSONWriter {
 			try(final OutputStreamWriter osw = new OutputStreamWriter(fos, Charset.forName("UTF-8"))) {
 				JsonObject j = new JsonObject();
 				j.addProperty("//", copyin);
-				j.addProperty("v", 0);
+				j.addProperty("docs", Merger.DOCS_URL);
+				j.addProperty("metaversion", Merger.METAVERSION);
 				
 				j.add("projects", getProjects(full));
 				
@@ -70,16 +70,28 @@ public class JSONWriter {
 	}
 
 	private static void extractReleases(final JsonObject p, final Node sitem) {
+        final JsonObject finalReleases = new JsonObject();
+        final JsonObject draftReleases = new JsonObject();
+        
 		final NodeList releases = sitem.getChildNodes();
 		for(int si=0;si< releases.getLength();si++) {
 			final Node release = releases.item(si);
 			
-			if(release.getNodeName().equals("release") 
-					&& release.getAttributes().getNamedItem("draft") == null) {
-				extractRelease(p, sitem, releases, release);
+			if(release.getNodeName().equals("release")) {
+                JsonObject addTo = finalReleases;
+                if(release.getAttributes().getNamedItem("draft") != null) {
+                    addTo = draftReleases;
+                }
+				extractRelease(addTo, sitem, releases, release);
 			}
 			
 		}
+        if(!finalReleases.entrySet().isEmpty()) {
+            p.add("releases", finalReleases);
+        }
+        if(!draftReleases.entrySet().isEmpty()) {
+            p.add("proposedReleases", draftReleases);
+        }
 	}
 
 	private static void extractRelease(final JsonObject p, final Node sitem, final NodeList releases,
@@ -95,7 +107,9 @@ public class JSONWriter {
 		for(int ssi=0;ssi< stuff.getLength();ssi++) {
 			final Node stuff2 = stuff.item(ssi);
 			if(stuff2.getNodeName().equals("dates")) {
-				extractDates(stuff2, r);
+                JsonObject d = new JsonObject();
+				extractDates(stuff2, d);
+                r.add("dates", d);
 			} else {
 //				System.err.println(stuff2.getNodeName());
 			}

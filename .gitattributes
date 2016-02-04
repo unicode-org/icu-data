@@ -920,6 +920,7 @@ meta/input/testing_ibm.xml svneol=native#text/xml
 meta/input/versions.xml svneol=native#text/xml
 meta/scripts/syncicu.py -text
 meta/src/com/ibm/icu/dev/meta/JSONWriter.java svneol=native#text/plain%3Bcharset%3Dutf-8
+meta/xml/README.md -text
 meta/xml/icucaps.css svneol=native#text/css
 meta/xml/icucaps.xml svneol=native#text/xml
 meta/xml/icumeta.css svneol=native#text/css
