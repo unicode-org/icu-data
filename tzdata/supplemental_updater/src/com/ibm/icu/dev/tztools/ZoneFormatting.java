@@ -1,3 +1,6 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
+
 /*
  *******************************************************************************
  * Copyright (C) 2012, International Business Machines Corporation and         *
@@ -11,14 +14,14 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
-import com.ibm.icu.impl.ICUResourceBundle;
+import com.ibm.icu.impl.ICUData;
 import com.ibm.icu.util.TimeZone;
 import com.ibm.icu.util.UResourceBundle;
 import com.ibm.icu.util.UResourceBundleIterator;
@@ -37,7 +40,7 @@ public class ZoneFormatting {
 
     private void load() {
         UResourceBundle bundle = UResourceBundle.getBundleInstance(
-                ICUResourceBundle.ICU_BASE_NAME, "timezoneTypes");
+                ICUData.ICU_BASE_NAME, "timezoneTypes");
 
         // First, collect alias data
         Map<String, SortedSet<String>> aliasMap = new HashMap<String, SortedSet<String>>();

@@ -1,3 +1,6 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
+
 /*
  *******************************************************************************
  * Copyright (C) 2012, International Business Machines Corporation and         *
@@ -37,7 +40,6 @@ public class SupplementalDataUpdater {
             templateReader = new BufferedReader(new InputStreamReader(new FileInputStream(templateFile), "UTF-8"));
         } catch (IOException e) {
             System.err.println("Cannot open " + templateFilePath + " to read");
-            return;
         }
 
         PrintWriter outPrintWriter = null;
@@ -45,41 +47,46 @@ public class SupplementalDataUpdater {
             outPrintWriter = new PrintWriter(outFile, "UTF-8");
         } catch (IOException e) {
             System.err.println("Cannot open " + outFilePath + " to write");
-            return;
         }
 
-        // Read and write
-        try {
-            while (true) {
-                String line = templateReader.readLine();
-                if (line == null) {
-                    break;
-                }
-                String text = line.trim();
-                if (text.startsWith(MARKER) && text.endsWith(MARKER)) {
-                    String type = text.substring(1, text.length() - 1);
-                    String baseIndent = line.substring(0, line.indexOf(MARKER));
-
-                    if (type.equals("mapTimezones")) {
-                        MapTimezones mptz = new MapTimezones(ver);
-                        mptz.write(outPrintWriter, baseIndent);
-                    } else if (type.equals("metazoneMappings")) {
-                        MetazoneMappings mzmp = new MetazoneMappings();
-                        mzmp.write(outPrintWriter, baseIndent);
-                    } else if (type.equals("zoneFormatting")) {
-                        ZoneFormatting zfmt = new ZoneFormatting(ver);
-                        zfmt.write(outPrintWriter, baseIndent);
-                    } else {
-                        throw new UnsupportedOperationException("Unknown type @" + type + "@");
+        if (templateReader != null && outPrintWriter != null) {
+            // Read and write
+            try {
+                while (true) {
+                    String line = templateReader.readLine();
+                    if (line == null) {
+                        break;
                     }
-                } else {
-                    outPrintWriter.println(line);
+                    String text = line.trim();
+                    if (text.startsWith(MARKER) && text.endsWith(MARKER)) {
+                        String type = text.substring(1, text.length() - 1);
+                        String baseIndent = line.substring(0, line.indexOf(MARKER));
+
+                        if (type.equals("mapTimezones")) {
+                            MapTimezones mptz = new MapTimezones(ver);
+                            mptz.write(outPrintWriter, baseIndent);
+                        } else if (type.equals("metazoneMappings")) {
+                            MetazoneMappings mzmp = new MetazoneMappings();
+                            mzmp.write(outPrintWriter, baseIndent);
+                        } else if (type.equals("zoneFormatting")) {
+                            ZoneFormatting zfmt = new ZoneFormatting(ver);
+                            zfmt.write(outPrintWriter, baseIndent);
+                        } else {
+                            throw new UnsupportedOperationException("Unknown type @" + type + "@");
+                        }
+                    } else {
+                        outPrintWriter.println(line);
+                    }
                 }
+            } catch (Exception e) {
+                System.out.println("Exception " + e.getMessage());
             }
-        } catch (Exception e) {
-            System.out.println("Exception " + e.getMessage());
-        } finally {
+        }
+
+        if (outPrintWriter != null) {
             outPrintWriter.close();
+        }
+        if (templateReader != null) {
             try {
                 templateReader.close();
             } catch (IOException e) {

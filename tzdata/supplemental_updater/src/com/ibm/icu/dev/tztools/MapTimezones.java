@@ -1,3 +1,6 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
+
 /*
  *******************************************************************************
  * Copyright (C) 2012, International Business Machines Corporation and         *
@@ -12,7 +15,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import com.ibm.icu.impl.ICUResourceBundle;
+import com.ibm.icu.impl.ICUData;
 import com.ibm.icu.util.UResourceBundle;
 import com.ibm.icu.util.UResourceBundleIterator;
 
@@ -33,7 +36,7 @@ public class MapTimezones {
 
     private SortedMap<String, SortedMap<String, String>> loadMapZones(String parent) {
         UResourceBundle bundle = UResourceBundle.getBundleInstance(
-                ICUResourceBundle.ICU_BASE_NAME, parent);
+                ICUData.ICU_BASE_NAME, parent);
         UResourceBundle mapTimezones = bundle.get("mapTimezones");
         UResourceBundleIterator itr = mapTimezones.getIterator();
 
