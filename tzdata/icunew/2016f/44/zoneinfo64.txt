@@ -1,9 +1,9 @@
 //---------------------------------------------------------
-// Copyright (C) 2003-2016, International Business Machines
-// Corporation and others.  All Rights Reserved.
+// (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 //---------------------------------------------------------
 // Build tool:  tz2icu
-// Build date:  Tue Jul  5 15:02:27 2016
+// Build date:  Tue Jul  5 18:13:18 2016
 // tz database: ftp://ftp.iana.org/tz/
 // tz version:  2016f
 // ICU version: 58.0.1
