@@ -1,3 +1,6 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
+
 // Copyright (c) 2006 IBM and Others. All Rights Reserved
 
 This directory contains updated zoneinfo.txt, binary versions, and a Makefile which will

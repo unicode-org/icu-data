@@ -1,3 +1,6 @@
+# (C) 2016 and later: Unicode, Inc. and others.
+# License & terms of use: http://www.unicode.org/copyright.html#License
+
 # Copyright (C) 2006-2015 IBM and Others. All Rights Reserved.
 
 all:

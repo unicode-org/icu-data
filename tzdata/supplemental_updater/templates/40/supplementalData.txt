@@ -1,17 +1,5 @@
-﻿// ***************************************************************************
-// *
-// * Copyright (C) 2010-2016 International Business Machines
-// * Corporation and others.  All Rights Reserved.
-// * Tool: com.ibm.icu.dev.tool.cldr.LDML2ICUConverter.java
-// * Source File:<path>/supplementalData.xml
-// *
-// ***************************************************************************
-//
-// Note: This file was originally generated from CLDR supplementalData.xml.
-//       Because the version of supplementalData.xml is no longer maintained,
-//       we edit this file manually to make necessary changes for new time zone
-//       related changes.
-//
+﻿// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 supplementalData:table(nofallback){
     /**
      * Map from ISO 3166 country codes to ISO 4217 currency codes 
