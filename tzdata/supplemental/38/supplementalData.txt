@@ -9503,6 +9503,7 @@ supplementalData:table(nofallback){
             "Asia:Krasnoyarsk"{"North Asia"}
             "Asia:Magadan"{"Magadan"}
             "Asia:Novosibirsk"{"N. Central Asia"}
+            "Asia:Omsk"{"Omsk"}
             "Asia:Pyongyang"{"North Korea"}
             "Asia:Rangoon"{"Myanmar"}
             "Asia:Riyadh"{"Arab"}
@@ -11457,7 +11458,7 @@ supplementalData:table(nofallback){
             territory{"BA"}
         }
         "Europe:Simferopol"{
-            territory{"RU"}
+            territory{"UA"}
         }
         "Europe:Skopje"{
             territory{"MK"}

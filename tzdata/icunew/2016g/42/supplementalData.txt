@@ -11231,6 +11231,7 @@ supplementalData:table(nofallback){
             "North Asia East Standard Time"{"Asia/Irkutsk"}
             "North Asia Standard Time"{"Asia/Krasnoyarsk"}
             "North Korea Standard Time"{"Asia/Pyongyang"}
+            "Omsk Standard Time"{"Asia/Omsk"}
             "Pacific SA Standard Time"{"America/Santiago"}
             "Pacific Standard Time"{"America/Los_Angeles"}
             "Pacific Standard Time (Mexico)"{"America/Tijuana"}
@@ -14813,7 +14814,7 @@ supplementalData:table(nofallback){
         }
         "Europe:Simferopol"{
             canonical{"Europe/Simferopol"}
-            territory{"RU"}
+            territory{"UA"}
         }
         "Europe:Skopje"{
             canonical{"Europe/Skopje"}

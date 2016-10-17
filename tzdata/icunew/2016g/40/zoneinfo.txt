@@ -1,9 +1,9 @@
 //---------------------------------------------------------
-// (C) 2016 and later: Unicode, Inc. and others.
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html#License
 //---------------------------------------------------------
 // Build tool:  tz2icu
-// Build date:  Wed Sep 28 21:48:54 2016
+// Build date:  Mon Oct 17 13:29:16 2016
 // tz database: ftp://ftp.iana.org/tz/
 // tz version:  2016g
 // ICU version: 58.1
@@ -3116,7 +3116,7 @@ zoneinfo:table(nofallback) {
   RE:intvector { 520 } //R#186
   RO:intvector { 444 } //R#187
   RS:intvector { 440 } //R#188
-  RU:intvector { 240, 249, 254, 271, 277, 282, 284, 290, 295, 296, 297, 307, 312, 321, 326, 328, 329, 331, 437, 456, 458, 468, 476, 479, 486, 492, 626 } //R#189
+  RU:intvector { 240, 249, 254, 271, 277, 282, 284, 290, 295, 296, 297, 307, 312, 321, 326, 328, 329, 331, 437, 456, 458, 468, 476, 486, 492, 626 } //R#189
   RW:intvector { 34 } //R#190
   SA:intvector { 305 } //R#191
   SB:intvector { 559, 593 } //R#192
@@ -3155,7 +3155,7 @@ zoneinfo:table(nofallback) {
   TV:intvector { 556 } //R#225
   TW:intvector { 313, 591 } //R#226
   TZ:intvector { 23 } //R#227
-  UA:intvector { 457, 487, 495 } //R#228
+  UA:intvector { 457, 479, 487, 495 } //R#228
   UG:intvector { 32 } //R#229
   UM:intvector { 562, 568, 586 } //R#230
   US:intvector { 4, 59, 60, 80, 89, 98, 109, 110, 117, 131, 132, 133, 134, 135, 136, 137, 138, 139, 144, 145, 146, 147, 151, 152, 162, 164, 173, 175, 177, 178, 179, 184, 203, 204, 222, 377, 507, 539, 541, 544, 561, 610, 611, 612, 613, 614, 615, 616, 617, 618, 619, 620, 621 } //R#231
