@@ -717,7 +717,6 @@ windowsZones:table(nofallback){
         }
         "W. Australia Standard Time"{
             001{"Australia/Perth"}
-            AQ{"Antarctica/Casey"}
             AU{"Australia/Perth"}
         }
         "W. Central Africa Standard Time"{
