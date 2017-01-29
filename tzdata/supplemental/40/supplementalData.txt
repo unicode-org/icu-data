@@ -12631,19 +12631,11 @@ supplementalData:table(nofallback){
                 "Etc/GMT-0",
                 "Etc/GMT0",
                 "Etc/Greenwich",
-                "Etc/UCT",
-                "Etc/UTC",
-                "Etc/Universal",
-                "Etc/Zulu",
                 "GMT",
                 "GMT+0",
                 "GMT-0",
                 "GMT0",
                 "Greenwich",
-                "UCT",
-                "UTC",
-                "Universal",
-                "Zulu",
             }
         }
         "Etc:GMT+1"{
@@ -12732,6 +12724,18 @@ supplementalData:table(nofallback){
         }
         "Etc:GMT-9"{
             territory{"001"}
+        }
+        "Etc:UTC"{
+            territory{"001"}
+            aliases{
+                "Etc/UCT",
+                "Etc/Universal",
+                "Etc/Zulu",
+                "UCT",
+                "UTC",
+                "Universal",
+                "Zulu",
+            }
         }
         "Etc:Unknown"{
             territory{"001"}

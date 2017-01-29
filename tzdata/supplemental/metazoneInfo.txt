@@ -3152,6 +3152,13 @@ metazoneInfo:table(nofallback){
                 "9999-12-31 23:59",
             }
         }
+        "Etc:GMT"{
+            mz0{
+                "GMT",
+                "1970-01-01 00:00",
+                "9999-12-31 23:59",
+            }
+        }
         "Europe:Amsterdam"{
             mz0{
                 "Europe_Central",
