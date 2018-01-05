@@ -1,3 +1,5 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
 *   Copyright (C) 2007-2007, International Business Machines
@@ -5,9 +7,14 @@
 *******************************************************************************
 */
 
+#ifndef _RPTP_MAP
+#define _RPTP_MAP
+
 #include "unicode/utypes.h"
 #include "hash.h"
 #include "uvector.h"
+
+using namespace icu;
 
 struct FilenameMapping;
 
@@ -49,3 +56,5 @@ private:
 };
 
 U_CFUNC UBool getCCSIDValues(uint32_t value, uint16_t *unicodeCCSID, uint16_t *ccsid);
+
+#endif

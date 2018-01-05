@@ -908,6 +908,7 @@ charset/source/ucmtools/rptp-history.txt -text
 charset/source/ucmtools/rptp2ucm.cpp -text
 charset/source/ucmtools/rptp2ucm.sln -text
 charset/source/ucmtools/rptp2ucm.vcproj -text
+charset/source/ucmtools/rptp2ucm_single.cpp svneol=native#text/plain%3Bcharset%3Dutf-8
 charset/source/ucmtools/rptp_map.cpp -text
 charset/source/ucmtools/rptp_map.h -text
 meta/.classpath -text

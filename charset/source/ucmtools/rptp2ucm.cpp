@@ -1,3 +1,5 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
 *
@@ -1254,7 +1256,7 @@ writeUCM(FILE *f, const char *ucmname, const char *rpname, const char *tpname) {
         }
     }
 
-    ucm_processStates(states);
+    ucm_processStates(states, false);
 
     /* separate extension mappings out of base table, and other checks */
     if(!ucm_separateMappings(fromUFile, is_0xe_0xf_Stateful)) {
