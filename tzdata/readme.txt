@@ -15,9 +15,11 @@ automatically fetch new tzdata and compile it.
 
 2. if icu-config isn't on your PATH, you can set ICU_CONFIG in Makefile.local to the address of your installed icu-config
 
-3. now run:
-3a.  "make update" to fetch latest tzdata via FTP, and build it
-3b.  or just "make update-mirror" to only fetch via FTP
-3c.  or just "make update-icu" to only update the icu4c with any tzdata in your mirror directory
+3. put updated updated metaZones.txt, timezoneTyes.txt amd wondowsZones.txt (also files for older ICU version) under supplemental directory
 
-4.  run "svn commit" to check the results back in.
+4. now run:
+4a.  "make TZDBVER=<version> update" to fetch latest tzdata/code specified by <version> (e.g. 2018b) via FTP, and build it
+4b.  or just "make TZDBVER=<version> update-mirror" to only fetch via FTP
+4c.  or just "make TZDBVER=<version> update-icu" to only update the icu4c with any tzdata in your mirror directory
+
+5. add files generated under icunew/<version> and supplemental files to svn

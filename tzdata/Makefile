@@ -21,11 +21,23 @@ VERSION_LIST=36 38 40 42 44
 ENDIAN_LIST=be le ee
 
 update-mirror:
+ifndef TZDBVER
+	$(error TZDBVER is not defined.)
+endif
+	cd mirror && ${FETCH} 'ftp://ftp.iana.org/tz/releases/tzdata${TZDBVER}.tar.gz'
+	cd mirror && ${FETCH} 'ftp://ftp.iana.org/tz/releases/tzcode${TZDBVER}.tar.gz'
+
+update-icu:
+	@echo 'Processing ${TZDBVER}'
+	$(MAKE) icunew/${TZDBVER}/zoneinfo64.txt; \
+	$(MAKE) icu/${TZDBVER}/zoneinfo.txt; \
+
+update-mirror-all:
 	cd mirror && ${FETCH} 'ftp://ftp.iana.org/tz/releases/tzdata201*.tar.gz'
 	cd mirror && ${FETCH} 'ftp://ftp.iana.org/tz/releases/tzcode201*.tar.gz'
 	# svn add mirror/tzdata*.tar.gz mirror/tzcode*.tar.gz
 
-update-icu:
+update-icu-all:
 	@for tzver in `ls mirror/tzdata*.tar.gz` ; do \
 		tzver=`basename $$tzver .tar.gz | cut -c7-`; \
 		tzyear=`echo $$tzver | cut -c1-4`; \
@@ -99,7 +111,7 @@ icunew/%/zoneinfo64.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	done
 
 	find $(@D)/* -type f
-	svn add $(@D)
+	# svn add $(@D)
 	@echo "## Build OK."
 
 ifeq (BUILD_OLD_STRUCTURE, true)
@@ -169,11 +181,13 @@ endif
 	@rm $(@D)/42/supplementalData.res
 
 	find $(@D)/* -type f
-	svn add $(@D)
+	# svn add $(@D)
 else
 icu/%/zoneinfo.txt:
 	# Do nothing
 endif
+
+update-all: update-mirror-all update-icu-all
 
 update: update-mirror update-icu
 
