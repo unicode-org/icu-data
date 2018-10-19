@@ -11248,6 +11248,7 @@ supplementalData:table(nofallback){
             "Saint Pierre Standard Time"{"America/Miquelon"}
             "Sakhalin Standard Time"{"Asia/Sakhalin"}
             "Samoa Standard Time"{"Pacific/Apia"}
+            "Sao Tome Standard Time"{"Africa/Sao_Tome"}
             "Saratov Standard Time"{"Europe/Saratov"}
             "Singapore Standard Time"{"Asia/Singapore"}
             "South Africa Standard Time"{"Africa/Johannesburg"}

@@ -9443,6 +9443,7 @@ supplementalData:table(nofallback){
             "Africa:Khartoum"{"Sudan"}
             "Africa:Lagos"{"W. Central Africa"}
             "Africa:Nairobi"{"E. Africa"}
+            "Africa:Sao_Tome"{"Sao Tome"}
             "Africa:Tripoli"{"Libya"}
             "Africa:Windhoek"{"Namibia"}
             "America:Adak"{"Aleutian"}
