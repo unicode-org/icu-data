@@ -1,11 +1,13 @@
 <!--
+* © 2018 and later: Unicode, Inc. and others.
+* License & terms of use: http://www.unicode.org/copyright.html#License
 *******************************************************************************
 * Copyright (C) 2009-2013, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 -->
 <project name="tzu" default="build" basedir=".">
-    <property name="tzdata.ver" value="2012j"/>
+    <property name="tzdata.ver" value="2018g"/>
 
     <property name="tzu.jar.file" value="icutzu.jar"/>
     <property name="tzu.src.zip.file" value="icutzu-src.zip"/>
@@ -30,11 +32,11 @@
         <mkdir dir="${bin.dir}"/>
         <javac srcdir="${src.dir}"
                 destdir="${bin.dir}"
-                source="1.5"
-                target="1.5"
+                source="1.7"
+                target="1.7"
                 debug="on"
                 deprecation="off"
-                encoding="ascii"/>
+                encoding="utf-8"/>
     </target>
 
     <target name="jar" depends="compile" description="Create ICUTZU jar file">
