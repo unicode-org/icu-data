@@ -1,3 +1,5 @@
+// © 2018 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 /*
  * ******************************************************************************
  * Copyright (C) 2007-2010, International Business Machines Corporation and others.
@@ -324,6 +326,7 @@ class ResultModel extends AbstractTableModel {
                 String line = icuFile.getFile().getPath() + '\t' + icuFile.getTZVersion();
                 logger.printlnToScreen(line);
                 writer.write(line);
+                writer.newLine();
             }
         } catch (FileNotFoundException ex) {
             resultListError("Could not create the " + resultListFilename + " file.");
