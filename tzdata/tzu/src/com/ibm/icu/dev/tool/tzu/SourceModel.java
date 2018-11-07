@@ -1,3 +1,5 @@
+// © 2018 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 /*
  * ******************************************************************************
  * Copyright (C) 2007-2013, International Business Machines Corporation and others.
@@ -12,11 +14,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.security.SecureRandom;
 import java.util.Iterator;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.text.MutableAttributeSet;
@@ -42,9 +46,14 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     public static URL TZ_BASE_URL = null;
 
     /**
+     * The URL string of the ICU Timezone Repository Tree.
+     */
+    public static final String TZ_TREE_BASE_URLSTRING = "https://github.com/unicode-org/icu-data/tree/master/tzdata/icunew";
+
+    /**
      * The URL string of the ICU Timezone Repository.
      */
-    public static final String TZ_BASE_URLSTRING = "http://source.icu-project.org/repos/icu/data/trunk/tzdata/icunew";
+    public static final String TZ_DATA_BASE_URLSTRING = "https://github.com/unicode-org/icu-data/raw/master/tzdata/icunew";
 
     /**
      * The readable name of the local timezone resource file, ie. "Local Copy" or "Local Copy
@@ -77,6 +86,11 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     private static final String TZ_VERSION_PATTERN = "\\d{4}[a-z]";
 
     /**
+     * The tz link pattern
+     */
+    private static final String TZ_VERSION_LINK_PATTERN = "/unicode-org/icu-data/tree/master/tzdata/icunew/\\d{4}[a-z]";
+
+    /**
      * The current logger.
      */
     private Logger logger;
@@ -106,7 +120,7 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
         // (this is where they get initialized)
         if (TZ_BASE_URL == null) {
             try {
-                TZ_BASE_URL = new URL(TZ_BASE_URLSTRING);
+                TZ_BASE_URL = new URL(TZ_TREE_BASE_URLSTRING);
 
                 SourceModel.tzresLocalDir = tzresLocalDir;
                 File zoneinfoFile = new File(tzresLocalDir, "44/be/zoneinfo64.res");
@@ -141,47 +155,45 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     public void findSources() {
         BufferedReader reader = null;
         try {
-            URLConnection con = TZ_BASE_URL.openConnection();
-            con.setRequestProperty("user-agent", System.getProperty("http.agent"));
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            sc.init(null, null, new SecureRandom());
+            HttpsURLConnection con = (HttpsURLConnection) TZ_BASE_URL.openConnection();
+            con.setSSLSocketFactory(sc.getSocketFactory());
             reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
             // create an html callback function to parse through every list item
-            // (every list item
+
+            // For each tz version folder, GitHub page includes <a> tag as below:
+            //
+            // <a class="js-navigation-open" title="2018g" id="92e390d5e31712cf744f6a83ec47d108-3a330ae226ed5849ec8a826633009724def935f4"
+            //    href="/unicode-org/icu-data/tree/master/tzdata/icunew/2018g">2018g</a>
+            //
+            // This ParserCallback look for <a> tag with title matching tzdata version string pattern and
+            // href matching tzdata folder link pattern.
+            //
+            // URL for tzdata resource files are not /tree url. To get the content, URL path /tree must be replaced
+            // with /raw. For example, https://github.com/unicode-org/icu-data/raw/master/tzdata/icunew/2018e/44/be/zoneinfo64.res
+
+
             HTMLEditorKit.ParserCallback htmlCallback = new HTMLEditorKit.ParserCallback() {
-                private boolean listItem = false;
-
-                public void handleEndTag(HTML.Tag tag, int pos) {
-                    if (tag == HTML.Tag.LI)
-                        listItem = false;
-                }
-
                 public void handleStartTag(HTML.Tag tag, MutableAttributeSet attr, int pos) {
-                    if (tag == HTML.Tag.DIR) {
-                        // Current Trac version uses <dir> for sub directories
-                        String name = attr.getAttribute(HTML.Attribute.NAME).toString();
-                        if (name != null && name.matches(TZ_VERSION_PATTERN)) {
-                            addVersion(name);
+                    if (tag == HTML.Tag.A) {
+                        Object titleAttr = attr.getAttribute(HTML.Attribute.TITLE);
+                        Object hrefAttr = attr.getAttribute(HTML.Attribute.HREF);
+                        if (titleAttr != null && hrefAttr != null) {
+                            String ver = titleAttr.toString();
+                            String verLink = hrefAttr.toString();
+                            if (ver.matches(TZ_VERSION_PATTERN) && verLink.matches(TZ_VERSION_LINK_PATTERN)) {
+                                addVersion(ver);
+                            }
                         }
-                    } else if (tag == HTML.Tag.LI) {
-                        // Older Trac version uses <li> for sub directories
-                        listItem = true;
-                    }
-                }
-
-                public void handleText(char[] data, int pos) {
-                    if (listItem) {
-                        String str = new String(data);
-                        if (str.charAt(str.length() - 1) == '/')
-                            str = str.substring(0, str.length() - 1);
-                        if (str.matches(TZ_VERSION_PATTERN))
-                            addVersion(str);
                     }
                 }
 
                 private void addVersion(String tzver) {
                     try {
                         // add the new item to the map
-                        urlMap.put(tzver, new URL(TZ_BASE_URLSTRING + "/" + tzver));
+                        urlMap.put(tzver, new URL(TZ_DATA_BASE_URLSTRING + "/" + tzver));
 
                         // update the selected item and fire off an
                         // event
@@ -200,7 +212,7 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
             };
 
             new ParserDelegator().parse(reader, htmlCallback, false);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             // cannot connect to the repository -- use local version only.
             String message = "Failed to connect to the ICU Timezone Repository at "
                     + TZ_BASE_URL.toString()

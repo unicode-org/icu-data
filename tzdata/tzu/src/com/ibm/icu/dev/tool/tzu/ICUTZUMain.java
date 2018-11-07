@@ -1,3 +1,5 @@
+// © 2018 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 /*
  * ******************************************************************************
  * Copyright (C) 2007-2013, International Business Machines Corporation and others.
@@ -15,7 +17,7 @@ import java.util.Locale;
  */
 public class ICUTZUMain {
 
-    private static final String TZU_VER = "1.5.0";
+    private static final String TZU_VER = "1.6.0";
 
     /**
      * Argument number for the backup directory.

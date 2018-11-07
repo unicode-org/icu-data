@@ -1,4 +1,6 @@
 @echo off
+rem Copyright (C) 2018 and later: Unicode, Inc. and others.
+rem License & terms of use: http://www.unicode.org/copyright.html
 rem *******************************************************************************
 rem * Copyright (C) 2007-2010 International Business Machines Corporation and         *
 rem * others. All Rights Reserved.                                                *
