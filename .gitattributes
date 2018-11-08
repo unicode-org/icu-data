@@ -7909,3 +7909,7 @@ tzdata/tzu/icu4j-core.jar -text
 tzdata/tzu/license.html svneol=native#text/html
 tzdata/tzu/manifest.stub -text
 tzdata/tzu/readme.html svneol=native#text/html
+
+*.bat   eol=crlf
+*.cmd   eol=crlf
+*.sh    eol=lf
