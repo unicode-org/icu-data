@@ -48,12 +48,12 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     /**
      * The URL string of the ICU Timezone Repository Tree.
      */
-    public static final String TZ_TREE_BASE_URLSTRING = "https://github.com/unicode-org/icu-data/tree/master/tzdata/icunew";
+    public static final String TZ_TREE_BASE_URLSTRING = "https://github.com/unicode-org/icu-data/tree/main/tzdata/icunew";
 
     /**
      * The URL string of the ICU Timezone Repository.
      */
-    public static final String TZ_DATA_BASE_URLSTRING = "https://github.com/unicode-org/icu-data/raw/master/tzdata/icunew";
+    public static final String TZ_DATA_BASE_URLSTRING = "https://github.com/unicode-org/icu-data/raw/main/tzdata/icunew";
 
     /**
      * The readable name of the local timezone resource file, ie. "Local Copy" or "Local Copy
@@ -88,7 +88,7 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
     /**
      * The tz link pattern
      */
-    private static final String TZ_VERSION_LINK_PATTERN = "/unicode-org/icu-data/tree/master/tzdata/icunew/\\d{4}[a-z]";
+    private static final String TZ_VERSION_LINK_PATTERN = "/unicode-org/icu-data/tree/main/tzdata/icunew/\\d{4}[a-z]";
 
     /**
      * The current logger.
@@ -166,13 +166,13 @@ class SourceModel extends AbstractListModel implements ComboBoxModel {
             // For each tz version folder, GitHub page includes <a> tag as below:
             //
             // <a class="js-navigation-open" title="2018g" id="92e390d5e31712cf744f6a83ec47d108-3a330ae226ed5849ec8a826633009724def935f4"
-            //    href="/unicode-org/icu-data/tree/master/tzdata/icunew/2018g">2018g</a>
+            //    href="/unicode-org/icu-data/tree/main/tzdata/icunew/2018g">2018g</a>
             //
             // This ParserCallback look for <a> tag with title matching tzdata version string pattern and
             // href matching tzdata folder link pattern.
             //
             // URL for tzdata resource files are not /tree url. To get the content, URL path /tree must be replaced
-            // with /raw. For example, https://github.com/unicode-org/icu-data/raw/master/tzdata/icunew/2018e/44/be/zoneinfo64.res
+            // with /raw. For example, https://github.com/unicode-org/icu-data/raw/main/tzdata/icunew/2018e/44/be/zoneinfo64.res
 
 
             HTMLEditorKit.ParserCallback htmlCallback = new HTMLEditorKit.ParserCallback() {
