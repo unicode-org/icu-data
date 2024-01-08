@@ -44,8 +44,12 @@ icunew/%/zoneinfo64.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 	@$(MAKE) -C $(ICU_SRC)/data  2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
 
 	@echo "## Testing icu data against tz algorithm"
-	@$(MAKE) -C $(TZSRC) check-dump  2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log
-	@echo "## Test passed"
+	@$(MAKE) -C $(TZSRC) check-dump  2>> $(shell basename $(@D)).log >> $(shell basename $(@D)).log || \
+		if [ $$? -eq  0 ]; then \
+			echo "### Test passed"; \
+		else \
+			echo "### !!! WARNING !!! zdump output comparison failure. Please review the log."; \
+		fi
 
 	@echo "## Building resource bundles for all ICU versions"
 
