@@ -61,7 +61,7 @@ icunew/%/zoneinfo64.txt: mirror/tzdata%.tar.gz mirror/tzcode%.tar.gz
 
 	@LOGFILE=`basename $(@D)`.log ; \
 	GENRBOPT="--formatVersion 2" ; \
-	TXTFILES="$(TZSRC)/zoneinfo64.txt supplemental/metaZones.txt supplemental/windowsZones.txt supplemental/timezoneTypes.txt" ; \
+	TXTFILES="$(TZSRC)/zoneinfo64.txt $(ICU_ROOT)/icu4c/source/data/misc/metaZones.txt $(ICU_ROOT)/icu4c/source/data/misc/windowsZones.txt $(ICU_ROOT)/icu4c/source/data/misc/timezoneTypes.txt" ; \
 	for srctxt in $$TXTFILES; do \
 		cp $$srctxt $(@D)/$(ICUVER) ; \
 		$(shell $(ICU_ROOT)/icu4c/source/config/icu-config --detect-prefix --invoke=genrb) $$GENRBOPT -d $(@D)/$(ICUVER) $$srctxt 2>> $$LOGFILE >> $$LOGFILE ; \
