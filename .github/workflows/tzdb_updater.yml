@@ -1,0 +1,58 @@
+name: Check for new TZDB release
+
+on:
+  schedule:
+    - cron: "0 15 * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check for new TZDB release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          path: 'icu-data'
+      - uses: actions/checkout@v4
+        with:
+          repository: unicode-org/icu 
+          ref: main
+          fetch-depth: 1
+          path: 'icu'
+
+      - name: Run script
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ICU_ROOT: ${{ github.workspace }}/icu
+          ICUDATA_ROOT: ${{ github.workspace }}/icu-data
+        run: |
+          set -e 
+
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          export TZDBVER=$(curl --silent -L -H "Accept: application/vnd.github+json" https://api.github.com/repos/eggert/tz/tags | jq -r '.[0].name')
+          
+          # Exit if the data already exists, or a PR has already been generated
+          ls "$ICUDATA_ROOT/tzdata/icunew/$TZDBVER" 2>/dev/null && echo "TZDB up to date" && exit
+          (cd icu-data; git rev-parse --verify "$TZDBVER" 2>/dev/null 1>&2) && echo "PR exists" && exit
+
+          # Build ICU4C
+          (cd $ICU_ROOT/icu4c/source/; ICU_DATA_BUILDTOOL_OPTS=--include_uni_core_data ./runConfigureICU Linux)
+          make -C $ICU_ROOT/icu4c/source -j -l2.5
+
+          # Build timezone data
+          make -C $ICUDATA_ROOT/tzdata update
+
+          cat $ICUDATA_ROOT/tzdata/$TZDBVER.log
+          rm $ICUDATA_ROOT/tzdata/$TZDBVER.log
+
+          # create PR
+          cd $ICUDATA_ROOT
+          git checkout -b "tzdb-${TZDBVER}"
+          git add .
+          git commit -m "${TZDBVER}"
+          git push --set-upstream origin "tzdb-${TZDBVER}"
+          gh pr create --title "TZDB ${TZDBVER}" --body "See [here](https://github.com/eggert/tz/blob/main/NEWS) for the latest changes made to tz."
