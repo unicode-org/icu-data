@@ -37,7 +37,7 @@ jobs:
           
           # Exit if the data already exists, or a PR has already been generated
           ls "$ICUDATA_ROOT/tzdata/icunew/$TZDBVER" 2>/dev/null && echo "TZDB up to date" && exit
-          (cd icu-data; git rev-parse --verify "$TZDBVER" 2>/dev/null 1>&2) && echo "PR exists" && exit
+          (cd $ICUDATA_ROOT; git rev-parse --verify "tzdb-${TZDBVER}" 2>/dev/null 1>&2) && echo "PR exists" && exit
 
           # Build ICU4C
           (cd $ICU_ROOT/icu4c/source/; ICU_DATA_BUILDTOOL_OPTS=--include_uni_core_data ./runConfigureICU Linux)
