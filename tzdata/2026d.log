@@ -1,0 +1,845 @@
+rm -f core *.o *.out zdump ../../bin/zic date ../../bin/tz2icu
+ICU specific cleanup:
+rm -f ZoneMetaData.java icu_zone.txt tz2icu zoneinfo64.txt zoneinfo.txt
+rm -rf zoneinfo
+rm -rf ./vanguard
+rm -rf ../../bin/icuzdump tzorig ./zdumpout/ ./icuzdumpout/
+rm -rf `gunzip -d < ./tzdata2026d.tar.gz | tar tf - --exclude=Makefile | grep -o '[^ ]*$' | tr '\n' ' '`
+rm -f tdatamarker
+rm -f africa antarctica asia australasia europe northamerica southamerica etcetera factory backward zone.tab leapseconds iso3166.tab
+c++ -O2  -W -Wall -pedantic -Wpointer-arith -Wwrite-strings -Wno-long-long -std=c++17   -I. -I../../common ./tz2icu.cpp -o ../../bin/tz2icu
+   cc	 ...  zic.c
+In file included from zic.c:27:
+./private.h:323:18: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  323 |    ? (time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1)
+      |      ~~~~~~~~~~~ ^
+./private.h:327:33: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  327 |    ? - (~ 0 < 0) - ((time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1))
+      |                     ~~~~~~~~~~~ ^
+zic.c:867:42: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  867 | static const zic_t min_time = (zic_t) -1 << (TIME_T_BITS_IN_FILE - 1);
+      |                               ~~~~~~~~~~ ^
+zic.c:868:48: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  868 | static const zic_t max_time = -1 - ((zic_t) -1 << (TIME_T_BITS_IN_FILE - 1));
+      |                                     ~~~~~~~~~~ ^
+4 warnings generated.
+   cc	 ...  localtime.c
+In file included from localtime.c:15:
+./private.h:323:18: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  323 |    ? (time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1)
+      |      ~~~~~~~~~~~ ^
+./private.h:327:33: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  327 |    ? - (~ 0 < 0) - ((time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1))
+      |                     ~~~~~~~~~~~ ^
+2 warnings generated.
+   cc	 ...  asctime.c
+In file included from asctime.c:14:
+./private.h:323:18: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  323 |    ? (time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1)
+      |      ~~~~~~~~~~~ ^
+./private.h:327:33: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  327 |    ? - (~ 0 < 0) - ((time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1))
+      |                     ~~~~~~~~~~~ ^
+2 warnings generated.
+   cc	 ...  scheck.c
+In file included from scheck.c:8:
+./private.h:323:18: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  323 |    ? (time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1)
+      |      ~~~~~~~~~~~ ^
+./private.h:327:33: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  327 |    ? - (~ 0 < 0) - ((time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1))
+      |                     ~~~~~~~~~~~ ^
+2 warnings generated.
+   cc	 ...  ialloc.c
+In file included from ialloc.c:8:
+./private.h:323:18: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  323 |    ? (time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1)
+      |      ~~~~~~~~~~~ ^
+./private.h:327:33: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  327 |    ? - (~ 0 < 0) - ((time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1))
+      |                     ~~~~~~~~~~~ ^
+2 warnings generated.
+mkdir ./vanguard
+gunzip -d < ./tzdata2026d.tar.gz | tar xf - --exclude=Makefile
+for tzfile in africa antarctica asia australasia europe northamerica southamerica etcetera factory backward ; do \
+		mv $tzfile ./vanguard/$tzfile && \
+		awk -v DATAFORM=rearguard -f ziguard.awk ./vanguard/$tzfile > $tzfile; \
+	done
+touch tdatamarker
+cc -O2  -std=c11 -Wall -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings   -D_POSIX_C_SOURCE=200112L -DSTD_INSPIRED  -I. zic.o localtime.o asctime.o scheck.o ialloc.o  -o ../../bin/zic
+../../bin/zic -d zoneinfo -L /dev/null africa antarctica asia australasia europe northamerica southamerica etcetera factory backward ./icuzones
+warning: "africa", line 112: time zone abbreviation differs from POSIX standard (-02)
+warning: "africa", line 113: time zone abbreviation differs from POSIX standard (-01)
+warning: "africa", line 353: time zone abbreviation differs from POSIX standard (-01)
+warning: "africa", line 418: time zone abbreviation differs from POSIX standard (+0230)
+warning: "africa", line 421: time zone abbreviation differs from POSIX standard (+0245)
+warning: "africa", line 592: time zone abbreviation differs from POSIX standard (+05) (rule from "africa", line 586)
+warning: "africa", line 592: time zone abbreviation differs from POSIX standard (+04) (rule from "africa", line 587)
+warning: "africa", line 943: time zone abbreviation differs from POSIX standard (+01) (rule from "africa", line 883)
+warning: "africa", line 943: time zone abbreviation differs from POSIX standard (+00) (rule from "africa", line 884)
+warning: "africa", line 961: time zone abbreviation differs from POSIX standard (-01)
+warning: "africa", line 962: time zone abbreviation differs from POSIX standard (+01) (rule from "africa", line 893)
+warning: "africa", line 962: time zone abbreviation differs from POSIX standard (+00) (rule from "africa", line 894)
+warning: "africa", line 1060: time zone abbreviation differs from POSIX standard (+0130)
+warning: "africa", line 1148: time zone abbreviation differs from POSIX standard (+0030)
+warning: "antarctica", line 86: time zone abbreviation differs from POSIX standard (-00)
+warning: "antarctica", line 87: time zone abbreviation differs from POSIX standard (+08)
+warning: "antarctica", line 88: time zone abbreviation differs from POSIX standard (+11)
+warning: "antarctica", line 104: time zone abbreviation differs from POSIX standard (-00)
+warning: "antarctica", line 105: time zone abbreviation differs from POSIX standard (+07)
+warning: "antarctica", line 108: time zone abbreviation differs from POSIX standard (+05)
+warning: "antarctica", line 112: time zone abbreviation differs from POSIX standard (-00)
+warning: "antarctica", line 113: time zone abbreviation differs from POSIX standard (+06)
+warning: "antarctica", line 114: time zone abbreviation differs from POSIX standard (+05)
+warning: "antarctica", line 235: time zone abbreviation differs from POSIX standard (-00)
+warning: "antarctica", line 236: time zone abbreviation differs from POSIX standard (+02) (rule from "antarctica", line 229)
+warning: "antarctica", line 236: time zone abbreviation differs from POSIX standard (+00) (rule from "antarctica", line 233)
+warning: "antarctica", line 292: time zone abbreviation differs from POSIX standard (-00)
+warning: "antarctica", line 293: time zone abbreviation differs from POSIX standard (+07)
+warning: "antarctica", line 296: time zone abbreviation differs from POSIX standard (+05)
+warning: "antarctica", line 328: time zone abbreviation differs from POSIX standard (-00)
+warning: "antarctica", line 329: time zone abbreviation differs from POSIX standard (-03)
+warning: "asia", line 86: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 87: time zone abbreviation differs from POSIX standard (+0430)
+warning: "asia", line 119: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 120: time zone abbreviation differs from POSIX standard (+05) (rule from "asia", line 77)
+warning: "asia", line 120: time zone abbreviation differs from POSIX standard (+04) (rule from "asia", line 78)
+warning: "asia", line 145: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 146: time zone abbreviation differs from POSIX standard (+05) (rule from "asia", line 77)
+warning: "asia", line 146: time zone abbreviation differs from POSIX standard (+04) (rule from "asia", line 78)
+warning: "asia", line 231: time zone abbreviation differs from POSIX standard (+0630)
+warning: "asia", line 232: time zone abbreviation differs from POSIX standard (+0530)
+warning: "asia", line 234: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 235: time zone abbreviation differs from POSIX standard (+07) (rule from "asia", line 225)
+warning: "asia", line 240: time zone abbreviation differs from POSIX standard (+0530)
+warning: "asia", line 241: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 251: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 252: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 268: time zone abbreviation differs from POSIX standard (+0630)
+warning: "asia", line 269: time zone abbreviation differs from POSIX standard (+09)
+warning: "asia", line 659: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 1117: time zone abbreviation differs from POSIX standard (+10) (rule from "asia", line 1086)
+warning: "asia", line 1117: time zone abbreviation differs from POSIX standard (+09) (rule from "asia", line 1087)
+warning: "asia", line 1160: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 1201: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 1202: time zone abbreviation differs from POSIX standard (+05) (rule from "asia", line 77)
+warning: "asia", line 1202: time zone abbreviation differs from POSIX standard (+04) (rule from "asia", line 78)
+warning: "asia", line 1244: time zone abbreviation differs from POSIX standard (+08)
+warning: "asia", line 1245: time zone abbreviation differs from POSIX standard (+09)
+warning: "asia", line 1313: time zone abbreviation differs from POSIX standard (+0630)
+warning: "asia", line 1367: time zone abbreviation differs from POSIX standard (+0720)
+warning: "asia", line 1368: time zone abbreviation differs from POSIX standard (+0730)
+warning: "asia", line 1369: time zone abbreviation differs from POSIX standard (+09)
+warning: "asia", line 1371: time zone abbreviation differs from POSIX standard (+08)
+warning: "asia", line 1377: time zone abbreviation differs from POSIX standard (+0730)
+warning: "asia", line 1378: time zone abbreviation differs from POSIX standard (+09)
+warning: "asia", line 1380: time zone abbreviation differs from POSIX standard (+08)
+warning: "asia", line 1387: time zone abbreviation differs from POSIX standard (+08)
+warning: "asia", line 1388: time zone abbreviation differs from POSIX standard (+09)
+warning: "asia", line 1392: time zone abbreviation differs from POSIX standard (+09)
+warning: "asia", line 1393: time zone abbreviation differs from POSIX standard (+0930)
+warning: "asia", line 1651: time zone abbreviation differs from POSIX standard (+0430) (rule from "asia", line 1608)
+warning: "asia", line 1651: time zone abbreviation differs from POSIX standard (+0330)
+warning: "asia", line 1652: time zone abbreviation differs from POSIX standard (+05) (rule from "asia", line 1610)
+warning: "asia", line 1652: time zone abbreviation differs from POSIX standard (+04) (rule from "asia", line 1611)
+warning: "asia", line 1696: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 1697: time zone abbreviation differs from POSIX standard (+04) (rule from "asia", line 1682)
+warning: "asia", line 2294: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 2509: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2510: time zone abbreviation differs from POSIX standard (+07) (rule from "asia", line 77)
+warning: "asia", line 2510: time zone abbreviation differs from POSIX standard (+06) (rule from "asia", line 78)
+warning: "asia", line 2517: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 2518: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2519: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 2532: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 2533: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2534: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 2543: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 2544: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2545: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 2555: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 2556: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2557: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 2566: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 2567: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2568: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 2570: time zone abbreviation differs from POSIX standard (+04) (rule from "asia", line 79)
+warning: "asia", line 2578: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 2579: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2580: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 2583: time zone abbreviation differs from POSIX standard (+04) (rule from "asia", line 79)
+warning: "asia", line 2607: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2608: time zone abbreviation differs from POSIX standard (+07) (rule from "asia", line 77)
+warning: "asia", line 2608: time zone abbreviation differs from POSIX standard (+06) (rule from "asia", line 78)
+warning: "asia", line 2818: time zone abbreviation differs from POSIX standard (+0730)
+warning: "asia", line 2819: time zone abbreviation differs from POSIX standard (+0820) (rule from "asia", line 2807)
+warning: "asia", line 2819: time zone abbreviation differs from POSIX standard (+08) (rule from "asia", line 2808)
+warning: "asia", line 2820: time zone abbreviation differs from POSIX standard (+09)
+warning: "asia", line 2827: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 2998: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 2999: time zone abbreviation differs from POSIX standard (+08) (rule from "asia", line 2969)
+warning: "asia", line 2999: time zone abbreviation differs from POSIX standard (+07) (rule from "asia", line 2970)
+warning: "asia", line 3002: time zone abbreviation differs from POSIX standard (+07)
+warning: "asia", line 3003: time zone abbreviation differs from POSIX standard (+09) (rule from "asia", line 2969)
+warning: "asia", line 3003: time zone abbreviation differs from POSIX standard (+08) (rule from "asia", line 2970)
+warning: "asia", line 3008: time zone abbreviation differs from POSIX standard (+0530)
+warning: "asia", line 3009: time zone abbreviation differs from POSIX standard (+0545)
+warning: "asia", line 3155: time zone abbreviation differs from POSIX standard (+0530)
+warning: "asia", line 3156: time zone abbreviation differs from POSIX standard (+0630)
+warning: "asia", line 3158: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 3797: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 3798: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 3848: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 3856: time zone abbreviation differs from POSIX standard (+07)
+warning: "asia", line 3857: time zone abbreviation differs from POSIX standard (+0720)
+warning: "asia", line 3859: time zone abbreviation differs from POSIX standard (+0730)
+warning: "asia", line 3860: time zone abbreviation differs from POSIX standard (+09)
+warning: "asia", line 3862: time zone abbreviation differs from POSIX standard (+08)
+warning: "asia", line 3920: time zone abbreviation differs from POSIX standard (+0530)
+warning: "asia", line 3921: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 3922: time zone abbreviation differs from POSIX standard (+0630)
+warning: "asia", line 4097: time zone abbreviation differs from POSIX standard (+03)
+warning: "asia", line 4103: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 4104: time zone abbreviation differs from POSIX standard (+07) (rule from "asia", line 77)
+warning: "asia", line 4104: time zone abbreviation differs from POSIX standard (+06) (rule from "asia", line 78)
+warning: "asia", line 4116: time zone abbreviation differs from POSIX standard (+07)
+warning: "asia", line 4122: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 4123: time zone abbreviation differs from POSIX standard (+06) (rule from "asia", line 77)
+warning: "asia", line 4123: time zone abbreviation differs from POSIX standard (+05) (rule from "asia", line 78)
+warning: "asia", line 4135: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 4141: time zone abbreviation differs from POSIX standard (+04)
+warning: "asia", line 4142: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 4143: time zone abbreviation differs from POSIX standard (+06)
+warning: "asia", line 4150: time zone abbreviation differs from POSIX standard (+05)
+warning: "asia", line 4151: time zone abbreviation differs from POSIX standard (+07) (rule from "asia", line 77)
+warning: "asia", line 4151: time zone abbreviation differs from POSIX standard (+06) (rule from "asia", line 78)
+warning: "asia", line 4232: time zone abbreviation differs from POSIX standard (+07)
+warning: "asia", line 4233: time zone abbreviation differs from POSIX standard (+08)
+warning: "asia", line 4234: time zone abbreviation differs from POSIX standard (+09)
+warning: "australasia", line 46: time zone abbreviation differs from POSIX standard (+0945) (rule from "australasia", line 17)
+warning: "australasia", line 46: time zone abbreviation differs from POSIX standard (+0845) (rule from "australasia", line 18)
+warning: "australasia", line 212: time zone abbreviation differs from POSIX standard (+1130) (rule from "australasia", line 196)
+warning: "australasia", line 212: time zone abbreviation differs from POSIX standard (+1030) (rule from "australasia", line 197)
+warning: "australasia", line 213: time zone abbreviation differs from POSIX standard (+11) (rule from "australasia", line 198)
+warning: "australasia", line 244: time zone abbreviation differs from POSIX standard (-00)
+warning: "australasia", line 419: time zone abbreviation differs from POSIX standard (+13) (rule from "australasia", line 405)
+warning: "australasia", line 419: time zone abbreviation differs from POSIX standard (+12) (rule from "australasia", line 406)
+warning: "australasia", line 424: time zone abbreviation differs from POSIX standard (-09)
+warning: "australasia", line 426: time zone abbreviation differs from POSIX standard (-0930)
+warning: "australasia", line 428: time zone abbreviation differs from POSIX standard (-10)
+warning: "australasia", line 471: time zone abbreviation differs from POSIX standard (+09)
+warning: "australasia", line 483: time zone abbreviation differs from POSIX standard (+12)
+warning: "australasia", line 488: time zone abbreviation differs from POSIX standard (-00)
+warning: "australasia", line 489: time zone abbreviation differs from POSIX standard (-12)
+warning: "australasia", line 490: time zone abbreviation differs from POSIX standard (-11)
+warning: "australasia", line 491: time zone abbreviation differs from POSIX standard (+13)
+warning: "australasia", line 493: time zone abbreviation differs from POSIX standard (-1040)
+warning: "australasia", line 494: time zone abbreviation differs from POSIX standard (-10)
+warning: "australasia", line 495: time zone abbreviation differs from POSIX standard (+14)
+warning: "australasia", line 501: time zone abbreviation differs from POSIX standard (+11)
+warning: "australasia", line 502: time zone abbreviation differs from POSIX standard (+10)
+warning: "australasia", line 503: time zone abbreviation differs from POSIX standard (+09)
+warning: "australasia", line 505: time zone abbreviation differs from POSIX standard (-12)
+warning: "australasia", line 506: time zone abbreviation differs from POSIX standard (+12)
+warning: "australasia", line 514: time zone abbreviation differs from POSIX standard (+11)
+warning: "australasia", line 515: time zone abbreviation differs from POSIX standard (+09)
+warning: "australasia", line 517: time zone abbreviation differs from POSIX standard (+10)
+warning: "australasia", line 520: time zone abbreviation differs from POSIX standard (+12)
+warning: "australasia", line 526: time zone abbreviation differs from POSIX standard (+1130)
+warning: "australasia", line 527: time zone abbreviation differs from POSIX standard (+09)
+warning: "australasia", line 529: time zone abbreviation differs from POSIX standard (+12)
+warning: "australasia", line 540: time zone abbreviation differs from POSIX standard (+12) (rule from "australasia", line 533)
+warning: "australasia", line 540: time zone abbreviation differs from POSIX standard (+11) (rule from "australasia", line 534)
+warning: "australasia", line 584: time zone abbreviation differs from POSIX standard (+1215)
+warning: "australasia", line 585: time zone abbreviation differs from POSIX standard (+1345) (rule from "australasia", line 561)
+warning: "australasia", line 585: time zone abbreviation differs from POSIX standard (+1245) (rule from "australasia", line 563)
+warning: "australasia", line 638: time zone abbreviation differs from POSIX standard (-1030)
+warning: "australasia", line 639: time zone abbreviation differs from POSIX standard (-10) (rule from "australasia", line 633)
+warning: "australasia", line 639: time zone abbreviation differs from POSIX standard (-0930) (rule from "australasia", line 634)
+warning: "australasia", line 656: time zone abbreviation differs from POSIX standard (-1120)
+warning: "australasia", line 657: time zone abbreviation differs from POSIX standard (-11)
+warning: "australasia", line 662: time zone abbreviation differs from POSIX standard (+1112)
+warning: "australasia", line 663: time zone abbreviation differs from POSIX standard (+1130)
+warning: "australasia", line 664: time zone abbreviation differs from POSIX standard (+1230)
+warning: "australasia", line 666: time zone abbreviation differs from POSIX standard (+11)
+warning: "australasia", line 667: time zone abbreviation differs from POSIX standard (+12) (rule from "australasia", line 182)
+warning: "australasia", line 673: time zone abbreviation differs from POSIX standard (+09)
+warning: "australasia", line 679: time zone abbreviation differs from POSIX standard (+10)
+warning: "australasia", line 700: time zone abbreviation differs from POSIX standard (+10)
+warning: "australasia", line 701: time zone abbreviation differs from POSIX standard (+09)
+warning: "australasia", line 703: time zone abbreviation differs from POSIX standard (+11)
+warning: "australasia", line 708: time zone abbreviation differs from POSIX standard (-0830)
+warning: "australasia", line 709: time zone abbreviation differs from POSIX standard (-08)
+warning: "australasia", line 798: time zone abbreviation differs from POSIX standard (-1130)
+warning: "australasia", line 799: time zone abbreviation differs from POSIX standard (-10) (rule from "australasia", line 790)
+warning: "australasia", line 799: time zone abbreviation differs from POSIX standard (-11) (rule from "australasia", line 791)
+warning: "australasia", line 800: time zone abbreviation differs from POSIX standard (+13) (rule from "australasia", line 793)
+warning: "australasia", line 800: time zone abbreviation differs from POSIX standard (+14) (rule from "australasia", line 794)
+warning: "australasia", line 806: time zone abbreviation differs from POSIX standard (+11)
+warning: "australasia", line 829: time zone abbreviation differs from POSIX standard (-11)
+warning: "australasia", line 830: time zone abbreviation differs from POSIX standard (+13)
+warning: "australasia", line 842: time zone abbreviation differs from POSIX standard (+1220)
+warning: "australasia", line 843: time zone abbreviation differs from POSIX standard (+13)
+warning: "australasia", line 844: time zone abbreviation differs from POSIX standard (+14) (rule from "australasia", line 834)
+warning: "australasia", line 933: time zone abbreviation differs from POSIX standard (+12) (rule from "australasia", line 925)
+warning: "australasia", line 933: time zone abbreviation differs from POSIX standard (+11) (rule from "australasia", line 926)
+warning: "europe", line 866: time zone abbreviation differs from POSIX standard (+03)
+warning: "europe", line 1181: time zone abbreviation differs from POSIX standard (-03)
+warning: "europe", line 1182: time zone abbreviation differs from POSIX standard (-02) (rule from "europe", line 568)
+warning: "europe", line 1188: time zone abbreviation differs from POSIX standard (-02)
+warning: "europe", line 1189: time zone abbreviation differs from POSIX standard (-01) (rule from "europe", line 635)
+warning: "europe", line 1190: time zone abbreviation differs from POSIX standard (+00) (rule from "europe", line 568)
+warning: "europe", line 1193: time zone abbreviation differs from POSIX standard (-03)
+warning: "europe", line 1194: time zone abbreviation differs from POSIX standard (-02) (rule from "europe", line 568)
+warning: "europe", line 1196: time zone abbreviation differs from POSIX standard (-01) (rule from "europe", line 568)
+warning: "europe", line 2415: time zone abbreviation differs from POSIX standard (-01) (rule from "europe", line 2200)
+warning: "europe", line 2415: time zone abbreviation differs from POSIX standard (-02) (rule from "europe", line 2201)
+warning: "europe", line 2416: time zone abbreviation differs from POSIX standard (+00) (rule from "europe", line 2273)
+warning: "europe", line 2452: time zone abbreviation differs from POSIX standard (+00) (rule from "europe", line 2200)
+warning: "europe", line 2452: time zone abbreviation differs from POSIX standard (-01) (rule from "europe", line 2201)
+warning: "europe", line 2453: time zone abbreviation differs from POSIX standard (+01) (rule from "europe", line 2273)
+warning: "europe", line 2688: time zone abbreviation differs from POSIX standard (+03)
+warning: "europe", line 2871: time zone abbreviation differs from POSIX standard (+05) (rule from "europe", line 675)
+warning: "europe", line 2938: time zone abbreviation differs from POSIX standard (+03)
+warning: "europe", line 2939: time zone abbreviation differs from POSIX standard (+05) (rule from "europe", line 680)
+warning: "europe", line 2939: time zone abbreviation differs from POSIX standard (+04) (rule from "europe", line 681)
+warning: "europe", line 2975: time zone abbreviation differs from POSIX standard (+03)
+warning: "europe", line 2976: time zone abbreviation differs from POSIX standard (+04)
+warning: "europe", line 2977: time zone abbreviation differs from POSIX standard (+05) (rule from "europe", line 680)
+warning: "europe", line 2998: time zone abbreviation differs from POSIX standard (+03)
+warning: "europe", line 2999: time zone abbreviation differs from POSIX standard (+05) (rule from "europe", line 680)
+warning: "europe", line 2999: time zone abbreviation differs from POSIX standard (+04) (rule from "europe", line 681)
+warning: "europe", line 3013: time zone abbreviation differs from POSIX standard (+03)
+warning: "europe", line 3014: time zone abbreviation differs from POSIX standard (+05) (rule from "europe", line 680)
+warning: "europe", line 3014: time zone abbreviation differs from POSIX standard (+04) (rule from "europe", line 681)
+warning: "europe", line 3031: time zone abbreviation differs from POSIX standard (+03)
+warning: "europe", line 3032: time zone abbreviation differs from POSIX standard (+04)
+warning: "europe", line 3033: time zone abbreviation differs from POSIX standard (+05) (rule from "europe", line 680)
+warning: "europe", line 3035: time zone abbreviation differs from POSIX standard (+02)
+warning: "europe", line 3055: time zone abbreviation differs from POSIX standard (+03)
+warning: "europe", line 3056: time zone abbreviation differs from POSIX standard (+05) (rule from "europe", line 680)
+warning: "europe", line 3056: time zone abbreviation differs from POSIX standard (+04) (rule from "europe", line 681)
+warning: "europe", line 3058: time zone abbreviation differs from POSIX standard (+02) (rule from "europe", line 684)
+warning: "europe", line 3087: time zone abbreviation differs from POSIX standard (+04)
+warning: "europe", line 3088: time zone abbreviation differs from POSIX standard (+06) (rule from "europe", line 680)
+warning: "europe", line 3088: time zone abbreviation differs from POSIX standard (+05) (rule from "europe", line 681)
+warning: "europe", line 3102: time zone abbreviation differs from POSIX standard (+05)
+warning: "europe", line 3103: time zone abbreviation differs from POSIX standard (+07) (rule from "europe", line 680)
+warning: "europe", line 3103: time zone abbreviation differs from POSIX standard (+06) (rule from "europe", line 681)
+warning: "europe", line 3140: time zone abbreviation differs from POSIX standard (+06)
+warning: "europe", line 3141: time zone abbreviation differs from POSIX standard (+08) (rule from "europe", line 680)
+warning: "europe", line 3141: time zone abbreviation differs from POSIX standard (+07) (rule from "europe", line 681)
+warning: "europe", line 3161: time zone abbreviation differs from POSIX standard (+06)
+warning: "europe", line 3162: time zone abbreviation differs from POSIX standard (+08) (rule from "europe", line 680)
+warning: "europe", line 3162: time zone abbreviation differs from POSIX standard (+07) (rule from "europe", line 681)
+warning: "europe", line 3213: time zone abbreviation differs from POSIX standard (+06)
+warning: "europe", line 3214: time zone abbreviation differs from POSIX standard (+08) (rule from "europe", line 680)
+warning: "europe", line 3214: time zone abbreviation differs from POSIX standard (+07) (rule from "europe", line 681)
+warning: "europe", line 3251: time zone abbreviation differs from POSIX standard (+06)
+warning: "europe", line 3252: time zone abbreviation differs from POSIX standard (+08) (rule from "europe", line 680)
+warning: "europe", line 3252: time zone abbreviation differs from POSIX standard (+07) (rule from "europe", line 681)
+warning: "europe", line 3270: time zone abbreviation differs from POSIX standard (+06)
+warning: "europe", line 3271: time zone abbreviation differs from POSIX standard (+08) (rule from "europe", line 680)
+warning: "europe", line 3271: time zone abbreviation differs from POSIX standard (+07) (rule from "europe", line 681)
+warning: "europe", line 3292: time zone abbreviation differs from POSIX standard (+07)
+warning: "europe", line 3293: time zone abbreviation differs from POSIX standard (+09) (rule from "europe", line 680)
+warning: "europe", line 3293: time zone abbreviation differs from POSIX standard (+08) (rule from "europe", line 681)
+warning: "europe", line 3314: time zone abbreviation differs from POSIX standard (+08)
+warning: "europe", line 3315: time zone abbreviation differs from POSIX standard (+10) (rule from "europe", line 680)
+warning: "europe", line 3315: time zone abbreviation differs from POSIX standard (+09) (rule from "europe", line 681)
+warning: "europe", line 3360: time zone abbreviation differs from POSIX standard (+08)
+warning: "europe", line 3361: time zone abbreviation differs from POSIX standard (+10) (rule from "europe", line 680)
+warning: "europe", line 3361: time zone abbreviation differs from POSIX standard (+09) (rule from "europe", line 681)
+warning: "europe", line 3383: time zone abbreviation differs from POSIX standard (+09)
+warning: "europe", line 3384: time zone abbreviation differs from POSIX standard (+11) (rule from "europe", line 680)
+warning: "europe", line 3384: time zone abbreviation differs from POSIX standard (+10) (rule from "europe", line 681)
+warning: "europe", line 3406: time zone abbreviation differs from POSIX standard (+08)
+warning: "europe", line 3407: time zone abbreviation differs from POSIX standard (+10) (rule from "europe", line 680)
+warning: "europe", line 3407: time zone abbreviation differs from POSIX standard (+09) (rule from "europe", line 681)
+warning: "europe", line 3410: time zone abbreviation differs from POSIX standard (+11) (rule from "europe", line 685)
+warning: "europe", line 3429: time zone abbreviation differs from POSIX standard (+09)
+warning: "europe", line 3430: time zone abbreviation differs from POSIX standard (+12) (rule from "europe", line 680)
+warning: "europe", line 3430: time zone abbreviation differs from POSIX standard (+11) (rule from "europe", line 681)
+warning: "europe", line 3431: time zone abbreviation differs from POSIX standard (+10) (rule from "europe", line 684)
+warning: "europe", line 3459: time zone abbreviation differs from POSIX standard (+10)
+warning: "europe", line 3460: time zone abbreviation differs from POSIX standard (+12) (rule from "europe", line 680)
+warning: "europe", line 3460: time zone abbreviation differs from POSIX standard (+11) (rule from "europe", line 681)
+warning: "europe", line 3510: time zone abbreviation differs from POSIX standard (+10)
+warning: "europe", line 3511: time zone abbreviation differs from POSIX standard (+12) (rule from "europe", line 680)
+warning: "europe", line 3511: time zone abbreviation differs from POSIX standard (+11) (rule from "europe", line 681)
+warning: "europe", line 3533: time zone abbreviation differs from POSIX standard (+08)
+warning: "europe", line 3534: time zone abbreviation differs from POSIX standard (+09)
+warning: "europe", line 3535: time zone abbreviation differs from POSIX standard (+11) (rule from "europe", line 681)
+warning: "europe", line 3535: time zone abbreviation differs from POSIX standard (+12) (rule from "europe", line 680)
+warning: "europe", line 3536: time zone abbreviation differs from POSIX standard (+10) (rule from "europe", line 684)
+warning: "europe", line 3553: time zone abbreviation differs from POSIX standard (+11)
+warning: "europe", line 3554: time zone abbreviation differs from POSIX standard (+13) (rule from "europe", line 680)
+warning: "europe", line 3554: time zone abbreviation differs from POSIX standard (+12) (rule from "europe", line 681)
+warning: "europe", line 3566: time zone abbreviation differs from POSIX standard (+12)
+warning: "europe", line 3567: time zone abbreviation differs from POSIX standard (+14) (rule from "europe", line 680)
+warning: "europe", line 3567: time zone abbreviation differs from POSIX standard (+13) (rule from "europe", line 681)
+warning: "europe", line 3569: time zone abbreviation differs from POSIX standard (+11) (rule from "europe", line 684)
+warning: "europe", line 3691: time zone abbreviation differs from POSIX standard (-01)
+warning: "europe", line 4010: time zone abbreviation differs from POSIX standard (+03) (rule from "europe", line 3995)
+warning: "europe", line 4010: time zone abbreviation differs from POSIX standard (+04) (rule from "europe", line 3997)
+warning: "northamerica", line 2491: time zone abbreviation differs from POSIX standard (-00)
+warning: "northamerica", line 2496: time zone abbreviation differs from POSIX standard (-00)
+warning: "northamerica", line 2503: time zone abbreviation differs from POSIX standard (-00)
+warning: "northamerica", line 2508: time zone abbreviation differs from POSIX standard (-00)
+warning: "northamerica", line 2514: time zone abbreviation differs from POSIX standard (-00)
+warning: "northamerica", line 3117: time zone abbreviation differs from POSIX standard (-0330) (rule from "northamerica", line 3106)
+warning: "northamerica", line 3171: time zone abbreviation differs from POSIX standard (-0530) (rule from "northamerica", line 3158)
+warning: "northamerica", line 3535: time zone abbreviation differs from POSIX standard (-0430) (rule from "northamerica", line 3528)
+warning: "northamerica", line 3840: time zone abbreviation differs from POSIX standard (-03)
+warning: "northamerica", line 3841: time zone abbreviation differs from POSIX standard (-02) (rule from "northamerica", line 1399)
+warning: "southamerica", line 405: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 406: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 407: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 424: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 425: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 426: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 436: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 437: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 438: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 449: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 450: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 451: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 463: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 464: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 465: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 478: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 479: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 480: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 493: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 494: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 495: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 509: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 510: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 511: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 524: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 525: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 526: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 547: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 548: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 549: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 566: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 567: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 568: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 579: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 580: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 52)
+warning: "southamerica", line 581: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 593: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 964: time zone abbreviation differs from POSIX standard (-01) (rule from "southamerica", line 784)
+warning: "southamerica", line 964: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 785)
+warning: "southamerica", line 982: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 784)
+warning: "southamerica", line 982: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 785)
+warning: "southamerica", line 988: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 784)
+warning: "southamerica", line 988: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 785)
+warning: "southamerica", line 995: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 784)
+warning: "southamerica", line 995: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 785)
+warning: "southamerica", line 1004: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 784)
+warning: "southamerica", line 1004: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 785)
+warning: "southamerica", line 1013: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 784)
+warning: "southamerica", line 1013: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 785)
+warning: "southamerica", line 1022: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 784)
+warning: "southamerica", line 1022: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 785)
+warning: "southamerica", line 1035: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 784)
+warning: "southamerica", line 1035: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 785)
+warning: "southamerica", line 1044: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 784)
+warning: "southamerica", line 1044: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 785)
+warning: "southamerica", line 1050: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 784)
+warning: "southamerica", line 1050: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 785)
+warning: "southamerica", line 1054: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 784)
+warning: "southamerica", line 1054: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 785)
+warning: "southamerica", line 1060: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 784)
+warning: "southamerica", line 1060: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 785)
+warning: "southamerica", line 1065: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 784)
+warning: "southamerica", line 1065: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 785)
+warning: "southamerica", line 1074: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 784)
+warning: "southamerica", line 1074: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 785)
+warning: "southamerica", line 1082: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 784)
+warning: "southamerica", line 1082: time zone abbreviation differs from POSIX standard (-05) (rule from "southamerica", line 785)
+warning: "southamerica", line 1091: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 784)
+warning: "southamerica", line 1091: time zone abbreviation differs from POSIX standard (-05) (rule from "southamerica", line 785)
+warning: "southamerica", line 1399: time zone abbreviation differs from POSIX standard (-05)
+warning: "southamerica", line 1401: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 1407: time zone abbreviation differs from POSIX standard (-03)
+warning: "southamerica", line 1413: time zone abbreviation differs from POSIX standard (-05)
+warning: "southamerica", line 1415: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 1423: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 1358)
+warning: "southamerica", line 1427: time zone abbreviation differs from POSIX standard (-05)
+warning: "southamerica", line 1429: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 1437: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 1358)
+warning: "southamerica", line 1441: time zone abbreviation differs from POSIX standard (-06) (rule from "southamerica", line 1358)
+warning: "southamerica", line 1441: time zone abbreviation differs from POSIX standard (-07) (rule from "southamerica", line 1359)
+warning: "southamerica", line 1442: time zone abbreviation differs from POSIX standard (-05) (rule from "southamerica", line 1366)
+warning: "southamerica", line 1461: time zone abbreviation differs from POSIX standard (-00)
+warning: "southamerica", line 1462: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 66)
+warning: "southamerica", line 1462: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 67)
+warning: "southamerica", line 1463: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 71)
+warning: "southamerica", line 1490: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 1484)
+warning: "southamerica", line 1490: time zone abbreviation differs from POSIX standard (-05) (rule from "southamerica", line 1485)
+warning: "southamerica", line 1521: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 1515)
+warning: "southamerica", line 1521: time zone abbreviation differs from POSIX standard (-05) (rule from "southamerica", line 1516)
+warning: "southamerica", line 1523: time zone abbreviation differs from POSIX standard (-05)
+warning: "southamerica", line 1524: time zone abbreviation differs from POSIX standard (-06) (rule from "southamerica", line 1516)
+warning: "southamerica", line 1624: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 1609)
+warning: "southamerica", line 1624: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 1610)
+warning: "southamerica", line 1625: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 1614)
+warning: "southamerica", line 1635: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 1636: time zone abbreviation differs from POSIX standard (-03)
+warning: "southamerica", line 1670: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 1671: time zone abbreviation differs from POSIX standard (-0345)
+warning: "southamerica", line 1672: time zone abbreviation differs from POSIX standard (-03)
+warning: "southamerica", line 1791: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 1792: time zone abbreviation differs from POSIX standard (-03)
+warning: "southamerica", line 1821: time zone abbreviation differs from POSIX standard (-04) (rule from "southamerica", line 1807)
+warning: "southamerica", line 1821: time zone abbreviation differs from POSIX standard (-05) (rule from "southamerica", line 1808)
+warning: "southamerica", line 1826: time zone abbreviation differs from POSIX standard (-02)
+warning: "southamerica", line 1836: time zone abbreviation differs from POSIX standard (-0330)
+warning: "southamerica", line 1837: time zone abbreviation differs from POSIX standard (-03)
+warning: "southamerica", line 2052: time zone abbreviation differs from POSIX standard (-04)
+warning: "southamerica", line 2053: time zone abbreviation differs from POSIX standard (-0330) (rule from "southamerica", line 1884)
+warning: "southamerica", line 2053: time zone abbreviation differs from POSIX standard (-03) (rule from "southamerica", line 1883)
+warning: "southamerica", line 2054: time zone abbreviation differs from POSIX standard (-0230) (rule from "southamerica", line 1947)
+warning: "southamerica", line 2055: time zone abbreviation differs from POSIX standard (-02) (rule from "southamerica", line 1949)
+warning: "southamerica", line 2058: time zone abbreviation differs from POSIX standard (-0130) (rule from "southamerica", line 1976)
+warning: "southamerica", line 2094: time zone abbreviation differs from POSIX standard (-0430)
+warning: "southamerica", line 2095: time zone abbreviation differs from POSIX standard (-04)
+warning: "etcetera", line 59: time zone abbreviation differs from POSIX standard (+14)
+warning: "etcetera", line 60: time zone abbreviation differs from POSIX standard (+13)
+warning: "etcetera", line 61: time zone abbreviation differs from POSIX standard (+12)
+warning: "etcetera", line 62: time zone abbreviation differs from POSIX standard (+11)
+warning: "etcetera", line 63: time zone abbreviation differs from POSIX standard (+10)
+warning: "etcetera", line 64: time zone abbreviation differs from POSIX standard (+09)
+warning: "etcetera", line 65: time zone abbreviation differs from POSIX standard (+08)
+warning: "etcetera", line 66: time zone abbreviation differs from POSIX standard (+07)
+warning: "etcetera", line 67: time zone abbreviation differs from POSIX standard (+06)
+warning: "etcetera", line 68: time zone abbreviation differs from POSIX standard (+05)
+warning: "etcetera", line 69: time zone abbreviation differs from POSIX standard (+04)
+warning: "etcetera", line 70: time zone abbreviation differs from POSIX standard (+03)
+warning: "etcetera", line 71: time zone abbreviation differs from POSIX standard (+02)
+warning: "etcetera", line 72: time zone abbreviation differs from POSIX standard (+01)
+warning: "etcetera", line 73: time zone abbreviation differs from POSIX standard (-01)
+warning: "etcetera", line 74: time zone abbreviation differs from POSIX standard (-02)
+warning: "etcetera", line 75: time zone abbreviation differs from POSIX standard (-03)
+warning: "etcetera", line 76: time zone abbreviation differs from POSIX standard (-04)
+warning: "etcetera", line 77: time zone abbreviation differs from POSIX standard (-05)
+warning: "etcetera", line 78: time zone abbreviation differs from POSIX standard (-06)
+warning: "etcetera", line 79: time zone abbreviation differs from POSIX standard (-07)
+warning: "etcetera", line 80: time zone abbreviation differs from POSIX standard (-08)
+warning: "etcetera", line 81: time zone abbreviation differs from POSIX standard (-09)
+warning: "etcetera", line 82: time zone abbreviation differs from POSIX standard (-10)
+warning: "etcetera", line 83: time zone abbreviation differs from POSIX standard (-11)
+warning: "etcetera", line 84: time zone abbreviation differs from POSIX standard (-12)
+warning: "factory", line 22: time zone abbreviation differs from POSIX standard (-00)
+warning: "./icuzones", line 17: time zone abbreviation has too many alphabetics (Unknown)
+../../bin/tz2icu zoneinfo zone.tab `echo ./tzdata2026d.tar.gz | sed -e "s/.*\/tzdata//;s/\.tar\.gz$//"`
+Olson data version: 2026d
+ICU 4.4+ format: Yes
+Finished reading 112 final zones and 22 final rules from icu_zone.txt
+Finished reading 639 zoneinfo files [ACT..Zulu]
+Region Mapping: custom override for Europe/Simferopol UA -> UA
+Finished reading 418 country entries from zone.tab
+Region Mapping: custom data zone=Africa/Asmera, region=ER
+Region Mapping: custom data zone=Africa/Timbuktu, region=ML
+Region Mapping: custom data zone=America/Coral_Harbour, region=CA
+Region Mapping: custom data zone=America/Montreal, region=CA
+Region Mapping: custom data zone=America/Pangnirtung, region=CA
+Region Mapping: custom data zone=America/Virgin, region=VI
+Region Mapping: custom data zone=Antarctica/South_Pole, region=AQ
+Region Mapping: custom data zone=Atlantic/Jan_Mayen, region=SJ
+Region Mapping: custom data zone=Pacific/Johnston, region=UM
+Region Mapping: custom data zone=Pacific/Ponape, region=FM
+Region Mapping: custom data zone=Pacific/Truk, region=FM
+Region Mapping: custom data zone=Pacific/Yap, region=FM
+Finished writing zoneinfo64.txt
+../../bin/tz2icu zoneinfo zone.tab `echo ./tzdata2026d.tar.gz | sed -e "s/.*\/tzdata//;s/\.tar\.gz$//"` --old
+Olson data version: 2026d
+ICU 4.4+ format: No
+Finished reading 112 final zones and 22 final rules from icu_zone.txt
+Finished reading 639 zoneinfo files [ACT..Zulu]
+Region Mapping: custom override for Europe/Simferopol UA -> UA
+Finished reading 418 country entries from zone.tab
+Region Mapping: custom data zone=Africa/Asmera, region=ER
+Region Mapping: custom data zone=Africa/Timbuktu, region=ML
+Region Mapping: custom data zone=America/Coral_Harbour, region=CA
+Region Mapping: custom data zone=America/Montreal, region=CA
+Region Mapping: custom data zone=America/Pangnirtung, region=CA
+Region Mapping: custom data zone=America/Virgin, region=VI
+Region Mapping: custom data zone=Antarctica/South_Pole, region=AQ
+Region Mapping: custom data zone=Atlantic/Jan_Mayen, region=SJ
+Region Mapping: custom data zone=Pacific/Johnston, region=UM
+Region Mapping: custom data zone=Pacific/Ponape, region=FM
+Region Mapping: custom data zone=Pacific/Truk, region=FM
+Region Mapping: custom data zone=Pacific/Yap, region=FM
+Finished writing zoneinfo.txt
+Makefile:262: warning: overriding commands for target `out/build/icudt78l/zoneinfo64.res'
+../data/rules.mk:1301: warning: ignoring old commands for target `out/build/icudt78l/zoneinfo64.res'
+Note: ./misc/zoneinfo.txt is IGNORED because ../tools/tzcode/tzdata2026d.tar.gz is present.
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb  -q -i ./out/build/icudt78l -d ./out/build/icudt78l ../tools/tzcode/zoneinfo64.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k af.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k am.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ar.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ar_SA.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ars.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k as.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k az.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k be.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k bg.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k blo.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k bn.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k bo.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k br.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k bs.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k bs_Cyrl.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ca.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ceb.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k chr.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k cs.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k cy.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k da.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k de.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k de_.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k de_AT.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k de__PHONEBOOK.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k dsb.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k dz.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ee.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k el.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k en.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k en_US.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k en_US_POSIX.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k eo.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k es.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k es_.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k es__TRADITIONAL.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k et.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k fa.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k fa_AF.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ff.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ff_Adlm.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k fi.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k fil.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k fo.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k fr.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k fr_CA.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k fy.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ga.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k gl.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k gu.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ha.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k haw.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k he.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k he_IL.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k hi.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k hr.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k hsb.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k hu.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k hy.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k id.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k id_ID.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ig.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k in.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k in_ID.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k is.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k it.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k iw.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k iw_IL.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ja.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ka.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k kk.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k kk_Arab.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k kl.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k km.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k kn.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ko.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k kok.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ku.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ky.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k lb.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k lij.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k lkt.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ln.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k lo.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k lt.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k lv.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k mk.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ml.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k mn.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k mo.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k mr.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ms.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k mt.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k my.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k nb.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k nb_NO.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ne.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k nl.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k nn.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k no.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k no_NO.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k nso.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k om.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k or.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k pa.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k pa_Guru.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k pa_Guru_IN.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k pa_IN.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k pl.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ps.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k pt.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ro.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k root.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ru.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sa.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k se.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sh.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sh_BA.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sh_CS.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sh_YU.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k si.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sk.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sl.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k smn.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sq.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_BA.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_Cyrl.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_Cyrl_BA.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_Cyrl_ME.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_Cyrl_RS.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_Latn.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_Latn_BA.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_Latn_RS.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_ME.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sr_RS.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k st.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sv.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k sw.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ta.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k te.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k th.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k tk.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k tn.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k to.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k tr.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ug.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k uk.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k ur.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k uz.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k vi.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k wae.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k wo.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k xh.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k yi.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k yo.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k yue.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k yue_CN.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k yue_Hans.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k yue_Hans_CN.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k yue_Hant.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_CN.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_HK.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_Hans.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_Hans_CN.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_Hans_SG.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_Hant.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_Hant_HK.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_Hant_MO.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_Hant_TW.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_MO.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_SG.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zh_TW.txt
+DYLD_LIBRARY_PATH=../lib:../stubdata:../tools/ctestfw:$DYLD_LIBRARY_PATH  ../bin/genrb --filterDir ./out/tmp/filters/coll_tree -s ./coll -d ./out/build/icudt78l/coll/ -i ./out/build/icudt78l  -k zu.txt
+echo timestamp > build-local
+DYLD_LIBRARY_PATH=../stubdata:../tools/ctestfw:../lib:$DYLD_LIBRARY_PATH  ../bin/pkgdata -O ../data/icupkg.inc -q -c -s /Users/robertbastian/Developer/cicu/icu4c/source/data/out/build/icudt78l -d ../lib -e icudt78  -T ./out/tmp -p icudt78l -m dll -r 78.3 -L icudata ./out/tmp/icudata.lst
+pkgdata: cc -DU_ALL_IMPLEMENTATION -DU_ATTRIBUTE_DEPRECATED=    -O2  -std=c11 -Wall -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings   -fno-common -c -I../common -I../common  -dynamic -o ./out/tmp/icudt78l_dat.o ./out/tmp/icudt78l_dat.S
+pkgdata: cc -dynamiclib -dynamic -O2  -std=c11 -Wall -pedantic -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings      -o ../lib/libicudata.78.3.dylib ./out/tmp/icudt78l_dat.o -Wl,-compatibility_version -Wl,78 -Wl,-current_version -Wl,78.3 -install_name  libicudata.78.dylib  
+pkgdata: cd ../lib/ && rm -f libicudata.78.dylib && ln -s libicudata.78.3.dylib libicudata.78.dylib
+pkgdata: cd ../lib/ && rm -f libicudata.dylib && ln -s libicudata.78.3.dylib libicudata.dylib
+echo timestamp > packagedata
+rm -rf ./tzorig/
+mkdir tzorig
+mkdir ./tzorig/tzdir
+gunzip -d < ./tzdata2026d.tar.gz | ( cd tzorig ; tar xf - )
+gunzip -d < ./tzcode2026d.tar.gz | ( cd tzorig ; tar xf - )
+for tzfile in africa antarctica asia australasia europe northamerica southamerica etcetera factory backward ; do \
+		mv ./tzorig/$tzfile ./tzorig/$tzfile.bak && \
+		awk -v DATAFORM=rearguard -f ./tzorig/ziguard.awk ./tzorig/$tzfile.bak > ./tzorig/$tzfile; \
+	done
+mv ./tzorig/zdump.c ./tzorig/zdump.c.orig
+cp ./zdump.c ./tzorig/zdump.c
+mv ./tzorig/factory ./tzorig/factory.orig
+cat ./tzorig/factory.orig ./icuzones > ./tzorig/factory
+mv ./tzorig/zishrink.awk ./tzorig/zishrink.awk.orig
+sed -e '/if (line ~ \/^R SystemV \/) return/s/^/#/' ./tzorig/zishrink.awk.orig > ./tzorig/zishrink.awk
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -C tzorig CFLAGS="-D_POSIX_C_SOURCE -DSTD_INSPIRED" TZDIR=/Users/robertbastian/Developer/cicu/icu4c/source/tools/tzcode/tzorig/tzdir tzdir.h zdump zones
+printf '%s\n' >tzdir.h.out \
+		  '#ifndef TZDEFAULT' \
+		  '# define TZDEFAULT "/etc/localtime" /* default zone */' \
+		  '#endif' \
+		  '#ifndef TZDIR' \
+		  '# define TZDIR "/Users/robertbastian/Developer/cicu/icu4c/source/tools/tzcode/tzorig/tzdir" /* TZif directory */' \
+		  '#endif'
+mv tzdir.h.out tzdir.h
+{ (type git) >/dev/null 2>&1 && \
+		  V=$(git describe --match '[0-9][0-9][0-9][0-9][a-z]*' --abbrev=7 --dirty) || \
+		  if test 'unknown' = unknown && read -r V <version; then \
+		    V=${V%-dirty}-dirty; \
+		  else \
+		    V='unknown'; \
+		  fi; } && \
+		printf '%s\n' "$V" >version.out
+fatal: No names found, cannot describe anything.
+mv version.out version
+read -r VERSION <version && printf '%s\n' \
+		  'static char const PKGVERSION[]="(tzcode) ";' \
+		  "static char const TZVERSION[]=\"$VERSION\";" \
+		  'static char const REPORT_BUGS_TO[]="tz@iana.org";' \
+		  >version.h.out
+mv version.h.out version.h
+cc -D_POSIX_C_SOURCE -DSTD_INSPIRED   -c -o zdump.o zdump.c
+zdump.c:216:18: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  216 |    ? (time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1)
+      |      ~~~~~~~~~~~ ^
+zdump.c:220:33: warning: shifting a negative signed value is undefined [-Wshift-negative-value]
+  220 |    ? - (~ 0 < 0) - ((time_t) -1 << (CHAR_BIT * sizeof (time_t) - 1))
+      |                     ~~~~~~~~~~~ ^
+2 warnings generated.
+cc -D_POSIX_C_SOURCE -DSTD_INSPIRED   -c -o localtime.o localtime.c
+localtime.c:781:14: error: call to undeclared function 'strnlen'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  781 |           int len = strnlen(&sp->chars[i], TZNAME_MAXIMUM + 1);
+      |                     ^
+localtime.c:781:14: note: did you mean 'strlen'?
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/_string.h:96:9: note: 'strlen' declared here
+   96 | size_t   strlen(const char *__s);
+      |          ^
+localtime.c:842:24: error: no member named 'st_ctimespec' in 'struct stat'
+  842 |     ctim.tv_nsec = st->st_ctim.tv_nsec;
+      |                    ~~  ^
+localtime.c:40:18: note: expanded from macro 'st_ctim'
+   40 | # define st_ctim st_ctimespec
+      |                  ^
+localtime.c:955:13: error: call to undeclared function 'issetugid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  955 |           else if (issetugid())
+      |                    ^
+localtime.c:971:7: error: call to undeclared function 'issetugid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  971 |                 if (issetugid())
+      |                     ^
+localtime.c:988:31: error: call to undeclared function 'issetugid'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  988 |             if (O_RESOLVE_BENEATH && issetugid()) {
+      |                                      ^
+localtime.c:1000:20: error: call to undeclared function 'strnlen'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 1000 |                 size_t namelen = strnlen (name, namesizemax);
+      |                                  ^
+localtime.c:1247:26: error: call to undeclared function 'strnlen'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 1247 |                               int tsabbrlen = strnlen(tsabbr, TZ_MAX_CHARS - j);
+      |                                               ^
+localtime.c:1864:17: error: call to undeclared function 'strnlen'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+ 1864 |       namelen = strnlen(name, sizeof lcl_TZname);
+      |                 ^
+8 errors generated.
+make[3]: *** [localtime.o] Error 1
+make[2]: *** [tzorig] Error 2
