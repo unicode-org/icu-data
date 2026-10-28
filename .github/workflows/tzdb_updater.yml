@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: unicode-org/icu 
-          ref: maint/maint-78
+          ref: maint/maint-79
           fetch-depth: 1
           path: 'icu'
 
